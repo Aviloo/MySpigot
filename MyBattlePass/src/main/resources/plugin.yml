@@ -1,0 +1,36 @@
+name: MyBattlePass
+version: '${project.version}'
+main: com.aviloo.mybattlepass.MyBattlePass
+api-version: 1.19
+authors: [ Aviloo ]
+description: add bp on your server
+permissions:
+  BattlePass.open:
+    description: open BattlePass inventory.
+  BattlePass.lvl8:
+    description: allow you going to level 8.
+  BattlePass.lvl9:
+    description: allow you going to level 9.
+  BattlePass.lvl10:
+    description: allow you going to level 10.
+commands:
+  battlepass:
+    usage: /<command>
+    aliases:
+      - bp
+      - battlep
+      - bpass
+  bpaddexp:
+    usage: /<command> PlayerName ExpCount
+  bpreset:
+    usage: /<command>
+    description: reset progression of ALL players in BattlePass.
+  freebattlepass:
+    usage: /<command> on/off
+    description: allow default players use battle pass (not for donates).
+  reloadbattlepass:
+    usage: /<command>
+    description: reload plugin configuration.
+    aliases:
+      - rbpass
+      - reloadbp

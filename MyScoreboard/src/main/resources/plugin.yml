@@ -1,0 +1,14 @@
+name: MyScoreboard
+version: '${project.version}'
+main: com.aviloo.myscoreboard.MyScoreboard
+api-version: 1.19
+soft-dependencies: PlaceholdersAPI, LuckPerms, PlayerPoints
+authors: [ Aviloo ]
+commands:
+  myscoreboard:
+    usage: /<command>
+    description: allow customize you own scoreboard.
+    aliases:
+      - mysb
+  seteventboard:
+    usage: /<command> [EventType]

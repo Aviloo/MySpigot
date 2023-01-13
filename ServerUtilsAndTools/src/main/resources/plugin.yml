@@ -1,0 +1,40 @@
+name: ServerUtilsAndTools
+version: '${project.version}'
+main: com.aviloo.serverutilsandtools.ServerUtilsAndTools
+api-version: 1.19
+authors: [ Aviloo ]
+description: more utils , more administrator tools for your server
+commands:
+  suspect:
+    usage: /<command>
+    permission: SUAT.suspect
+    permission-message: У вас недостаточно прав.
+  adc:
+    usage: /<command> сообщение.
+    permission: SUAT.admin-chat
+    permission-message: У вас недостаточно прав.
+  maintenance:
+    usage: /<command> on/off
+    description: Activate/Deactivate maintenance mode.
+  adminmode:
+    usage: /<command> on/off
+    description: mode for administrators
+    aliases:
+      - amode
+  serverutilsandtools:
+    usage: /<command> reload
+    description: reload configuration of this plugin
+    aliases:
+      - suat
+  auc:
+    usage: /<command>
+    description: shortcut for PlayersAuction Plugin.
+  links:
+    usage: /<command>
+permissions:
+  SUAT.suspect:
+    description: allow players use suspect command.
+  SUAT.admin-chat:
+    description: allow admins use admin chat.
+  SUAT.adminmode:
+    description: allow use command admin mode

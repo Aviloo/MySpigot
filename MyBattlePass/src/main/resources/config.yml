@@ -1,0 +1,12 @@
+host: mysql4.joinserver.xyz:3306
+port: 3306
+database: s94854_Test
+username: u94854_AF5smJbXNI
+password: n+yZL0+4PeCq2mGe4q=Ocax9
+use_SQLite: true
+FreeBattlePassStatus: false
+FreeBattlePass_BroadcastMessage: true
+StopServerWithoutConnection: false
+SetEnableStopping: true
+BukkitShutdownStopping: false
+ShopLink: 'http:/vk.com/'

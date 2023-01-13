@@ -1,0 +1,18 @@
+name: RewardChests
+version: '${project.version}'
+main: com.aviloo.rewardchests.RewardChests
+api-version: 1.19
+authors: [ Aviloo ]
+commands:
+  rewardchest:
+    usage: /<command>
+    description: Command ONLY for STAFF.
+    aliases:
+      - rchest
+      - rewardc
+  givechest:
+    usage: /<command> chestType PlayerName
+    description: Gives players chest for donate
+  givequestchestsecretcommand:
+    usage: /<command>
+    description: Needs for beginners quest number three.

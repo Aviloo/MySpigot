@@ -1,0 +1,22 @@
+name: MyTraderReloaded
+version: '${project.version}'
+main: com.aviloo.mytraderreloaded.MyTraderReloaded
+api-version: 1.19
+authors: [ Aviloo ]
+description: add Trader to your server
+commands:
+  secretsellercommand:
+    usage: /<command>
+    description: command for players. Use by NPC
+  seller:
+    usage: /<command>
+    description: команда для донатеров. Использовать можно где угодно
+  sellertype:
+    usage: /<command> reload
+    description: команда позволяет перезагружать тип скупщика.
+  secretdonatshopcommand:
+    usage: /<command>
+    description: команда позволяет открыть меню донат магазина
+permissions:
+  mytrader.seller:
+    description: позволяет использовать комманду /seller

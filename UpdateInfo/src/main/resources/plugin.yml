@@ -1,0 +1,17 @@
+name: UpdateInformation
+version: '${project.version}'
+main: me.aviloo.updateinformation.UpdateInformation
+api-version: 1.19
+authors: [ Aviloo ]
+description: Show server update Information
+commands:
+  update:
+    usage: /<command>
+    aliases:
+      - server-update
+      - update-info
+  updates:
+    usage: /<command> reload
+  updatebook:
+    usage: /<command>
+

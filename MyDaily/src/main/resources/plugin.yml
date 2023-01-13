@@ -1,0 +1,10 @@
+name: MyDaily
+version: '${project.version}'
+main: com.aviloo.mydaily.MyDaily
+api-version: 1.19
+authors: [ Aviloo ]
+description: adds daily quests for u server
+commands:
+  secretopendailycommand:
+    usage: /<command> [Player]
+    description: Открывает меню ежедневных заданий.
