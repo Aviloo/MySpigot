@@ -1,5 +1,6 @@
 package com.aviloo.mytraderreloaded.Seller.Inventories;
 
+import com.aviloo.mytraderreloaded.Seller.Utils.PriceManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -22,11 +23,29 @@ public class Screen1 {
         red_glassMeta.setDisplayName("Закрыть");
         red_glass.setItemMeta(red_glassMeta);
 
+        ItemStack back = new ItemStack(Material.SPECTRAL_ARROW,1);
+        ItemMeta backMeta = back.getItemMeta();
+        backMeta.setDisplayName(ChatColor.YELLOW+"Назад");
+        back.setItemMeta(backMeta);
+
+        ItemStack leaders = new ItemStack(Material.PLAYER_HEAD,1);
+        ItemMeta lMeta = leaders.getItemMeta();
+        lMeta.setDisplayName(ChatColor.YELLOW+"Лидеры продаж");
+        leaders.setItemMeta(lMeta);
+
+        ItemStack reputation = new ItemStack(Material.CHEST_MINECART,1);
+        ItemMeta repMeta = reputation.getItemMeta();
+        repMeta.setDisplayName(ChatColor.YELLOW+"Репутация у скупщика");
+        reputation.setItemMeta(repMeta);
+
         ItemStack redStone = new ItemStack(Material.REDSTONE,1);
         ItemMeta redMeta = redStone.getItemMeta();
         redMeta.setDisplayName(ChatColor.WHITE+"Редстоун");
+        if(PriceManager.isProductBlocked("REDSTONE")){
+            redStone.setType(Material.BARRIER);
+        }
         ArrayList<String> redLore = new ArrayList<>();
-        redLore.add(ChatColor.YELLOW+"Цена за 1 штуку - 3 монеты");
+        redLore.add(ChatColor.YELLOW+"Цена за 1 штуку - "+PriceManager.getCurrentPrice("REDSTONE"));
         redLore.add(ChatColor.YELLOW+"Цена за 64 штуку - 192 монеты");
         redLore.add(" ");
         redLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
@@ -141,14 +160,30 @@ public class Screen1 {
         infoMeta.setLore(infoLore);
         info.setItemMeta(infoMeta);
 
+        inv.setItem(12,redStone);
+        inv.setItem(13,gunPowder);
+        inv.setItem(14,rose);
+        inv.setItem(21,clay);
+        inv.setItem(22,quartz);
+        inv.setItem(23,cane);
+        inv.setItem(30,deadBrush);
+        inv.setItem(31,wheat);
+        inv.setItem(32,blazePowder);
+        inv.setItem(53,back);
+        inv.setItem(48,leaders);
+        inv.setItem(49,info);
+        inv.setItem(50,reputation);
+
+        /*
         ItemStack[] inv_stack = {red_glass,red_glass,red_glass,red_glass,info,red_glass,red_glass,red_glass,red_glass,
                 red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,
                 red_glass,red_glass,red_glass, redStone, gunPowder,rose,red_glass,red_glass,red_glass,
                 red_glass,red_glass,red_glass,clay,quartz,cane,red_glass,red_glass,red_glass,
                 red_glass,red_glass,red_glass,deadBrush,wheat,blazePowder,red_glass,red_glass,red_glass,
                 red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass};
-
         inv.setContents(inv_stack);
+         */
+
         return inv;
     }
 }

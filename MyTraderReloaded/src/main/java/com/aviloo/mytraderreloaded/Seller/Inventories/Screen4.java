@@ -14,6 +14,21 @@ public class Screen4 {
     public static Inventory getInventory(Player player) {
         Inventory inv = Bukkit.createInventory(player,54, ChatColor.WHITE+"Скупщик    ");
 
+        ItemStack back = new ItemStack(Material.SPECTRAL_ARROW,1);
+        ItemMeta backMeta = back.getItemMeta();
+        backMeta.setDisplayName(ChatColor.YELLOW+"Назад");
+        back.setItemMeta(backMeta);
+
+        ItemStack leaders = new ItemStack(Material.PLAYER_HEAD,1);
+        ItemMeta lMeta = leaders.getItemMeta();
+        lMeta.setDisplayName(ChatColor.YELLOW+"Лидеры продаж");
+        leaders.setItemMeta(lMeta);
+
+        ItemStack reputation = new ItemStack(Material.CHEST_MINECART,1);
+        ItemMeta repMeta = reputation.getItemMeta();
+        repMeta.setDisplayName(ChatColor.YELLOW+"Репутация у скупщика");
+        reputation.setItemMeta(repMeta);
+
         ItemStack red_glass = new ItemStack(Material.RED_STAINED_GLASS_PANE,1);
         ItemMeta red_glassMeta = red_glass.getItemMeta();
         red_glassMeta.setDisplayName("Закрыть");
@@ -138,6 +153,21 @@ public class Screen4 {
         infoMeta.setLore(infoLore);
         info.setItemMeta(infoMeta);
 
+        inv.setItem(12,Zombie);
+        inv.setItem(13,Kelp);
+        inv.setItem(14,WarpedPlants);
+        inv.setItem(21,Honey);
+        inv.setItem(22,Rail);
+        inv.setItem(23,Cane);
+        inv.setItem(30,Shell);
+        inv.setItem(31,Bone);
+        inv.setItem(32,BlockCopper);
+        inv.setItem(53,back);
+        inv.setItem(48,leaders);
+        inv.setItem(49,info);
+        inv.setItem(50,reputation);
+
+        /*
         ItemStack[] inv_stacks = {red_glass,red_glass,red_glass,red_glass,info,red_glass,red_glass,red_glass,red_glass,
                 red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,
                 red_glass,red_glass,red_glass,Zombie,Kelp,WarpedPlants,red_glass,red_glass,red_glass,
@@ -145,6 +175,7 @@ public class Screen4 {
                 red_glass,red_glass,red_glass,Shell,Bone,BlockCopper,red_glass,red_glass,red_glass,
                 red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass};
         inv.setContents(inv_stacks);
+         */
 
         return inv;
     }

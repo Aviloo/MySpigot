@@ -62,6 +62,10 @@ public class EnchantedInteract implements Listener {
                 case ENCHANTED_BOOK:
                     switch (event.getCurrentItem().getAmount()){
                         case 1 : //todo дописать часть с api
+                            if(AnotherInteract.isInventoryFull(player)){
+                                player.sendMessage(ChatColor.RED+"[Ошибка] "+ChatColor.WHITE+"Ваш инвентарь заполнен.");
+                                break;
+                            }
                             if(event.isLeftClick()){
                                 if(!hasEnoughPlayerPoints(player,3)){
                                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&7[Система] " +
@@ -100,6 +104,10 @@ public class EnchantedInteract implements Listener {
                             }
                             break;
                         case 2 :
+                            if(AnotherInteract.isInventoryFull(player)){
+                                player.sendMessage(ChatColor.RED+"[Ошибка] "+ChatColor.WHITE+"Ваш инвентарь заполнен.");
+                                break;
+                            }
                             if(event.isLeftClick()){
                                 if(!hasEnoughPlayerPoints(player,3)){
                                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&7[Система] " +
@@ -138,6 +146,10 @@ public class EnchantedInteract implements Listener {
                             }
                             break;
                         case 3 :
+                            if(AnotherInteract.isInventoryFull(player)){
+                                player.sendMessage(ChatColor.RED+"[Ошибка] "+ChatColor.WHITE+"Ваш инвентарь заполнен.");
+                                break;
+                            }
                             if(event.isLeftClick()){
                                 if(!hasEnoughPlayerPoints(player,3)){
                                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&7[Система] " +
@@ -176,6 +188,10 @@ public class EnchantedInteract implements Listener {
                             }
                             break;
                         case 4 :
+                            if(AnotherInteract.isInventoryFull(player)){
+                                player.sendMessage(ChatColor.RED+"[Ошибка] "+ChatColor.WHITE+"Ваш инвентарь заполнен.");
+                                break;
+                            }
                             if(event.isLeftClick()){
                                 if(!hasEnoughPlayerPoints(player,3)){
                                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&7[Система] " +
@@ -214,6 +230,10 @@ public class EnchantedInteract implements Listener {
                             }
                             break;
                         case 5 :
+                            if(AnotherInteract.isInventoryFull(player)){
+                                player.sendMessage(ChatColor.RED+"[Ошибка] "+ChatColor.WHITE+"Ваш инвентарь заполнен.");
+                                break;
+                            }
                             if(event.isLeftClick()){
                                 if(!hasEnoughPlayerPoints(player,3)){
                                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&7[Система] " +
@@ -252,6 +272,10 @@ public class EnchantedInteract implements Listener {
                             }
                             break;
                         case 6 :
+                            if(AnotherInteract.isInventoryFull(player)){
+                                player.sendMessage(ChatColor.RED+"[Ошибка] "+ChatColor.WHITE+"Ваш инвентарь заполнен.");
+                                break;
+                            }
                             if(event.isLeftClick()){
                                 if(!hasEnoughPlayerPoints(player,3)){
                                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&7[Система] " +

@@ -4,6 +4,7 @@ main: com.aviloo.mytraderreloaded.MyTraderReloaded
 api-version: 1.19
 authors: [ Aviloo ]
 description: add Trader to your server
+softdepend: [Vault, PlayerPoints, PlaceholderAPI, Essentials]
 commands:
   secretsellercommand:
     usage: /<command>
@@ -17,6 +18,9 @@ commands:
   secretdonatshopcommand:
     usage: /<command>
     description: команда позволяет открыть меню донат магазина
+  mytrader:
+    usage: /<command>
+    description: позволяет перезагружать конфиг плагина.
 permissions:
   mytrader.seller:
     description: позволяет использовать комманду /seller

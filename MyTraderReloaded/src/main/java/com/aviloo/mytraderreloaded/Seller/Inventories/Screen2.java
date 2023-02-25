@@ -15,6 +15,21 @@ public class Screen2 {
 
         Inventory inv = Bukkit.createInventory(player,54, ChatColor.WHITE+"Скупщик  ");
 
+        ItemStack back = new ItemStack(Material.SPECTRAL_ARROW,1);
+        ItemMeta backMeta = back.getItemMeta();
+        backMeta.setDisplayName(ChatColor.YELLOW+"Назад");
+        back.setItemMeta(backMeta);
+
+        ItemStack leaders = new ItemStack(Material.PLAYER_HEAD,1);
+        ItemMeta lMeta = leaders.getItemMeta();
+        lMeta.setDisplayName(ChatColor.YELLOW+"Лидеры продаж");
+        leaders.setItemMeta(lMeta);
+
+        ItemStack reputation = new ItemStack(Material.CHEST_MINECART,1);
+        ItemMeta repMeta = reputation.getItemMeta();
+        repMeta.setDisplayName(ChatColor.YELLOW+"Репутация у скупщика");
+        reputation.setItemMeta(repMeta);
+
         ItemStack red_glass = new ItemStack(Material.RED_STAINED_GLASS_PANE, 1);
         ItemMeta red_glassMeta = red_glass.getItemMeta();
         red_glassMeta.setDisplayName("Закрыть");
@@ -139,7 +154,21 @@ public class Screen2 {
         infoMeta.setLore(infoLore);
         info.setItemMeta(infoMeta);
 
+        inv.setItem(12,apple);
+        inv.setItem(13,sugar);
+        inv.setItem(14,dragonBreath);
+        inv.setItem(21,membrane);
+        inv.setItem(22,melon);
+        inv.setItem(23,bottle);
+        inv.setItem(30,ink);
+        inv.setItem(31,sweet);
+        inv.setItem(32,seeds);
+        inv.setItem(53,back);
+        inv.setItem(48,leaders);
+        inv.setItem(49,info);
+        inv.setItem(50,reputation);
 
+        /*
         ItemStack[] inv_stack = {red_glass,red_glass,red_glass,red_glass,info,red_glass,red_glass,red_glass,red_glass,
                 red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,
                 red_glass,red_glass,red_glass,apple,sugar,dragonBreath,red_glass,red_glass,red_glass,
@@ -148,6 +177,8 @@ public class Screen2 {
                 red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass,red_glass};
 
         inv.setContents(inv_stack);
+         */
+
         return inv;
     }
 }

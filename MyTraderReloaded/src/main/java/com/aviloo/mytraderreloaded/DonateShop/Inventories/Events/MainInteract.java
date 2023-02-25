@@ -33,6 +33,9 @@ public class MainInteract implements Listener {
                 case MAGMA_CUBE_SPAWN_EGG:
                     player.openInventory(EggsInventory.getInv(player));
                     break;
+                case CYAN_SHULKER_BOX:
+                    player.openInventory(AnotherInventory.getInv(player));
+                    break;
             }
             event.setCancelled(true);
         }

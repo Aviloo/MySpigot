@@ -1,8 +1,11 @@
-package com.aviloo.mytraderreloaded.Seller.Inventories.Events;
+package com.aviloo.mytraderreloaded.Seller.Events;
 
+import com.aviloo.mytraderreloaded.Seller.Inventories.LeaderInventory;
+import com.aviloo.mytraderreloaded.Seller.Inventories.ReputationProductInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,11 +15,27 @@ import org.bukkit.inventory.ItemStack;
 public class Interact2 implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event){
+        if(event.getCurrentItem() == null){return;}
 
         Player player = (Player) event.getWhoClicked();
         if(event.getView().getTitle().equals(ChatColor.WHITE+"Скупщик  ")){
             try {
                 switch (event.getCurrentItem().getType()) {
+                    case CHEST_MINECART:
+                        player.openInventory(ReputationProductInventory.getInv(player));
+                        break;
+                    case PLAYER_HEAD:
+                        player.openInventory(LeaderInventory.getInv(player));
+                        break;
+                    case SPECTRAL_ARROW:
+                        player.closeInventory();
+                        player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT,5,1);
+                        break;
+                    case BARRIER:
+                        player.sendMessage(ChatColor.GRAY+"[Скупщик] "+ChatColor.RED+"Извините. Но мы больше не" +
+                                " нуждаемся в данном товаре.");
+                        player.closeInventory();
+                        break;
                     case APPLE:
                         if (event.getClick().isRightClick()) {
                             try {

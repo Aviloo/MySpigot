@@ -28,6 +28,10 @@ public class MushroomInteract implements Listener {
                     player.openInventory(MainInventory.getInv(player));
                     break;
                 case RED_MUSHROOM_BLOCK:
+                    if(AnotherInteract.isInventoryFull(player)){
+                        player.sendMessage(ChatColor.RED+"[Ошибка] "+ChatColor.WHITE+"Ваш инвентарь заполнен.");
+                        break;
+                    }
                     if(event.isRightClick()){
                         if(!EnchantedInteract.hasEnoughPlayerPoints(player,40)){
                             player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&7[Система] " +

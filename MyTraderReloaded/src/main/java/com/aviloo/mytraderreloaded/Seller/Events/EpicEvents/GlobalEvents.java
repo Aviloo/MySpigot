@@ -1,4 +1,4 @@
-package com.aviloo.mytraderreloaded.Seller.Inventories.Events.EpicEvents;
+package com.aviloo.mytraderreloaded.Seller.Events.EpicEvents;
 
 import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import org.bukkit.Bukkit;
@@ -31,7 +31,7 @@ public class GlobalEvents implements Listener {
             sender(event.getPlayer(),"&7====================================== ",
                     " ",
                     "&a♦&f&lВнимание - Внимание.&a♦",
-                    "&fСегодня отличный день! На сервере появился &dЭпический скупщик&f. Успей заработать на этом.",
+                    "&fСегодня - отличный день! На сервере появился &dЭпический скупщик&f. Успей заработать на этом.",
                     " ",
                     "&7====================================== ");
             event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_ENDER_DRAGON_DEATH,5,1);

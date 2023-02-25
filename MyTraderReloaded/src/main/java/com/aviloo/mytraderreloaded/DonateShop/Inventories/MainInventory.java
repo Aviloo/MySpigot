@@ -101,10 +101,19 @@ public class MainInventory {
                 "&fКликните, чтобы посмотреть",
                 " ");
 
+        ItemStack another = new ItemStack(Material.CYAN_SHULKER_BOX,1);
+        EggsInventory.itemStackRedactor(another,"Полезные предметы"," ",
+                "&7Здесь продаются предметы,",
+                "&7которые нельзя получить в обычном",
+                "&7выживании.",
+                " ",
+                "&fКликните, чтобы посмотреть",
+                " ");
+
         ItemStack[] inv_stack = {empty,air,air,air,air,air,air,air,empty,
         empty,air,air,air,air,air,air,air,empty,
         air,air,air,vault,shield,mushroom,air,air,air,
-        air,air,air,egg,barrier,air,air,air,air,
+        air,air,air,egg,another,barrier,air,air,air,
         empty,air,air,air,air,air,air,air,empty,
         empty,air,air,air,air,air,air,air,empty};
         inv.setContents(inv_stack);

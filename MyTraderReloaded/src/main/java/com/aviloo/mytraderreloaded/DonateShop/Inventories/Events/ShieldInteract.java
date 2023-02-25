@@ -30,6 +30,10 @@ public class ShieldInteract implements Listener {
                 case SHIELD:
                     switch (event.getCurrentItem().getAmount()){
                         case 1:
+                            if(AnotherInteract.isInventoryFull(player)){
+                                player.sendMessage(ChatColor.RED+"[Ошибка] "+ChatColor.WHITE+"Ваш инвентарь заполнен.");
+                                break;
+                            }
                             if(event.isLeftClick()){
                                 if(!EnchantedInteract.hasEnoughPlayerPoints(player,15)){
                                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&7[Система] " +
@@ -60,6 +64,10 @@ public class ShieldInteract implements Listener {
                             }
                             break;
                         case 2:
+                            if(AnotherInteract.isInventoryFull(player)){
+                                player.sendMessage(ChatColor.RED+"[Ошибка] "+ChatColor.WHITE+"Ваш инвентарь заполнен.");
+                                break;
+                            }
                             if(event.isLeftClick()){
                                 if(!EnchantedInteract.hasEnoughPlayerPoints(player,30)){
                                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&7[Система] " +
@@ -90,6 +98,10 @@ public class ShieldInteract implements Listener {
                             }
                             break;
                         case 3:
+                            if(AnotherInteract.isInventoryFull(player)){
+                                player.sendMessage(ChatColor.RED+"[Ошибка] "+ChatColor.WHITE+"Ваш инвентарь заполнен.");
+                                break;
+                            }
                             if(event.isLeftClick()){
                                 if(!EnchantedInteract.hasEnoughPlayerPoints(player,40)){
                                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&7[Система] " +
@@ -120,6 +132,10 @@ public class ShieldInteract implements Listener {
                             }
                             break;
                         case 4:
+                            if(AnotherInteract.isInventoryFull(player)){
+                                player.sendMessage(ChatColor.RED+"[Ошибка] "+ChatColor.WHITE+"Ваш инвентарь заполнен.");
+                                break;
+                            }
                             if(event.isLeftClick()){
                                 if(!EnchantedInteract.hasEnoughPlayerPoints(player,15)){
                                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&7[Система] " +

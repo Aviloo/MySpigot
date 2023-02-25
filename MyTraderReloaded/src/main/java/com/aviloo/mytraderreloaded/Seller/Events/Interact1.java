@@ -1,8 +1,12 @@
-package com.aviloo.mytraderreloaded.Seller.Inventories.Events;
+package com.aviloo.mytraderreloaded.Seller.Events;
 
+import com.aviloo.mytraderreloaded.Seller.Inventories.ReputationProductInventory;
+import com.aviloo.mytraderreloaded.Seller.Inventories.LeaderInventory;
+import com.aviloo.mytraderreloaded.Seller.Utils.PriceManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,17 +23,35 @@ public class Interact1 implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event){
-
+        if(event.getCurrentItem() == null){return;}
         Player player = (Player) event.getWhoClicked();
         if(event.getView().getTitle().equals(ChatColor.WHITE+"Скупщик ")){
             try {
                 switch (event.getCurrentItem().getType()) {
+                    case CHEST_MINECART:
+                        player.openInventory(ReputationProductInventory.getInv(player));
+                        break;
+                    case PLAYER_HEAD:
+                        player.openInventory(LeaderInventory.getInv(player));
+                        break;
+                    case SPECTRAL_ARROW:
+                        player.closeInventory();
+                        player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT,5,1);
+                        break;
+                    case BARRIER:
+                        player.sendMessage(ChatColor.GRAY+"[Скупщик] "+ChatColor.RED+"Извините. Но мы больше не" +
+                                " нуждаемся в данном товаре.");
+                        player.closeInventory();
+                        break;
                     case REDSTONE:
                         if (event.getClick().isRightClick()) {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE), 1)) {
+                                    PriceManager.priceChecker("REDSTONE");
+                                    PriceManager.addSoldQuantity("REDSTONE",1);
                                     player.getInventory().removeItem(new ItemStack(Material.REDSTONE, 1));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 3");
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " "+
+                                            PriceManager.getCurrentPrice("REDSTONE"));
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. красной пыли.");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE), 1)) {
@@ -42,8 +64,11 @@ public class Interact1 implements Listener {
                         if (event.getClick().isLeftClick()) {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE), 64)) {
+                                    PriceManager.priceChecker("REDSTONE");
+                                    PriceManager.addSoldQuantity("REDSTONE",64);
                                     player.getInventory().removeItem(new ItemStack(Material.REDSTONE, 64));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 192");
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " "
+                                            +PriceManager.getCurrentPrice("REDSTONE") * 64);
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. красной пыли.");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE), 64)) {
