@@ -41,7 +41,7 @@ public class Screen1 {
         ItemStack redStone = new ItemStack(Material.REDSTONE,1);
         ItemMeta redMeta = redStone.getItemMeta();
         redMeta.setDisplayName(ChatColor.WHITE+"Редстоун");
-        if(PriceManager.isProductBlocked("REDSTONE")){
+        if(PriceManager.isQuantityBlocked("REDSTONE")){
             redStone.setType(Material.BARRIER);
         }
         ArrayList<String> redLore = new ArrayList<>();

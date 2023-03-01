@@ -21,6 +21,8 @@ commands:
   mytrader:
     usage: /<command>
     description: позволяет перезагружать конфиг плагина.
+  traderreputation:
+    usage: /<command> take|set|add|reset {Ник Игрока} {кол-во очков}
 permissions:
   mytrader.seller:
     description: позволяет использовать комманду /seller

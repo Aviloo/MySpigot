@@ -6,9 +6,11 @@ import com.aviloo.mytraderreloaded.DonateShop.Inventories.ShieldInventory;
 import com.aviloo.mytraderreloaded.GeneralCommands.ReloadConfigCommand;
 import com.aviloo.mytraderreloaded.Seller.Commands.OpenTrader;
 import com.aviloo.mytraderreloaded.Seller.Commands.ReloadType;
+import com.aviloo.mytraderreloaded.Seller.Commands.ReputationCommand;
 import com.aviloo.mytraderreloaded.Seller.Commands.TraderForDonate;
 import com.aviloo.mytraderreloaded.Seller.Events.*;
 import com.aviloo.mytraderreloaded.Seller.Events.EpicEvents.GlobalEvents;
+import com.aviloo.mytraderreloaded.Seller.Utils.PlayerReputation;
 import com.aviloo.mytraderreloaded.Seller.Utils.PlayersStats;
 import com.aviloo.mytraderreloaded.Seller.Utils.PriceManager;
 import org.bukkit.Bukkit;
@@ -19,10 +21,10 @@ public final class MyTraderReloaded extends JavaPlugin {
 
     //todo 1. Добавить подключение к бд
     //todo 2. Настроить список лидеров
-    //todo 3. Добавить товары за репутацию
+    //todo 3. Добавить товары за репутацию (Начал делать.)
     //todo 4. Добавить больше Инвентарей min- до 10 ,max- до 25
     //todo 5. Оптимизировать Interact (Например: убрать бесполезные try and catch блоки)
-    //todo 5.1 Можно объеденить все интеракты в один
+    //todo 5.1 Можно объеденить все интеракты в один (+-)
     //todo 6. Настроить PriceManager корректно
 
     private static String TraderType = "Screen1";
@@ -68,11 +70,16 @@ public final class MyTraderReloaded extends JavaPlugin {
                 //General Events (Seller)
             Bukkit.getServer().getPluginManager().registerEvents(new GlobalEvents(this), this);
             Bukkit.getServer().getPluginManager().registerEvents(new PlayersStats(),this);
+            Bukkit.getServer().getPluginManager().registerEvents(new PlayerReputation(),this);
 
             //Commands(Seller)
             getCommand("secretsellercommand").setExecutor(new OpenTrader());
             getCommand("seller").setExecutor(new TraderForDonate());
             getCommand("sellertype").setExecutor(new ReloadType());
+            getCommand("traderreputation").setExecutor(new ReputationCommand());
+
+            //Completer`s (Seller)
+            getCommand("traderreputation").setTabCompleter(new ReputationCommand());
         }
 
         if(this.getConfig().getBoolean("usePluginShop")) {

@@ -6,6 +6,8 @@ public class PriceManager {
 
     private static final ConcurrentHashMap<String,Integer> SoldQuantity = new ConcurrentHashMap<>();
 
+    private static final ConcurrentHashMap<String,Integer> BlockQuantity = new ConcurrentHashMap<>();
+
     private static final ConcurrentHashMap<String,Double> CurrentPrice = new ConcurrentHashMap<>();
 
     private static final ConcurrentHashMap<String,Double> StartingPrice = new ConcurrentHashMap<>();
@@ -24,21 +26,28 @@ public class PriceManager {
         return CurrentPrice.get(ProductType);
     }
 
+    public static Boolean isQuantityBlocked(String ProductType){
+        if(SoldQuantity.get(ProductType).equals(BlockQuantity.get(ProductType))){
+            return true;
+        }
+        return false;
+    }
+
     public static void addSoldQuantity(String ProductType,Integer count){
         SoldQuantity.put(ProductType,SoldQuantity.getOrDefault(ProductType,0)+count);
     }
 
-    private static void priceSetUp(String ProductType,Double StartPrice,Integer NextStepQuantity,Double StopTreadingPrice){
+    private static void priceSetUp(String ProductType,Double StartPrice,Integer NextStepQuantity,Integer StopTreadingQuantity){
         SoldQuantity.put(ProductType,0);
         StartingPrice.put(ProductType,StartPrice);
         CurrentPrice.put(ProductType,StartPrice);
         StepQuantity.put(ProductType,NextStepQuantity);
-        BlockTradePrice.put(ProductType,StopTreadingPrice);
+        BlockQuantity.put(ProductType,StopTreadingQuantity);
         ProductBlockedBool.put(ProductType,false);
     }
 
     public static void allProductSetUp(){ // todo использовать метод priceSetUp здесь
-        priceSetUp("REDSTONE",3.0,500,0.23328);
+        priceSetUp("REDSTONE",3.0,500,1100); // тестовая версия
     }
 
     public static void priceChecker(String ProductType){
@@ -51,7 +60,7 @@ public class PriceManager {
         }
          */
         //Проверка! Достигла ли цена минимума
-        if(CurrentPrice.get(ProductType).equals(BlockTradePrice.get(ProductType))){
+        if(SoldQuantity.get(ProductType).equals(BlockQuantity.get(ProductType))){
             ProductBlockedBool.put(ProductType,true);
         }
     }

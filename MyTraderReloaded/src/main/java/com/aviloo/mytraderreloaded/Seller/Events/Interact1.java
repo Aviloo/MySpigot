@@ -44,6 +44,11 @@ public class Interact1 implements Listener {
                         player.closeInventory();
                         break;
                     case REDSTONE:
+                        if (PriceManager.isQuantityBlocked("REDSTONE")){
+                            player.sendMessage(ChatColor.GRAY+"[Система] "+ChatColor.WHITE+"Торговец больше не" +
+                                    " принимает данный товар. Приходите завтра.");
+                            break;
+                        }
                         if (event.getClick().isRightClick()) {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE), 1)) {
