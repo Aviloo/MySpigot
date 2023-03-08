@@ -1,7 +1,10 @@
 package com.aviloo.mytraderreloaded.Seller.Events;
 
+import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import com.aviloo.mytraderreloaded.Seller.Inventories.ReputationProductInventory;
-import com.aviloo.mytraderreloaded.Seller.Inventories.LeaderInventory;
+import com.aviloo.mytraderreloaded.Seller.Utils.LoadScreen;
+import com.aviloo.mytraderreloaded.Seller.Utils.MySQLManager;
+import com.aviloo.mytraderreloaded.Seller.Utils.PlayersStats;
 import com.aviloo.mytraderreloaded.Seller.Utils.PriceManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -29,17 +32,20 @@ public class Interact1 implements Listener {
             try {
                 switch (event.getCurrentItem().getType()) {
                     case CHEST_MINECART:
+                        if(!MySQLManager.isConnected()){
+                            LoadScreen.LoadingMenu(player);
+                            break;
+                        }
                         player.openInventory(ReputationProductInventory.getInv(player));
                         break;
                     case PLAYER_HEAD:
-                        player.openInventory(LeaderInventory.getInv(player));
                         break;
                     case SPECTRAL_ARROW:
                         player.closeInventory();
                         player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT,5,1);
                         break;
                     case BARRIER:
-                        player.sendMessage(ChatColor.GRAY+"[Скупщик] "+ChatColor.RED+"Извините. Но мы больше не" +
+                        player.sendMessage(ChatColor.GRAY+"[Скупщик] "+ChatColor.RED+"Извините. Мы больше не" +
                                 " нуждаемся в данном товаре.");
                         player.closeInventory();
                         break;
@@ -58,6 +64,8 @@ public class Interact1 implements Listener {
                                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " "+
                                             PriceManager.getCurrentPrice("REDSTONE"));
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. красной пыли.");
+                                    PlayersStats.addSoldCount(player,1);
+                                    PlayersStats.addEarned(player, PriceManager.getCurrentPrice("REDSTONE"));
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE), 1)) {
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
@@ -75,6 +83,8 @@ public class Interact1 implements Listener {
                                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " "
                                             +PriceManager.getCurrentPrice("REDSTONE") * 64);
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. красной пыли.");
+                                    PlayersStats.addSoldCount(player,64);
+                                    PlayersStats.addEarned(player, PriceManager.getCurrentPrice("REDSTONE") *64);
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE), 64)) {
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
@@ -85,9 +95,16 @@ public class Interact1 implements Listener {
                         }
                         break;
                     case GUNPOWDER:
+                        if (PriceManager.isQuantityBlocked("GUNPOWDER")){
+                            player.sendMessage(ChatColor.GRAY+"[Система] "+ChatColor.WHITE+"Торговец больше не" +
+                                    " принимает данный товар. Приходите завтра.");
+                            break;
+                        }
                         if (event.getClick().isRightClick()) {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.GUNPOWDER), 1)) {
+                                    PriceManager.priceChecker("GUNPOWDER");
+                                    PriceManager.addSoldQuantity("GUNPOWDER",1);
                                     player.getInventory().removeItem(new ItemStack(Material.GUNPOWDER, 1));
                                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 5");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. пороха.");
@@ -102,6 +119,8 @@ public class Interact1 implements Listener {
                         if (event.getClick().isLeftClick()) {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.GUNPOWDER), 64)) {
+                                    PriceManager.priceChecker("GUNPOWDER");
+                                    PriceManager.addSoldQuantity("GUNPOWDER",64);
                                     player.getInventory().removeItem(new ItemStack(Material.GUNPOWDER, 64));
                                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 320");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. пороха.");

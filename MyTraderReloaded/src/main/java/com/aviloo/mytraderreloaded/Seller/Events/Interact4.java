@@ -1,7 +1,9 @@
 package com.aviloo.mytraderreloaded.Seller.Events;
 
+import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import com.aviloo.mytraderreloaded.Seller.Inventories.LeaderInventory;
 import com.aviloo.mytraderreloaded.Seller.Inventories.ReputationProductInventory;
+import com.aviloo.mytraderreloaded.Seller.Utils.MySQLManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -23,10 +25,16 @@ public class Interact4 implements Listener {
             try {
                 switch (event.getCurrentItem().getType()) {
                     case CHEST_MINECART:
+                        if(!MySQLManager.isConnected()){
+                            player.closeInventory();
+                            player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,9,1);
+                            player.sendMessage(ChatColor.translateAlternateColorCodes('&',""+
+                                    "&c[Ошибка] &fДанная функция не доступна. Пожалуйста, сообщите об этом администрации."));
+                            break;
+                        }
                         player.openInventory(ReputationProductInventory.getInv(player));
                         break;
                     case PLAYER_HEAD:
-                        player.openInventory(LeaderInventory.getInv(player));
                         break;
                     case SPECTRAL_ARROW:
                         player.closeInventory();

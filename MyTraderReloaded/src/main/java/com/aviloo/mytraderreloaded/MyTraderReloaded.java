@@ -10,12 +10,13 @@ import com.aviloo.mytraderreloaded.Seller.Commands.ReputationCommand;
 import com.aviloo.mytraderreloaded.Seller.Commands.TraderForDonate;
 import com.aviloo.mytraderreloaded.Seller.Events.*;
 import com.aviloo.mytraderreloaded.Seller.Events.EpicEvents.GlobalEvents;
-import com.aviloo.mytraderreloaded.Seller.Utils.PlayerReputation;
-import com.aviloo.mytraderreloaded.Seller.Utils.PlayersStats;
-import com.aviloo.mytraderreloaded.Seller.Utils.PriceManager;
+import com.aviloo.mytraderreloaded.Seller.Utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.sql.SQLException;
+
 
 public final class MyTraderReloaded extends JavaPlugin {
 
@@ -26,6 +27,25 @@ public final class MyTraderReloaded extends JavaPlugin {
     //todo 5. Оптимизировать Interact (Например: убрать бесполезные try and catch блоки)
     //todo 5.1 Можно объеденить все интеракты в один (+-)
     //todo 6. Настроить PriceManager корректно
+
+    public MySQLManager sql;
+
+    private void setSql(){
+        this.sql = new MySQLManager();
+
+        try {
+            sql.connection();
+        }catch (ClassNotFoundException | SQLException e){
+            e.printStackTrace();
+            Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY+"[MyTraderReloaded] "+ChatColor.RED+
+                    "Connection to database failed!");
+        }
+
+        if(sql.isConnected()){
+            Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY+"[MyTraderReloaded] "+ChatColor.GREEN+
+                    "Connection to database complete successful!");
+        }
+    }
 
     private static String TraderType = "Screen1";
 
@@ -46,14 +66,17 @@ public final class MyTraderReloaded extends JavaPlugin {
         //General Methods
         loadConfig();
         startingAlerts();
+        setSql();
         //GeneralCommands
         getCommand("mytrader").setExecutor(new ReloadConfigCommand(this));
         getCommand("mytrader").setTabCompleter(new ReloadConfigCommand(this));
 
         if(this.getConfig().getBoolean("usePluginTradeSystem")) {
             //Methods(Seller)
+            Bukkit.getServer().getPluginManager().registerEvents(new PlayersStats(this),this); // not move
             randomTraderType();
             PriceManager.allProductSetUp();
+            PlayersStats.updateLeader();
 
             //Events (Seller)
                 //Inventory Events (Seller)
@@ -69,8 +92,8 @@ public final class MyTraderReloaded extends JavaPlugin {
             Bukkit.getServer().getPluginManager().registerEvents(new InteractE(), this);
                 //General Events (Seller)
             Bukkit.getServer().getPluginManager().registerEvents(new GlobalEvents(this), this);
-            Bukkit.getServer().getPluginManager().registerEvents(new PlayersStats(),this);
             Bukkit.getServer().getPluginManager().registerEvents(new PlayerReputation(),this);
+            Bukkit.getServer().getPluginManager().registerEvents(new LoadScreen(this),this);
 
             //Commands(Seller)
             getCommand("secretsellercommand").setExecutor(new OpenTrader());
@@ -97,6 +120,16 @@ public final class MyTraderReloaded extends JavaPlugin {
             getCommand("secretdonatshopcommand").setExecutor(new OpenShop());
         }
 
+    }
+
+    @Override
+    public void onDisable(){
+        try {
+            MySQLManager.setDataReputation();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        sql.disconnection();
     }
 
     public static void randomTraderType(){
@@ -150,6 +183,7 @@ public final class MyTraderReloaded extends JavaPlugin {
     }
 
     private void startingAlerts(){
+        startingArtImage();
         if(!this.getConfig().getBoolean("usePluginShop") && this.getConfig().getBoolean("usePluginTradeSystem")){
             Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',"" +
                     "&7[MyTraderReloaded] &4Внимание! В плагине отключена функция донат-магазина." +
@@ -168,7 +202,6 @@ public final class MyTraderReloaded extends JavaPlugin {
          Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',"" +
                  "&7[MyTraderReloaded] &aПлагин был успешо загружен."));
         }
-        startingArtImage();
     }
 
     private void startingArtImage(){

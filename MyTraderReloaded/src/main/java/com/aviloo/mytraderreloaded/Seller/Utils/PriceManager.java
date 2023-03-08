@@ -1,5 +1,8 @@
 package com.aviloo.mytraderreloaded.Seller.Utils;
 
+import org.bukkit.Bukkit;
+
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PriceManager {
@@ -44,10 +47,21 @@ public class PriceManager {
         StepQuantity.put(ProductType,NextStepQuantity);
         BlockQuantity.put(ProductType,StopTreadingQuantity);
         ProductBlockedBool.put(ProductType,false);
+        CurrentQuantityStage.put(ProductType,0);
     }
 
     public static void allProductSetUp(){ // todo использовать метод priceSetUp здесь
-        priceSetUp("REDSTONE",3.0,500,1100); // тестовая версия
+        // тестовая версия
+        // screen 1
+        priceSetUp("REDSTONE",3.0,100,150);
+        priceSetUp("GUNPOWDER",5.0,100,150);
+        priceSetUp("ROSE_BUSH",3.5,100,150);
+        priceSetUp("CLAY_BALL",2.4,100,150);
+        priceSetUp("QUARTZ",1.5,100,150);
+        priceSetUp("SUGAR_CANE",2.1,100,150);
+        priceSetUp("DEAD_BUSH",5.1,100,150);
+        priceSetUp("WHEAT",2.1,100,150);
+        priceSetUp("BLAZE_POWDER",7.3,100,150);
     }
 
     public static void priceChecker(String ProductType){
@@ -59,37 +73,69 @@ public class PriceManager {
             CurrentPrice.put(ProductType,NewPrice);
         }
          */
+    }
+
+    //Показывает этап на котором находиться товар
+    private final static ConcurrentHashMap<String,Integer> CurrentQuantityStage = new ConcurrentHashMap<>();
+
+    private static void checkSteps(String ProductType,Integer OneStepQuantity){
         //Проверка! Достигла ли цена минимума
         if(SoldQuantity.get(ProductType).equals(BlockQuantity.get(ProductType))){
             ProductBlockedBool.put(ProductType,true);
-        }
-    }
-
-    private static void checkSteps(String ProductType,Integer OneStepQuantity){
-        if(SoldQuantity.get(ProductType) >= OneStepQuantity && SoldQuantity.get(ProductType) < OneStepQuantity*2){
-            double NewPrice = CurrentPrice.get(ProductType) * 0.6;
-            CurrentPrice.put(ProductType,NewPrice);
             return;
+        }
+        if(SoldQuantity.get(ProductType) >= OneStepQuantity && SoldQuantity.get(ProductType) < OneStepQuantity*2){
+            if(CurrentQuantityStage.get(ProductType) == 0){
+                double NewPrice = CurrentPrice.get(ProductType) * 0.6;
+                CurrentPrice.put(ProductType,NewPrice);
+                CurrentQuantityStage.put(ProductType,1);
+                //debug
+                Bukkit.getConsoleSender().sendMessage("1");
+                return;
+            }
+
         }
         if(SoldQuantity.get(ProductType) >= OneStepQuantity*2 && SoldQuantity.get(ProductType) < OneStepQuantity*3){
-            double NewPrice = CurrentPrice.get(ProductType) * 0.6;
-            CurrentPrice.put(ProductType,NewPrice);
-            return;
+            if(CurrentQuantityStage.get(ProductType) == 1){
+                double NewPrice = CurrentPrice.get(ProductType) * 0.6;
+                CurrentPrice.put(ProductType,NewPrice);
+                CurrentQuantityStage.put(ProductType,2);
+                //debug
+                Bukkit.getConsoleSender().sendMessage("2");
+                return;
+            }
+
         }
         if(SoldQuantity.get(ProductType) >= OneStepQuantity*3 && SoldQuantity.get(ProductType) < OneStepQuantity*4){
-            double NewPrice = CurrentPrice.get(ProductType) * 0.6;
-            CurrentPrice.put(ProductType,NewPrice);
-            return;
+            if(CurrentQuantityStage.get(ProductType) == 2){
+                double NewPrice = CurrentPrice.get(ProductType) * 0.6;
+                CurrentPrice.put(ProductType,NewPrice);
+                CurrentQuantityStage.put(ProductType,3);
+                //debug
+                Bukkit.getConsoleSender().sendMessage("3");
+                return;
+            }
+
         }
         if(SoldQuantity.get(ProductType) >= OneStepQuantity*4 && SoldQuantity.get(ProductType) < OneStepQuantity*5){
-            double NewPrice = CurrentPrice.get(ProductType) * 0.6;
-            CurrentPrice.put(ProductType,NewPrice);
-            return;
+            if(CurrentQuantityStage.get(ProductType) == 3){
+                double NewPrice = CurrentPrice.get(ProductType) * 0.6;
+                CurrentPrice.put(ProductType,NewPrice);
+                CurrentQuantityStage.put(ProductType,4);
+                //debug
+                Bukkit.getConsoleSender().sendMessage("4");
+                return;
+            }
         }
         if(SoldQuantity.get(ProductType) >= OneStepQuantity*5 && SoldQuantity.get(ProductType) < OneStepQuantity*6){
-            double NewPrice = CurrentPrice.get(ProductType) * 0.6;
-            CurrentPrice.put(ProductType,NewPrice);
-            return;
+            if(CurrentQuantityStage.get(ProductType) == 4){
+                double NewPrice = CurrentPrice.get(ProductType) * 0.6;
+                CurrentPrice.put(ProductType,NewPrice);
+                CurrentQuantityStage.put(ProductType,5);
+                //debug
+                Bukkit.getConsoleSender().sendMessage("5");
+                return;
+            }
         }
     }
 }

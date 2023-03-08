@@ -1,5 +1,6 @@
 package com.aviloo.mytraderreloaded.Seller.Inventories;
 
+import com.aviloo.mytraderreloaded.Seller.Utils.PlayersStats;
 import com.aviloo.mytraderreloaded.Seller.Utils.PriceManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -8,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 
@@ -28,10 +30,15 @@ public class Screen1 {
         backMeta.setDisplayName(ChatColor.YELLOW+"Назад");
         back.setItemMeta(backMeta);
 
+        /*
         ItemStack leaders = new ItemStack(Material.PLAYER_HEAD,1);
-        ItemMeta lMeta = leaders.getItemMeta();
-        lMeta.setDisplayName(ChatColor.YELLOW+"Лидеры продаж");
+        SkullMeta lMeta = (SkullMeta) leaders.getItemMeta();
+        ArrayList<String> lLore = new ArrayList<>();
+        PlayersStats.setLeaderLore(lLore,player);
+        lMeta.setDisplayName(ChatColor.YELLOW+"Лидер продаж");
+        lMeta.setLore(lLore);
         leaders.setItemMeta(lMeta);
+         */
 
         ItemStack reputation = new ItemStack(Material.CHEST_MINECART,1);
         ItemMeta repMeta = reputation.getItemMeta();
@@ -65,7 +72,7 @@ public class Screen1 {
         gunMeta.setLore(gunLore);
         gunPowder.setItemMeta(gunMeta);
 
-        ItemStack rose = new ItemStack(Material.ROSE_BUSH);
+        ItemStack rose = new ItemStack(Material.ROSE_BUSH,1);
         ItemMeta roseMeta = rose.getItemMeta();
         roseMeta.setDisplayName(ChatColor.WHITE+"Роза");
         ArrayList<String> roseLore = new ArrayList<>();
@@ -151,7 +158,7 @@ public class Screen1 {
 
         ItemStack info = new ItemStack(Material.PAPER,1);
         ItemMeta infoMeta = info.getItemMeta();
-        infoMeta.setDisplayName(ChatColor.YELLOW+"            Информация");
+        infoMeta.setDisplayName(ChatColor.YELLOW+"Информация");
         ArrayList<String> infoLore = new ArrayList<>();
         infoLore.add(" ");
         infoLore.add(ChatColor.WHITE+"Каждый"+ChatColor.GREEN+" день "+ChatColor.WHITE+", реального времени, ");
@@ -169,8 +176,8 @@ public class Screen1 {
         inv.setItem(30,deadBrush);
         inv.setItem(31,wheat);
         inv.setItem(32,blazePowder);
-        inv.setItem(53,back);
-        inv.setItem(48,leaders);
+        inv.setItem(48,back);
+        //inv.setItem(48,leaders);
         inv.setItem(49,info);
         inv.setItem(50,reputation);
 
