@@ -1,5 +1,6 @@
 package com.aviloo.mytraderreloaded.Seller.Utils;
 
+import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -27,11 +28,11 @@ public class MySQLManager {
         return connection;
     }
 
-    private String host = "";
-    private String port = "";
-    private String username = "";
+    private String host = "localhost";
+    private Integer port = 3307;
+    private String username = "root";
     private String password = "";
-    private String database = "";
+    private String database = "mytrader";
 
     public void connection() throws ClassNotFoundException, SQLException{
         if(!isConnected()) {
@@ -48,6 +49,25 @@ public class MySQLManager {
             }catch (SQLException e){
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static void setUpTable(){
+        if(!isConnected()){
+            return;
+        }
+        try {
+            //Reputation DataBase
+            String reputation = "CREATE TABLE IF NOT EXISTS Reputation "+ "(uuid VARCHAR(36)," + " value INTEGER)";
+            Statement ReputationStatement = connection.createStatement();
+            ReputationStatement.executeUpdate(reputation);
+            //Leader DataBase
+            String leader = "CREATE TABLE IF NOT EXISTS Leader "+ "(uuid VARCHAR(36)," + " quantity INTEGER,"
+                    + " earned INTEGER)";
+            Statement LeaderStatement = connection.createStatement();
+            LeaderStatement.executeUpdate(leader);
+        }catch (SQLException sql){
+            sql.printStackTrace();
         }
     }
 
@@ -84,9 +104,11 @@ public class MySQLManager {
                 String updateValue = "UPDATE Reputation SET value = '" +valueToStr+"' WHERE uuid LIKE '" + uuidToStr+"'";
                 statement.executeUpdate(updateValue);
                 //connection.close();
-                //return;
+                return;
             }
 
+            String writeValues = "INSERT INTO Reputation VALUES( '" + uuidToStr + "', '" + valueToStr + "')";
+            statement.executeUpdate(writeValues);
         }
     }
 }

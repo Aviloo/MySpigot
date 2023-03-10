@@ -1,8 +1,8 @@
 package com.aviloo.mytraderreloaded.Seller.Utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PriceManager {
@@ -27,6 +27,15 @@ public class PriceManager {
 
     public static Double getCurrentPrice(String ProductType){
         return CurrentPrice.get(ProductType);
+    }
+
+    public static Double getCurrentPriceFor64(String ProductType){
+        return (CurrentPrice.get(ProductType) * 64) + 9;
+    }
+
+    public static String getCurrentPriceFor64String(String ProductType){
+        String price = String.valueOf(CurrentPrice.get(ProductType) * 64);
+        return price + ChatColor.AQUA + "(+9)";
     }
 
     public static Boolean isQuantityBlocked(String ProductType){

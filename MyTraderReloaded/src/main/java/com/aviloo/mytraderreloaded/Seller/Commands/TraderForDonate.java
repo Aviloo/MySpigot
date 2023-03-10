@@ -45,6 +45,22 @@ public class TraderForDonate implements CommandExecutor {
                 player.openInventory(Screen5.getInventory(player));
                 return true;
             }
+            if(Objects.equals(MyTraderReloaded.getTraderType(), "Screen6")){
+                player.openInventory(Screen6.getInv(player));
+                return true;
+            }
+            if(Objects.equals(MyTraderReloaded.getTraderType(), "Screen7")){
+                player.openInventory(Screen7.getInv(player));
+                return true;
+            }
+            if(Objects.equals(MyTraderReloaded.getTraderType(), "Screen8")){
+                player.openInventory(Screen8.getInv(player));
+                return true;
+            }
+            if(Objects.equals(MyTraderReloaded.getTraderType(), "Screen9")){
+                player.openInventory(Screen9.getInv(player));
+                return true;
+            }
             if(Objects.equals(MyTraderReloaded.getTraderType(), "ScreenE")){
                 player.openInventory(ScreenE.getInventory(player));
                 return true;

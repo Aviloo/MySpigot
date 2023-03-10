@@ -51,6 +51,22 @@ public class OpenTrader implements CommandExecutor {
                 argPlayer.openInventory(Screen5.getInventory(argPlayer));
                 return true;
             }
+            if(Objects.equals(MyTraderReloaded.getTraderType(), "Screen6")){
+                argPlayer.openInventory(Screen6.getInv(argPlayer));
+                return true;
+            }
+            if(Objects.equals(MyTraderReloaded.getTraderType(), "Screen7")){
+                argPlayer.openInventory(Screen7.getInv(argPlayer));
+                return true;
+            }
+            if(Objects.equals(MyTraderReloaded.getTraderType(), "Screen8")){
+                argPlayer.openInventory(Screen8.getInv(argPlayer));
+                return true;
+            }
+            if(Objects.equals(MyTraderReloaded.getTraderType(), "Screen9")){
+                argPlayer.openInventory(Screen9.getInv(argPlayer));
+                return true;
+            }
             if(Objects.equals(MyTraderReloaded.getTraderType(), "ScreenE")){
                 argPlayer.openInventory(ScreenE.getInventory(argPlayer));
                 return true;

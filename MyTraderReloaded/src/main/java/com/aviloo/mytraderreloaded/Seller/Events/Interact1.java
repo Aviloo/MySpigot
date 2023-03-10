@@ -81,10 +81,10 @@ public class Interact1 implements Listener {
                                     PriceManager.addSoldQuantity("REDSTONE",64);
                                     player.getInventory().removeItem(new ItemStack(Material.REDSTONE, 64));
                                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " "
-                                            +PriceManager.getCurrentPrice("REDSTONE") * 64);
+                                            +PriceManager.getCurrentPriceFor64("REDSTONE"));
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. красной пыли.");
                                     PlayersStats.addSoldCount(player,64);
-                                    PlayersStats.addEarned(player, PriceManager.getCurrentPrice("REDSTONE") *64);
+                                    PlayersStats.addEarned(player, PriceManager.getCurrentPriceFor64("REDSTONE"));
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE), 64)) {
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
