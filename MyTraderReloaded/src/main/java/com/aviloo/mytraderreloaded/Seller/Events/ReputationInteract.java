@@ -20,8 +20,8 @@ public class ReputationInteract implements Listener {
                     player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT,5,1);
                     break;
                 case BARRIER:
-                    player.sendMessage(ChatColor.GRAY+"[Скупщик] "+ChatColor.RED+"Извините. Мы больше не" +
-                            " нуждаемся в данном товаре.");
+                    player.sendMessage(ChatColor.GRAY+"[Скупщик] "+ChatColor.RED+"Вы еще не разблокировали этот" +
+                            "товар.");
                     player.closeInventory();
                     break;
             }

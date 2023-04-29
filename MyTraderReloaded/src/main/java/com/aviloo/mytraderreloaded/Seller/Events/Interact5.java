@@ -64,7 +64,7 @@ public class Interact5 implements Listener {
                                 try {
                                     if (player.getInventory().containsAtLeast(new ItemStack(Material.DIORITE_STAIRS), 64)) {
                                         player.getInventory().removeItem(new ItemStack(Material.DIORITE_STAIRS, 64));
-                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getDisplayName() + " 115.3");
+                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 115.3");
                                         player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. DIORITE_STAIRS.");
                                     }
                                     if (!player.getInventory().containsAtLeast(new ItemStack(Material.DIORITE_STAIRS), 64)) {

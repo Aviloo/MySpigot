@@ -34,6 +34,7 @@ public class PlayerReputation implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) throws SQLException {
         Player player = event.getPlayer();
+        if(isPlayerPlayedToday(player)){return;}
         if(!player.hasPlayedBefore()){ // todo Пока не подключю бд ,будет криво работать!
             Reputation.put(player.getUniqueId(),0);
             PlayersPlayedToday.put(player.getUniqueId(),true);

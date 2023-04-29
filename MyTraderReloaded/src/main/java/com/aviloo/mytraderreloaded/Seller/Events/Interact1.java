@@ -2,10 +2,7 @@ package com.aviloo.mytraderreloaded.Seller.Events;
 
 import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import com.aviloo.mytraderreloaded.Seller.Inventories.ReputationProductInventory;
-import com.aviloo.mytraderreloaded.Seller.Utils.LoadScreen;
-import com.aviloo.mytraderreloaded.Seller.Utils.MySQLManager;
-import com.aviloo.mytraderreloaded.Seller.Utils.PlayersStats;
-import com.aviloo.mytraderreloaded.Seller.Utils.PriceManager;
+import com.aviloo.mytraderreloaded.Seller.Utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -61,8 +58,9 @@ public class Interact1 implements Listener {
                                     PriceManager.priceChecker("REDSTONE");
                                     PriceManager.addSoldQuantity("REDSTONE",1);
                                     player.getInventory().removeItem(new ItemStack(Material.REDSTONE, 1));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " "+
-                                            PriceManager.getCurrentPrice("REDSTONE"));
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPrice("REDSTONE"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " "+
+                                            //PriceManager.getCurrentPrice("REDSTONE"));
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. красной пыли.");
                                     PlayersStats.addSoldCount(player,1);
                                     PlayersStats.addEarned(player, PriceManager.getCurrentPrice("REDSTONE"));

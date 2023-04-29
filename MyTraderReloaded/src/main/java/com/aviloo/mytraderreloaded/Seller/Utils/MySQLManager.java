@@ -28,11 +28,11 @@ public class MySQLManager {
         return connection;
     }
 
-    private String host = "localhost";
-    private Integer port = 3307;
-    private String username = "root";
-    private String password = "";
-    private String database = "mytrader";
+    private String host = "mysql-pl1.joinserver.xyz";
+    private Integer port = 3306;
+    private String username = "u119586_vbSAyd0Ovo";
+    private String password = "r=QtffwUzCaHX8R=!l.bERPh";
+    private String database = "s119586_database";
 
     public void connection() throws ClassNotFoundException, SQLException{
         if(!isConnected()) {
@@ -81,11 +81,15 @@ public class MySQLManager {
         PreparedStatement statement = connection.prepareStatement(request);
         ResultSet result = statement.executeQuery();
         //For debugging
+        /*
         String ResultString = String.valueOf(result.getInt(1));
         Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GRAY+"Репутация " +player.getName()+
                 " равна"+ResultString);
+         */
         //End of Debugging
-        PlayerReputation.setReputation(player,result.getInt(1));
+        if(result.next()) {
+            PlayerReputation.setReputation(player, result.getInt(1));
+        }
     }
 
     public static void setDataReputation() throws SQLException {

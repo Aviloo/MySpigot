@@ -61,6 +61,18 @@ public class ReputationProductInventory {
         ReputationItemRedactor(inv,player,300,third,Material.LAPIS_LAZULI,"&fЛазурит",
                 14," ");
 
+        ItemStack fourth = new ItemStack(Material.BARRIER,1);
+        ReputationItemRedactor(inv,player,400,fourth,Material.TOTEM_OF_UNDYING,"&fТотем",
+                21," ");
+
+        ItemStack fifth = new ItemStack(Material.BARRIER,1);
+        ReputationItemRedactor(inv,player,500,fifth,Material.CAKE,"&fТорт",
+                22," ");
+
+        ItemStack sixth = new ItemStack(Material.BARRIER,1);
+        ReputationItemRedactor(inv,player,600,sixth,Material.DIAMOND_ORE,"&fАлмазная руда",
+                23," ");
+
         return inv;
     }
 }

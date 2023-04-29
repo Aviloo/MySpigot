@@ -11,27 +11,41 @@ import com.aviloo.mytraderreloaded.Seller.Commands.TraderForDonate;
 import com.aviloo.mytraderreloaded.Seller.Events.*;
 import com.aviloo.mytraderreloaded.Seller.Events.EpicEvents.GlobalEvents;
 import com.aviloo.mytraderreloaded.Seller.Utils.*;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
+import java.util.Objects;
 
 
 public final class MyTraderReloaded extends JavaPlugin {
 
-    //todo 1. Добавить подключение к бд
+    //todo 1. Добавить подключение к бд (+)
     //todo 2. Настроить список лидеров
     //todo 3. Добавить товары за репутацию (Начал делать.)
-    //todo 4. Добавить больше Инвентарей min- до 10 ,max- до 25
+    //todo 4. Добавить больше Инвентарей min- до 10 ,max- до 25 (+-)
     //todo 5. Оптимизировать Interact (Например: убрать бесполезные try and catch блоки)
     //todo 5.1 Можно объеденить все интеракты в один (+-)
     //todo 6. Настроить PriceManager корректно
-    //todo 7. Добавить бонусы , если игрок продаёт сразу стак
+    //todo 7. Добавить бонусы , если игрок продаёт сразу стак (+)
     //todo 8. Создать таблицу в бд, чтобы каждый день были новые Screen у скупщика.
-    // (Например: Вчера был Screen1. Это записалось в бд, и исключило этот скрин из рандома.)
+    // (Например: Вчера был Screen1. Это записалось в бд, и исключило этот скрин из рандома.) (+)
+    //todo 9. Оптимизировать экономику
 
     public MySQLManager sql;
+
+    public Economy eco;
+
+    private boolean setupEconomy(){
+        RegisteredServiceProvider<Economy> economy = getServer().getServicesManager()
+                .getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if(economy != null) eco = economy.getProvider();
+
+        return (eco != null);
+    }
 
     private void setSql(){
         this.sql = new MySQLManager();
@@ -41,12 +55,12 @@ public final class MyTraderReloaded extends JavaPlugin {
         }catch (ClassNotFoundException | SQLException e){
             e.printStackTrace();
             Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY+"[MyTraderReloaded] "+ChatColor.RED+
-                    "Connection to database failed!");
+                    "Подключение к БД провалилось!");
         }
 
         if(sql.isConnected()){
             Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY+"[MyTraderReloaded] "+ChatColor.GREEN+
-                    "Connection to database complete successful!");
+                    "Подключение к БД - успешно!");
         }
     }
 
@@ -64,6 +78,13 @@ public final class MyTraderReloaded extends JavaPlugin {
         return string;
     }
 
+    private final String YesterdayScreen = getConfig().getString("YesterdayScreen");
+
+    private void writeYesterdayScreen(String ScreenType){
+        this.getConfig().set("YesterdayScreen",ScreenType);
+        saveConfig();
+    }
+
     @Override
     public void onEnable() {
 
@@ -77,12 +98,17 @@ public final class MyTraderReloaded extends JavaPlugin {
         getCommand("mytrader").setExecutor(new ReloadConfigCommand(this));
         getCommand("mytrader").setTabCompleter(new ReloadConfigCommand(this));
 
+        //General Events
+        getServer().getPluginManager().registerEvents(new EconomyManager(this),this);
+
         if(this.getConfig().getBoolean("usePluginTradeSystem")) {
             //Methods(Seller)
             Bukkit.getServer().getPluginManager().registerEvents(new PlayersStats(this),this); // not move
             randomTraderType();
             PriceManager.allProductSetUp();
             PlayersStats.updateLeader();
+            Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY+"[MyTraderReloaded]"+ChatColor.WHITE
+                    +"Вчера был тип - "+YesterdayScreen);
 
             //Events (Seller)
                 //Inventory Events (Seller)
@@ -125,7 +151,6 @@ public final class MyTraderReloaded extends JavaPlugin {
             //Commands(DonateShop)
             getCommand("secretdonatshopcommand").setExecutor(new OpenShop());
         }
-
     }
 
     @Override
@@ -136,78 +161,99 @@ public final class MyTraderReloaded extends JavaPlugin {
             throw new RuntimeException(e);
         }
         sql.disconnection();
+        writeYesterdayScreen(TraderType);
     }
 
-    public static void randomTraderType(){
+    public void randomTraderType(){
         if(Math.random() < 0.12){
-            TraderType = "Screen1";
-            isEpicType = false;
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&7[MyTrader] &fСегодня скупщик типа - Screen1"));
-            return;
+            if(!(Objects.equals(YesterdayScreen, "Screen1"))) {
+                TraderType = "Screen1";
+                isEpicType = false;
+                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen1"));
+                return;
+            }
         }
         if(Math.random() >= 0.12 && Math.random() < 0.24){
-            TraderType = "Screen2";
-            isEpicType = false;
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&7[MyTrader] &fСегодня скупщик типа - Screen2"));
-            return;
+            if(!(Objects.equals(YesterdayScreen, "Screen2"))) {
+                TraderType = "Screen2";
+                isEpicType = false;
+                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen2"));
+                return;
+            }
         }
         if(Math.random() >= 0.24 && Math.random() < 0.36){
-            TraderType = "Screen3";
-            isEpicType = false;
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&7[MyTrader] &fСегодня скупщик типа - Screen3"));
-            return;
+            if(!(Objects.equals(YesterdayScreen, "Screen3"))) {
+                TraderType = "Screen3";
+                isEpicType = false;
+                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen3"));
+                return;
+            }
         }
         if(Math.random() >= 0.36 && Math.random() < 0.48){
-            TraderType = "Screen4";
-            isEpicType = false;
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&7[MyTrader] &fСегодня скупщик типа - Screen4"));
-            return;
+            if(!(Objects.equals(YesterdayScreen, "Screen4"))) {
+                TraderType = "Screen4";
+                isEpicType = false;
+                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen4"));
+                return;
+            }
         }
         if(Math.random() >= 0.48 && Math.random() < 0.6){
-            TraderType = "Screen5";
-            isEpicType = false;
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&7[MyTrader] &fСегодня скупщик типа - Screen5"));
-            return;
+            if(!(Objects.equals(YesterdayScreen, "Screen5"))) {
+                TraderType = "Screen5";
+                isEpicType = false;
+                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen5"));
+                return;
+            }
         }
         if(Math.random() >= 0.6 && Math.random() < 0.72){
-            TraderType = "Screen6";
-            isEpicType = false;
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&7[MyTrader] &fСегодня скупщик типа - Screen6"));
-            return;
+            if(!(Objects.equals(YesterdayScreen, "Screen6"))) {
+                TraderType = "Screen6";
+                isEpicType = false;
+                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen6"));
+                return;
+            }
         }
         if(Math.random() >= 0.72 && Math.random() < 0.84){
-            TraderType = "Screen7";
-            isEpicType = false;
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&7[MyTrader] &fСегодня скупщик типа - Screen7"));
-            return;
+            if(!(Objects.equals(YesterdayScreen, "Screen7"))) {
+                TraderType = "Screen7";
+                isEpicType = false;
+                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen7"));
+                return;
+            }
         }
         if(Math.random() >= 0.84 && Math.random() < 0.90){
-            TraderType = "Screen8";
-            isEpicType = false;
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&7[MyTrader] &fСегодня скупщик типа - Screen8"));
-            return;
+            if(!(Objects.equals(YesterdayScreen, "Screen8"))) {
+                TraderType = "Screen8";
+                isEpicType = false;
+                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen8"));
+                return;
+            }
         }
         if(Math.random() >= 0.9 && Math.random() < 0.96){
-            TraderType = "Screen9";
-            isEpicType = false;
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&7[MyTrader] &fСегодня скупщик типа - Screen9"));
-            return;
+            if(!(Objects.equals(YesterdayScreen, "Screen9"))) {
+                TraderType = "Screen9";
+                isEpicType = false;
+                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen9"));
+                return;
+            }
         }
         if(Math.random() >= 0.96){
-            TraderType = "ScreenE";
-            isEpicType = true;
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&7[MyTrader] &fСегодня скупщик типа - &dScreenE"));
-            return;
+            if(!(Objects.equals(YesterdayScreen, "ScreenE"))) {
+                TraderType = "ScreenE";
+                isEpicType = true;
+                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&7[MyTraderReloaded] &fСегодня скупщик типа - &dScreenE"));
+                return;
+            }
         }
     }
 
@@ -217,6 +263,13 @@ public final class MyTraderReloaded extends JavaPlugin {
     }
 
     private void startingAlerts(){
+        if (!setupEconomy()){
+            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    "&4[Ошибка] &fНеполадки в плагине Vault. " +
+                            "&fПлагин &7(MyTraderReloaded)&f будет отключен."));
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
         startingArtImage();
         if(!this.getConfig().getBoolean("usePluginShop") && this.getConfig().getBoolean("usePluginTradeSystem")){
             Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',"" +
@@ -232,6 +285,7 @@ public final class MyTraderReloaded extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',"" +
                     "&7[MyTraderReloaded] &4Внимание. В плагине отключены функции магазина и торговца." +
                     " &7(Изменить это можно в конфиге плагина)"));
+            getServer().getPluginManager().disablePlugin(this); // Останавливает плагин
         }else {
          Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',"" +
                  "&7[MyTraderReloaded] &aПлагин был успешо загружен."));
