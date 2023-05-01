@@ -12,12 +12,15 @@ import java.util.Objects;
 
 public class ReloadType implements CommandExecutor {
 
-    private MyTraderReloaded plugin;
+    private static MyTraderReloaded plugin;
+    public ReloadType(MyTraderReloaded plugin){
+        this.plugin = plugin;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(!(sender instanceof ConsoleCommandSender)){
-            sender.sendMessage("You cannot use this command!");
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&7[Система] &fВы не можете использовать эту команду."));
             return true;
         }
         if(command.getName().equalsIgnoreCase("sellertype")){

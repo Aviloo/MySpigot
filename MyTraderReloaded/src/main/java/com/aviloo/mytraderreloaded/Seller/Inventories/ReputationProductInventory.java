@@ -47,31 +47,73 @@ public class ReputationProductInventory {
         ItemMeta bMeta = back.getItemMeta();
         bMeta.setDisplayName(ChatColor.YELLOW+"Назад");
         back.setItemMeta(bMeta);
-        inv.setItem(40,back);
+        inv.setItem(41,back);
+
+        ItemStack info = new ItemStack(Material.PAPER,1);
+        ItemMeta iMeta = info.getItemMeta();
+        iMeta.setDisplayName(ChatColor.YELLOW+"Информация");
+        ArrayList<String> iLore = new ArrayList<>();
+        iLore.add("");
+        iMeta.setLore(iLore);
+        info.setItemMeta(iMeta);
+        inv.setItem(40,info);
+
+        ItemStack exit = new ItemStack(Material.RED_DYE,1);
+        ItemMeta eMeta = exit.getItemMeta();
+        eMeta.setDisplayName(ChatColor.YELLOW+"Выход");
+        ArrayList<String> eLore = new ArrayList<>();
+        eLore.add(" ");
+        eMeta.setLore(eLore);
+        exit.setItemMeta(eMeta);
+        inv.setItem(39,exit);
 
         ItemStack first = new ItemStack(Material.BARRIER,1);
         ReputationItemRedactor(inv,player,100,first,Material.GOLD_INGOT,"&fЗолотой слиток",
-                12," ");
+                12,"&eЦена за 1 штуку - 1.3",
+                "&eЦена за 64 штуки - 83,3",
+                " ",
+                "&7Чтобы продать 1 ед. , нажмите ПКМ",
+                "&7Чтобы продать 64 ед. , нажмите ЛКМ");
 
         ItemStack second = new ItemStack(Material.BARRIER,1);
         ReputationItemRedactor(inv,player,200,second,Material.WHEAT,"&fПшеница",
-                13," ");
+                13,"&eЦена за 1 штуку - 0.3",
+                "&eЦена за 64 штуки - 19,3",
+                " ",
+                "&7Чтобы продать 1 ед. , нажмите ПКМ",
+                "&7Чтобы продать 64 ед. , нажмите ЛКМ");
 
         ItemStack third = new ItemStack(Material.BARRIER,1);
         ReputationItemRedactor(inv,player,300,third,Material.LAPIS_LAZULI,"&fЛазурит",
-                14," ");
+                14,"&eЦена за 1 штуку - 0.9",
+                "&eЦена за 64 штуки - 57,6",
+                " ",
+                "&7Чтобы продать 1 ед. , нажмите ПКМ",
+                "&7Чтобы продать 64 ед. , нажмите ЛКМ");
 
         ItemStack fourth = new ItemStack(Material.BARRIER,1);
         ReputationItemRedactor(inv,player,400,fourth,Material.TOTEM_OF_UNDYING,"&fТотем",
-                21," ");
+                21,"&eЦена за 1 штуку - 6",
+                "&eЦена за 64 штуки - 384",
+                " ",
+                "&7Чтобы продать 1 ед. , нажмите ПКМ",
+                "&7Чтобы продать 64 ед. , нажмите ЛКМ");
 
         ItemStack fifth = new ItemStack(Material.BARRIER,1);
         ReputationItemRedactor(inv,player,500,fifth,Material.CAKE,"&fТорт",
-                22," ");
+                22,"&eЦена за 1 штуку - 5.3",
+                "&eЦена за 64 штуки - 339,3",
+                " ",
+                "&7Чтобы продать 1 ед. , нажмите ПКМ",
+                "&7Чтобы продать 64 ед. , нажмите ЛКМ");
 
         ItemStack sixth = new ItemStack(Material.BARRIER,1);
         ReputationItemRedactor(inv,player,600,sixth,Material.DIAMOND_ORE,"&fАлмазная руда",
-                23," ");
+                23,"&eЦена за 1 штуку - 1.5",
+                "&eЦена за 64 штуки - 96",
+                " ",
+                "&7Чтобы продать 1 ед. , нажмите ПКМ",
+                "&7Чтобы продать 64 ед. , нажмите ЛКМ");
 
         return inv;
     }

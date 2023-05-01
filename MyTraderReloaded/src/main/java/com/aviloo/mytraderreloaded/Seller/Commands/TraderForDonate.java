@@ -2,6 +2,10 @@ package com.aviloo.mytraderreloaded.Seller.Commands;
 
 import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import com.aviloo.mytraderreloaded.Seller.Inventories.*;
+import com.aviloo.mytraderreloaded.Seller.Inventories.NonOptimizedScreens.Screen6;
+import com.aviloo.mytraderreloaded.Seller.Inventories.NonOptimizedScreens.Screen7;
+import com.aviloo.mytraderreloaded.Seller.Inventories.NonOptimizedScreens.Screen8;
+import com.aviloo.mytraderreloaded.Seller.Inventories.NonOptimizedScreens.Screen9;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,7 +18,7 @@ public class TraderForDonate implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(!(sender instanceof Player)){
-            sender.sendMessage("You cannot use this command");
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&7[Система] &fВы не можете использовать эту команду."));
             return true;
         }
         Player player = (Player) sender;

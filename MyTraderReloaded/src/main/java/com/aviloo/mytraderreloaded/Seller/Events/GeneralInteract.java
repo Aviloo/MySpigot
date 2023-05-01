@@ -14,7 +14,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class GeneralInteract implements Listener { //TODO Когда настрою все товары ,удалю другие классы Interact (кроме InteractE), чтобы всё регулировать через один класс
+public class GeneralInteract { //TODO Когда настрою все товары ,удалю другие классы Interact (кроме InteractE), чтобы всё регулировать через один класс
 
     private JavaPlugin plugin;
 

@@ -14,6 +14,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Objects;
+
 public class Interact1 implements Listener {
     private JavaPlugin plugin;
 
@@ -23,9 +25,10 @@ public class Interact1 implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event){
+        if(!Objects.equals(MyTraderReloaded.getTraderType(), "Screen1")){return;}
         if(event.getCurrentItem() == null){return;}
         Player player = (Player) event.getWhoClicked();
-        if(event.getView().getTitle().equals(ChatColor.WHITE+"Скупщик ")){
+        if(event.getView().getTitle().equals(ChatColor.WHITE+"Скупщик")){
             try {
                 switch (event.getCurrentItem().getType()) {
                     case CHEST_MINECART:
@@ -78,8 +81,9 @@ public class Interact1 implements Listener {
                                     PriceManager.priceChecker("REDSTONE");
                                     PriceManager.addSoldQuantity("REDSTONE",64);
                                     player.getInventory().removeItem(new ItemStack(Material.REDSTONE, 64));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " "
-                                            +PriceManager.getCurrentPriceFor64("REDSTONE"));
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPriceFor64("REDSTONE"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " "
+                                            //+PriceManager.getCurrentPriceFor64("REDSTONE"));
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. красной пыли.");
                                     PlayersStats.addSoldCount(player,64);
                                     PlayersStats.addEarned(player, PriceManager.getCurrentPriceFor64("REDSTONE"));
@@ -104,7 +108,8 @@ public class Interact1 implements Listener {
                                     PriceManager.priceChecker("GUNPOWDER");
                                     PriceManager.addSoldQuantity("GUNPOWDER",1);
                                     player.getInventory().removeItem(new ItemStack(Material.GUNPOWDER, 1));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 5");
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPrice("GUNPOWDER"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 5");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. пороха.");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.GUNPOWDER), 1)) {
@@ -120,7 +125,8 @@ public class Interact1 implements Listener {
                                     PriceManager.priceChecker("GUNPOWDER");
                                     PriceManager.addSoldQuantity("GUNPOWDER",64);
                                     player.getInventory().removeItem(new ItemStack(Material.GUNPOWDER, 64));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 320");
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPriceFor64("GUNPOWDER"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 320");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. пороха.");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.GUNPOWDER), 64)) {
@@ -136,7 +142,8 @@ public class Interact1 implements Listener {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.ROSE_BUSH), 1)) {
                                     player.getInventory().removeItem(new ItemStack(Material.ROSE_BUSH, 1));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 3.5");
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPrice("ROSE_BUSH"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 3.5");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. розы.");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.ROSE_BUSH), 1)) {
@@ -150,7 +157,8 @@ public class Interact1 implements Listener {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.ROSE_BUSH), 64)) {
                                     player.getInventory().removeItem(new ItemStack(Material.ROSE_BUSH, 64));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 224");
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPriceFor64("ROSE_BUSH"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 224");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. розы.");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.ROSE_BUSH), 64)) {
@@ -166,7 +174,8 @@ public class Interact1 implements Listener {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.CLAY_BALL), 1)) {
                                     player.getInventory().removeItem(new ItemStack(Material.CLAY_BALL, 1));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 2.4");
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPrice("CLAY_BALL"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 2.4");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. глины.");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.CLAY_BALL), 1)) {
@@ -180,7 +189,8 @@ public class Interact1 implements Listener {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.CLAY_BALL), 64)) {
                                     player.getInventory().removeItem(new ItemStack(Material.CLAY_BALL, 64));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 153.6");
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPriceFor64("CLAY_BALL"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 153.6");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. глины.");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.CLAY_BALL), 64)) {
@@ -196,7 +206,8 @@ public class Interact1 implements Listener {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.QUARTZ), 1)) {
                                     player.getInventory().removeItem(new ItemStack(Material.QUARTZ, 1));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 1.5");
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPrice("QUARTZ"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 1.5");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. квартца.");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.QUARTZ), 1)) {
@@ -210,7 +221,8 @@ public class Interact1 implements Listener {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.QUARTZ), 64)) {
                                     player.getInventory().removeItem(new ItemStack(Material.QUARTZ, 64));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 96");
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPriceFor64("QUARTZ"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 96");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. квартца.");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.QUARTZ), 64)) {
@@ -226,9 +238,10 @@ public class Interact1 implements Listener {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.SUGAR_CANE), 1)) {
                                     player.getInventory().removeItem(new ItemStack(Material.SUGAR_CANE, 1));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 2.1");
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPrice("SUGAR_CANE"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 2.1");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. тростника.");
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "secretCaneCommandssss " + player.getName() + " 1");
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "secretCaneCommandssss " + player.getName() + " 1");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.SUGAR_CANE), 1)) {
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
@@ -241,9 +254,10 @@ public class Interact1 implements Listener {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.SUGAR_CANE), 64)) {
                                     player.getInventory().removeItem(new ItemStack(Material.SUGAR_CANE, 64));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 134.4");
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPriceFor64("SUGAR_CANE"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 134.4");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. тростника.");
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "secretCaneCommandssss " + player.getName() + " 64");
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "secretCaneCommandssss " + player.getName() + " 64");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.SUGAR_CANE), 64)) {
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
@@ -258,7 +272,8 @@ public class Interact1 implements Listener {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.DEAD_BUSH), 1)) {
                                     player.getInventory().removeItem(new ItemStack(Material.DEAD_BUSH, 1));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 5.1");
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPrice("DEAD_BUSH"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 5.1");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. мёртвого куста.");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.DEAD_BUSH), 1)) {
@@ -272,7 +287,8 @@ public class Interact1 implements Listener {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.DEAD_BUSH), 64)) {
                                     player.getInventory().removeItem(new ItemStack(Material.DEAD_BUSH, 64));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 326.4");
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPriceFor64("DEAD_BUSH"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 326.4");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. мёртвых кустов.");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.DEAD_BUSH), 64)) {
@@ -288,7 +304,8 @@ public class Interact1 implements Listener {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.WHEAT), 1)) {
                                     player.getInventory().removeItem(new ItemStack(Material.WHEAT, 1));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 2.1");
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPrice("WHEAT"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 2.1");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. пшеницы.");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.WHEAT), 1)) {
@@ -302,7 +319,8 @@ public class Interact1 implements Listener {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.WHEAT), 64)) {
                                     player.getInventory().removeItem(new ItemStack(Material.WHEAT, 64));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 134.4");
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPriceFor64("WHEAT"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 134.4");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. пшеницы.");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.WHEAT), 64)) {
@@ -318,7 +336,8 @@ public class Interact1 implements Listener {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.BLAZE_POWDER), 1)) {
                                     player.getInventory().removeItem(new ItemStack(Material.BLAZE_POWDER, 1));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 7.3");
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPrice("BLAZE_POWDER"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 7.3");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. порошка блейза.");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.BLAZE_POWDER), 1)) {
@@ -332,7 +351,8 @@ public class Interact1 implements Listener {
                             try {
                                 if (player.getInventory().containsAtLeast(new ItemStack(Material.BLAZE_POWDER), 64)) {
                                     player.getInventory().removeItem(new ItemStack(Material.BLAZE_POWDER, 64));
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 467.2");
+                                    EconomyManager.giveMoney(player,PriceManager.getCurrentPriceFor64("BLAZE_POWDER"));
+                                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " 467.2");
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. порошка блейза.");
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.BLAZE_POWDER), 64)) {

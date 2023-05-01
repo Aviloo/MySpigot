@@ -1,6 +1,7 @@
 package com.aviloo.mytraderreloaded.Seller.Inventories;
 
 import com.aviloo.mytraderreloaded.Seller.Utils.PlayersStats;
+import com.aviloo.mytraderreloaded.Seller.Utils.PriceManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 public class Screen2 {
     public static Inventory sellInventory(Player player){
 
-        Inventory inv = Bukkit.createInventory(player,54, ChatColor.WHITE+"Скупщик  ");
+        Inventory inv = Bukkit.createInventory(player,54, ChatColor.WHITE+"Скупщик");
 
         ItemStack back = new ItemStack(Material.SPECTRAL_ARROW,1);
         ItemMeta backMeta = back.getItemMeta();
@@ -46,8 +47,8 @@ public class Screen2 {
         ItemMeta appleMeta = apple.getItemMeta();
         appleMeta.setDisplayName(ChatColor.WHITE+ "Яблоко");
         ArrayList<String> appleLore = new ArrayList<>();
-        appleLore.add(ChatColor.YELLOW+"Цена за 1 штуку - 4.3 монеты");
-        appleLore.add(ChatColor.YELLOW+"Цена за 64 штуку - 275.2 монеты");
+        appleLore.add(ChatColor.YELLOW+"Цена за 1 штуку - "+ PriceManager.getCurrentPriceString("APPLE"));
+        appleLore.add(ChatColor.YELLOW+"Цена за 64 штуку - "+PriceManager.getCurrentPriceFor64String("APPLE"));
         appleLore.add(" ");
         appleLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         appleLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
@@ -58,8 +59,8 @@ public class Screen2 {
         ItemMeta sugarMeta = sugar.getItemMeta();
         sugarMeta.setDisplayName(ChatColor.WHITE+"Сахар");
         ArrayList<String> sugarLore = new ArrayList<>();
-        sugarLore.add(ChatColor.YELLOW+"Цена за 1 штуку - 5.1 монеты");
-        sugarLore.add(ChatColor.YELLOW+"Цена за 64 штуку - 326.4 монеты");
+        sugarLore.add(ChatColor.YELLOW+"Цена за 1 штуку - "+PriceManager.getCurrentPriceString("SUGAR"));
+        sugarLore.add(ChatColor.YELLOW+"Цена за 64 штуку - "+PriceManager.getCurrentPriceFor64String("SUGAR"));
         sugarLore.add(" ");
         sugarLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         sugarLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
@@ -70,8 +71,8 @@ public class Screen2 {
         ItemMeta dragonMeta = dragonBreath.getItemMeta();
         dragonMeta.setDisplayName(ChatColor.WHITE + "Дыхание дракона");
         ArrayList<String> dragonLore = new ArrayList<>();
-        dragonLore.add(ChatColor.YELLOW+"Цена за 1 штуку - 24 монеты");
-        dragonLore.add(ChatColor.YELLOW+"Цена за 64 штуку - 1536 монеты");
+        dragonLore.add(ChatColor.YELLOW+"Цена за 1 штуку - "+PriceManager.getCurrentPriceString("DRAGON_BREATH"));
+        dragonLore.add(ChatColor.YELLOW+"Цена за 64 штуку - "+PriceManager.getCurrentPriceFor64String("DRAGON_BREATH"));
         dragonLore.add(" ");
         dragonLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         dragonLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
@@ -82,8 +83,8 @@ public class Screen2 {
         ItemMeta membraneMeta = membrane.getItemMeta();
         membraneMeta.setDisplayName(ChatColor.WHITE+"Чешуя фантома");
         ArrayList<String> membraneLore = new ArrayList<>();
-        membraneLore.add(ChatColor.YELLOW+"Цена за 1 штуку - 16 монеты");
-        membraneLore.add(ChatColor.YELLOW+"Цена за 64 штуку - 1024 монеты");
+        membraneLore.add(ChatColor.YELLOW+"Цена за 1 штуку - "+PriceManager.getCurrentPriceString("PHANTOM_MEMBRANE"));
+        membraneLore.add(ChatColor.YELLOW+"Цена за 64 штуку - "+PriceManager.getCurrentPriceFor64String("PHANTOM_MEMBRANE"));
         membraneLore.add(" ");
         membraneLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         membraneLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
@@ -94,8 +95,8 @@ public class Screen2 {
         ItemMeta melonMeta = melon.getItemMeta();
         melonMeta.setDisplayName(ChatColor.WHITE+"Долька арбуза");
         ArrayList<String> melonLore = new ArrayList<>();
-        melonLore.add(ChatColor.YELLOW+"Цена за 1 штуку - 3.3 монеты");
-        melonLore.add(ChatColor.YELLOW+"Цена за 64 штуку - 211.2 монеты");
+        melonLore.add(ChatColor.YELLOW+"Цена за 1 штуку - "+PriceManager.getCurrentPriceString("MELON_SLICE"));
+        melonLore.add(ChatColor.YELLOW+"Цена за 64 штуку - "+PriceManager.getCurrentPriceFor64String("MELON_SLICE"));
         melonLore.add(" ");
         melonLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         melonLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
@@ -106,8 +107,8 @@ public class Screen2 {
         ItemMeta bottleMeta = bottle.getItemMeta();
         bottleMeta.setDisplayName(ChatColor.WHITE+"Пузырёк");
         ArrayList<String> bottleLore = new ArrayList<>();
-        bottleLore.add(ChatColor.YELLOW+"Цена за 1 штуку - 2.5 монеты");
-        bottleLore.add(ChatColor.YELLOW+"Цена за 64 штуку - 160 монеты");
+        bottleLore.add(ChatColor.YELLOW+"Цена за 1 штуку - "+PriceManager.getCurrentPriceString("GLASS_BOTTLE"));
+        bottleLore.add(ChatColor.YELLOW+"Цена за 64 штуку - "+PriceManager.getCurrentPriceFor64String("GLASS_BOTTLE"));
         bottleLore.add(" ");
         bottleLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         bottleLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
@@ -118,8 +119,8 @@ public class Screen2 {
         ItemMeta inkMeta = ink.getItemMeta();
         inkMeta.setDisplayName(ChatColor.WHITE+"Чернила");
         ArrayList<String> inkLore = new ArrayList<>();
-        inkLore.add(ChatColor.YELLOW+"Цена за 1 штуку - 2.7 монеты");
-        inkLore.add(ChatColor.YELLOW+"Цена за 64 штуку - 172.8 монеты");
+        inkLore.add(ChatColor.YELLOW+"Цена за 1 штуку - "+PriceManager.getCurrentPriceString("INK_SAC"));
+        inkLore.add(ChatColor.YELLOW+"Цена за 64 штуку - "+PriceManager.getCurrentPriceFor64String("INK_SAC"));
         inkLore.add(" ");
         inkLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         inkLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
@@ -130,8 +131,8 @@ public class Screen2 {
         ItemMeta sweetMeta = sweet.getItemMeta();
         sweetMeta.setDisplayName(ChatColor.WHITE+"Сладкие ягоды");
         ArrayList<String> sweetLore = new ArrayList<>();
-        sweetLore.add(ChatColor.YELLOW+"Цена за 1 штуку - 2.4 монеты");
-        sweetLore.add(ChatColor.YELLOW+"Цена за 64 штуку - 153.6 монеты");
+        sweetLore.add(ChatColor.YELLOW+"Цена за 1 штуку - "+PriceManager.getCurrentPriceString("SWEET_BERRIES"));
+        sweetLore.add(ChatColor.YELLOW+"Цена за 64 штуку - "+PriceManager.getCurrentPriceFor64String("SWEET_BERRIES"));
         sweetLore.add(" ");
         sweetLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         sweetLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
@@ -142,8 +143,8 @@ public class Screen2 {
         ItemMeta seedsMeta = seeds.getItemMeta();
         seedsMeta.setDisplayName(ChatColor.WHITE+"Семена пшеницы");
         ArrayList<String> seedsLore = new ArrayList<>();
-        seedsLore.add(ChatColor.YELLOW+"Цена за 1 штуку - 2.4 монеты");
-        seedsLore.add(ChatColor.YELLOW+"Цена за 64 штуку - 153.6 монеты");
+        seedsLore.add(ChatColor.YELLOW+"Цена за 1 штуку - "+PriceManager.getCurrentPriceString("WHEAT_SEEDS"));
+        seedsLore.add(ChatColor.YELLOW+"Цена за 64 штуку - "+PriceManager.getCurrentPriceFor64String("WHEAT_SEEDS"));
         seedsLore.add(" ");
         seedsLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         seedsLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");

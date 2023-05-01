@@ -2,6 +2,10 @@ package com.aviloo.mytraderreloaded.Seller.Commands;
 
 import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import com.aviloo.mytraderreloaded.Seller.Inventories.*;
+import com.aviloo.mytraderreloaded.Seller.Inventories.NonOptimizedScreens.Screen6;
+import com.aviloo.mytraderreloaded.Seller.Inventories.NonOptimizedScreens.Screen7;
+import com.aviloo.mytraderreloaded.Seller.Inventories.NonOptimizedScreens.Screen8;
+import com.aviloo.mytraderreloaded.Seller.Inventories.NonOptimizedScreens.Screen9;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

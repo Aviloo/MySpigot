@@ -1,4 +1,4 @@
-package com.aviloo.mytraderreloaded.Seller.Inventories;
+package com.aviloo.mytraderreloaded.Seller.Inventories.NonOptimizedScreens;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -10,7 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 
-public class Screen7 {
+public class Screen9 {
 
     public static Inventory getInv(Player player){
         Inventory inv = Bukkit.createInventory(player,54,"");
@@ -41,33 +41,33 @@ public class Screen7 {
         infoMeta.setLore(infoLore);
         info.setItemMeta(infoMeta);
 
-        ItemStack tear = new ItemStack(Material.GHAST_TEAR,1);
+        ItemStack magma = new ItemStack(Material.MAGMA_BLOCK,1);
 
-        ItemStack eye = new ItemStack(Material.SPIDER_EYE,1);
+        ItemStack bone = new ItemStack(Material.BONE_BLOCK,1);
 
-        ItemStack foot = new ItemStack(Material.RABBIT_FOOT,1);
+        ItemStack sea = new ItemStack(Material.SEA_PICKLE,1);
 
-        ItemStack beetroot = new ItemStack(Material.BEETROOT,1);
+        ItemStack soul = new ItemStack(Material.SOUL_SOIL,1);
 
-        ItemStack wheat = new ItemStack(Material.WHEAT,1);
+        ItemStack melon = new ItemStack(Material.MELON,1);
 
-        ItemStack slime = new ItemStack(Material.SLIME_BALL,1);
+        ItemStack emerald = new ItemStack(Material.EMERALD,1);
 
-        ItemStack breath = new ItemStack(Material.DRAGON_BREATH,1);
+        ItemStack copper = new ItemStack(Material.COPPER_INGOT,1);
 
-        ItemStack honey = new ItemStack(Material.HONEYCOMB_BLOCK,1);
+        ItemStack flint = new ItemStack(Material.FLINT,1);
 
-        ItemStack kelp = new ItemStack(Material.KELP,1);
+        ItemStack lazuli = new ItemStack(Material.LAPIS_LAZULI,1);
 
-        inv.setItem(12,tear);
-        inv.setItem(13,eye);
-        inv.setItem(14,foot);
-        inv.setItem(21,beetroot);
-        inv.setItem(22,wheat);
-        inv.setItem(23,slime);
-        inv.setItem(30,breath);
-        inv.setItem(31,honey);
-        inv.setItem(32,kelp);
+        inv.setItem(12,magma);
+        inv.setItem(13,bone);
+        inv.setItem(14,sea);
+        inv.setItem(21,soul);
+        inv.setItem(22,melon);
+        inv.setItem(23,emerald);
+        inv.setItem(30,copper);
+        inv.setItem(31,flint);
+        inv.setItem(32,lazuli);
         inv.setItem(48,back);
         //inv.setItem(48,leaders);
         inv.setItem(49,info);

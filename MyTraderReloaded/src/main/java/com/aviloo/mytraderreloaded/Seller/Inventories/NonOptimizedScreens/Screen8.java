@@ -1,4 +1,4 @@
-package com.aviloo.mytraderreloaded.Seller.Inventories;
+package com.aviloo.mytraderreloaded.Seller.Inventories.NonOptimizedScreens;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -10,7 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 
-public class Screen6 {
+public class Screen8 {
 
     public static Inventory getInv(Player player){
         Inventory inv = Bukkit.createInventory(player,54,"");
@@ -41,33 +41,33 @@ public class Screen6 {
         infoMeta.setLore(infoLore);
         info.setItemMeta(infoMeta);
 
-        ItemStack bamboo = new ItemStack(Material.BAMBOO,1);
+        ItemStack rose = new ItemStack(Material.WITHER_ROSE,1);
 
-        ItemStack cookie = new ItemStack(Material.COOKIE,1);
+        ItemStack mangrove = new ItemStack(Material.MANGROVE_PROPAGULE,1);
 
-        ItemStack GlowInk = new ItemStack(Material.GLOW_INK_SAC,1);
+        ItemStack seeds = new ItemStack(Material.WHEAT_SEEDS,1);
 
-        ItemStack black = new ItemStack(Material.BLACK_DYE,1);
+        ItemStack book = new ItemStack(Material.BOOK,1);
 
-        ItemStack wart = new ItemStack(Material.NETHER_WART,1);
+        ItemStack dust = new ItemStack(Material.GLOWSTONE_DUST,1);
 
-        ItemStack beetroot = new ItemStack(Material.BEETROOT_SEEDS,1);
+        ItemStack ender = new ItemStack(Material.ENDER_PEARL,1);
 
-        ItemStack nuggets = new ItemStack(Material.IRON_NUGGET,1);
+        ItemStack honeycomb = new ItemStack(Material.HONEYCOMB,1);
 
-        ItemStack lily = new ItemStack(Material.LILY_OF_THE_VALLEY,1);
+        ItemStack cactus = new ItemStack(Material.CACTUS,1);
 
-        ItemStack pearl = new ItemStack(Material.PEARLESCENT_FROGLIGHT,1);
+        ItemStack pumpkin = new ItemStack(Material.PUMPKIN,1);
 
-        inv.setItem(12,bamboo);
-        inv.setItem(13,cookie);
-        inv.setItem(14,GlowInk);
-        inv.setItem(21,black);
-        inv.setItem(22,wart);
-        inv.setItem(23,beetroot);
-        inv.setItem(30,nuggets);
-        inv.setItem(31,lily);
-        inv.setItem(32,pearl);
+        inv.setItem(12,rose);
+        inv.setItem(13,mangrove);
+        inv.setItem(14,seeds);
+        inv.setItem(21,book);
+        inv.setItem(22,dust);
+        inv.setItem(23,ender);
+        inv.setItem(30,honeycomb);
+        inv.setItem(31,cactus);
+        inv.setItem(32,pumpkin);
         inv.setItem(48,back);
         //inv.setItem(48,leaders);
         inv.setItem(49,info);
@@ -75,4 +75,5 @@ public class Screen6 {
 
         return inv;
     }
+
 }

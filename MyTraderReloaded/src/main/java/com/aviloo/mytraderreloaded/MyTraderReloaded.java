@@ -4,12 +4,9 @@ import com.aviloo.mytraderreloaded.DonateShop.Commands.OpenShop;
 import com.aviloo.mytraderreloaded.DonateShop.Inventories.Events.*;
 import com.aviloo.mytraderreloaded.DonateShop.Inventories.ShieldInventory;
 import com.aviloo.mytraderreloaded.GeneralCommands.ReloadConfigCommand;
-import com.aviloo.mytraderreloaded.Seller.Commands.OpenTrader;
-import com.aviloo.mytraderreloaded.Seller.Commands.ReloadType;
-import com.aviloo.mytraderreloaded.Seller.Commands.ReputationCommand;
-import com.aviloo.mytraderreloaded.Seller.Commands.TraderForDonate;
+import com.aviloo.mytraderreloaded.Seller.Commands.*;
 import com.aviloo.mytraderreloaded.Seller.Events.*;
-import com.aviloo.mytraderreloaded.Seller.Events.EpicEvents.GlobalEvents;
+import com.aviloo.mytraderreloaded.Seller.Events.EpicEvents.*;
 import com.aviloo.mytraderreloaded.Seller.Utils.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -78,6 +75,32 @@ public final class MyTraderReloaded extends JavaPlugin {
         return string;
     }
 
+    public static void setTraderType(String type){
+        if(Objects.equals(type, "Screen1")){
+            TraderType = type;
+        }
+        if(Objects.equals(type, "Screen2")){
+            TraderType = type;
+        }
+        if(Objects.equals(type, "Screen3")){
+            TraderType = type;
+        }
+        if(Objects.equals(type, "Screen4")){
+            TraderType = type;
+        }
+        if(Objects.equals(type, "Screen5")){
+            TraderType = type;
+        }
+        if(Objects.equals(type, "ScreenE")){
+            TraderType = type;
+            isEpicType = true;
+        }else {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    "&4[Ошибка] &fВы не можете присвоить этот тип. &7(Возможно, его не существует или" +
+                            "&7 вы ошиблись в написании!)"));
+        }
+    }
+
     private final String YesterdayScreen = getConfig().getString("YesterdayScreen");
 
     private void writeYesterdayScreen(String ScreenType){
@@ -119,7 +142,7 @@ public final class MyTraderReloaded extends JavaPlugin {
             Bukkit.getServer().getPluginManager().registerEvents(new Interact5(), this);
 
             //тестовый класс
-            Bukkit.getServer().getPluginManager().registerEvents(new GeneralInteract(this),this);
+            //Bukkit.getServer().getPluginManager().registerEvents(new GeneralInteract(this),this);
             Bukkit.getServer().getPluginManager().registerEvents(new ReputationInteract(),this);
             Bukkit.getServer().getPluginManager().registerEvents(new InteractE(), this);
                 //General Events (Seller)
@@ -130,8 +153,9 @@ public final class MyTraderReloaded extends JavaPlugin {
             //Commands(Seller)
             getCommand("secretsellercommand").setExecutor(new OpenTrader());
             getCommand("seller").setExecutor(new TraderForDonate());
-            getCommand("sellertype").setExecutor(new ReloadType());
+            getCommand("sellertype").setExecutor(new ReloadType(this));
             getCommand("traderreputation").setExecutor(new ReputationCommand());
+            getCommand("sellersettype").setExecutor(new SetType());
 
             //Completer`s (Seller)
             getCommand("traderreputation").setTabCompleter(new ReputationCommand());
@@ -165,7 +189,8 @@ public final class MyTraderReloaded extends JavaPlugin {
     }
 
     public void randomTraderType(){
-        if(Math.random() < 0.12){
+        double chance = Math.random();
+        if(chance < 0.21){
             if(!(Objects.equals(YesterdayScreen, "Screen1"))) {
                 TraderType = "Screen1";
                 isEpicType = false;
@@ -174,7 +199,7 @@ public final class MyTraderReloaded extends JavaPlugin {
                 return;
             }
         }
-        if(Math.random() >= 0.12 && Math.random() < 0.24){
+        if(chance >= 0.21 && chance < 0.42){
             if(!(Objects.equals(YesterdayScreen, "Screen2"))) {
                 TraderType = "Screen2";
                 isEpicType = false;
@@ -183,7 +208,7 @@ public final class MyTraderReloaded extends JavaPlugin {
                 return;
             }
         }
-        if(Math.random() >= 0.24 && Math.random() < 0.36){
+        if(chance >= 0.42 && chance < 0.63){
             if(!(Objects.equals(YesterdayScreen, "Screen3"))) {
                 TraderType = "Screen3";
                 isEpicType = false;
@@ -192,7 +217,7 @@ public final class MyTraderReloaded extends JavaPlugin {
                 return;
             }
         }
-        if(Math.random() >= 0.36 && Math.random() < 0.48){
+        if(chance >= 0.63 && chance < 0.81){
             if(!(Objects.equals(YesterdayScreen, "Screen4"))) {
                 TraderType = "Screen4";
                 isEpicType = false;
@@ -201,7 +226,7 @@ public final class MyTraderReloaded extends JavaPlugin {
                 return;
             }
         }
-        if(Math.random() >= 0.48 && Math.random() < 0.6){
+        if(chance >= 0.81 && chance < 0.96){
             if(!(Objects.equals(YesterdayScreen, "Screen5"))) {
                 TraderType = "Screen5";
                 isEpicType = false;
@@ -210,43 +235,7 @@ public final class MyTraderReloaded extends JavaPlugin {
                 return;
             }
         }
-        if(Math.random() >= 0.6 && Math.random() < 0.72){
-            if(!(Objects.equals(YesterdayScreen, "Screen6"))) {
-                TraderType = "Screen6";
-                isEpicType = false;
-                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen6"));
-                return;
-            }
-        }
-        if(Math.random() >= 0.72 && Math.random() < 0.84){
-            if(!(Objects.equals(YesterdayScreen, "Screen7"))) {
-                TraderType = "Screen7";
-                isEpicType = false;
-                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen7"));
-                return;
-            }
-        }
-        if(Math.random() >= 0.84 && Math.random() < 0.90){
-            if(!(Objects.equals(YesterdayScreen, "Screen8"))) {
-                TraderType = "Screen8";
-                isEpicType = false;
-                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen8"));
-                return;
-            }
-        }
-        if(Math.random() >= 0.9 && Math.random() < 0.96){
-            if(!(Objects.equals(YesterdayScreen, "Screen9"))) {
-                TraderType = "Screen9";
-                isEpicType = false;
-                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen9"));
-                return;
-            }
-        }
-        if(Math.random() >= 0.96){
+        if(chance >= 0.96){
             if(!(Objects.equals(YesterdayScreen, "ScreenE"))) {
                 TraderType = "ScreenE";
                 isEpicType = true;

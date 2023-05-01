@@ -23,6 +23,8 @@ commands:
     description: позволяет перезагружать конфиг плагина.
   traderreputation:
     usage: /<command> take|set|add|reset {Ник Игрока} {кол-во очков}
+  sellersettype:
+    usage: /<command> тип_скупщика
 permissions:
   mytrader.seller:
     description: позволяет использовать комманду /seller
