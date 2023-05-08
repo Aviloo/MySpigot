@@ -1,0 +1,17 @@
+name: MyPotionSystem
+version: '${project.version}'
+main: me.aviloo.mypotionsystem.MyPotionSystem
+api-version: 1.19
+authors: [ Aviloo ]
+description: Добавляет новую систему крафта зелий
+softdepend: [Vault, PlaceholderAPI, Essentials]
+commands:
+  gettestpotion:
+    usage: /<command>
+    description: Выдает игроку тестовое зелье (Для отладки!).
+  secretpotioncommand:
+    usage: /<command> ник_игрока
+    description: Открывает меню крафта зелий.
+  mypotion:
+    usage: /<command> reload
+    description: Перезагружает конфиг.
