@@ -102,7 +102,7 @@ public class BoardManager implements Listener {
                                 " Отыграно: &7" + PlaceholderAPI.setPlaceholders(board.getPlayer(),"%statistic_time_played:hours%") + " ч.",
                                 " ",
                                 "&f♦&e&lПРОГРЕСС: ",
-                                " Монет: &7" + PlaceholderAPI.setPlaceholders(board.getPlayer(), "%vault_eco_balance%"),
+                                " Монет: &7" + PlaceholderAPI.setPlaceholders(board.getPlayer(), "%vault_eco_balance_formatted%"),
                                 " Орури: &7" + PlaceholderAPI.setPlaceholders(board.getPlayer(), "%playerpoints_points%"),
                                 " ",
                                 "&7     www.Orumii.su   ");
@@ -121,7 +121,7 @@ public class BoardManager implements Listener {
                                 " Отыграно: &7" + PlaceholderAPI.setPlaceholders(board.getPlayer(),"%statistic_time_played:hours%") + " ч.",
                                 " ",
                                 "&f♦&c&lПРОГРЕСС: ",
-                                " Монет: &7" + PlaceholderAPI.setPlaceholders(board.getPlayer(), "%vault_eco_balance%"),
+                                " Монет: &7" + PlaceholderAPI.setPlaceholders(board.getPlayer(), "%vault_eco_balance_formatted%"),
                                 " Орури: &7" + PlaceholderAPI.setPlaceholders(board.getPlayer(), "%playerpoints_points%"),
                                 " ",
                                 "&7     www.Orumii.su   ");
@@ -140,7 +140,7 @@ public class BoardManager implements Listener {
                                 " Отыграно: &7" + PlaceholderAPI.setPlaceholders(board.getPlayer(),"%statistic_time_played:hours%") + " ч.",
                                 " ",
                                 "&f♦&b&lПРОГРЕСС: ",
-                                " Монет: &7" + PlaceholderAPI.setPlaceholders(board.getPlayer(), "%vault_eco_balance%"),
+                                " Монет: &7" + PlaceholderAPI.setPlaceholders(board.getPlayer(), "%vault_eco_balance_formatted%"),
                                 " Орури: &7" + PlaceholderAPI.setPlaceholders(board.getPlayer(), "%playerpoints_points%"),
                                 " ",
                                 "&7     www.Orumii.su   ");
@@ -159,7 +159,7 @@ public class BoardManager implements Listener {
                                 " Отыграно: &7" + PlaceholderAPI.setPlaceholders(board.getPlayer(),"%statistic_time_played:hours%") + " ч.",
                                 " ",
                                 "&f♦&d&lПРОГРЕСС: ",
-                                " Монет: &7" + PlaceholderAPI.setPlaceholders(board.getPlayer(), "%vault_eco_balance%"),
+                                " Монет: &7" + PlaceholderAPI.setPlaceholders(board.getPlayer(), "%vault_eco_balance_formatted%"),
                                 " Орури: &7" + PlaceholderAPI.setPlaceholders(board.getPlayer(), "%playerpoints_points%"),
                                 " ",
                                 "&7     www.Orumii.su   ");
@@ -178,7 +178,7 @@ public class BoardManager implements Listener {
                                 " Отыграно: &n" + PlaceholderAPI.setPlaceholders(board.getPlayer(),"%statistic_time_played:hours%") + " ч.",
                                 " ",
                                 "&f♦&7&lПРОГРЕСС: ",
-                                " Монет: &n" + PlaceholderAPI.setPlaceholders(board.getPlayer(), "%vault_eco_balance%"),
+                                " Монет: &n" + PlaceholderAPI.setPlaceholders(board.getPlayer(), "%vault_eco_balance_formatted%"),
                                 " Орури: &n" + PlaceholderAPI.setPlaceholders(board.getPlayer(), "%playerpoints_points%"),
                                 " ",
                                 "&8     www.Orumii.su   ");

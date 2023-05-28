@@ -2,7 +2,7 @@ name: MyScoreboard
 version: '${project.version}'
 main: com.aviloo.myscoreboard.MyScoreboard
 api-version: 1.19
-soft-dependencies: PlaceholdersAPI, LuckPerms, PlayerPoints
+softdepend: [Vault, PlayerPoints, LuckPerms, PlaceholderAPI, Essentials]
 authors: [ Aviloo ]
 commands:
   myscoreboard:
