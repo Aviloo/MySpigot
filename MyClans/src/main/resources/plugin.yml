@@ -1,0 +1,72 @@
+name: MyClans
+version: '${project.version}'
+main: me.aviloo.myclans.MyClans
+api-version: 1.19
+authors: [ Aviloo ]
+folia-supported: true
+prefix: MyClans
+description: Добавляет боевой пропуск на сервер
+softdepend: [ PlaceholderAPI, PlugManX, Vault ]
+commands:
+  clan:
+    description: Create, delete and manage clans!
+    usage: "Usage: /clan [create|disband|invite|kick|info|list|prefix|transfer|ally|enemy|sethome|delhome|home|points]"
+    permission: clanslite.clan
+    aliases:
+      - clans
+      - c
+      - cl
+  clanadmin:
+    description: Admin commands for clans.
+    usage: "Usage: /clanadmin [save|reload|about]"
+    permission: clanslite.admin
+    aliases:
+      - ca
+      - cla
+  cc:
+    description: Send a message to your clan members only.
+    usage: "Usage: /cc <message>"
+    permission: clanslite.clan
+    aliases:
+      - clanchat
+      - clanc
+      - cchat
+      - chat
+  chatspy:
+    description: Allows admins to see ALL clan chat messages.
+    usage: "Usage: /chatspy"
+    permission: clanslite.chat.spy
+    aliases:
+      - cs
+      - ccs
+      - clanchatspy
+      - spy
+  playerpoints:
+    description: Displays a players point balance or displays all players points balances.
+    usage: "/playerpoint {listall}"
+    permission: clanslite.clan
+    aliases:
+      - pp
+      - points
+      - ppoints
+
+permissions:
+  clanslite.clan:
+    default: true
+  clanslite.maxclansize.group1:
+    default: true
+  clanslite.*:
+    default: op
+    children:
+      clanslite.clanadmin:
+        children:
+          clanslite.chat.spy:
+            default: op
+          clanslite.update:
+            default: op
+          clanslite.bypass:
+            default: op
+          clanslite.maxclansize.*:
+            default: op
+          clanslite.points.listall:
+            default: op

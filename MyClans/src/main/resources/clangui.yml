@@ -1,0 +1,52 @@
+#This is the options for the ClanList GUI
+clan-list:
+  #What name would you like the gui to have?
+  name: "&fСписок кланов"
+
+  #Message sent when your on the first page.
+  GUI-first-page: "&7[Кланы] &fВы находитесь на первой странице."
+  #Message sent when your on the last page.
+  GUI-last-page: "&7[Кланы] &fВы находитесь на последней странице."
+
+  #Menu controls options
+  menu-controls:
+    #The name of the previous page icon
+    previous-page-icon-name: "&eПредыдущая страница"
+    #The name of the next page icon
+    next-page-icon-name: "&eСледующая страница"
+    #The name of the close/go back icon
+    close-go-back-icon-name: "&eЗакрыть"
+
+  icons:
+    #Do you want to use the auto data update system for the icons in the GUI? [Default value: true]
+    ##Disabling this option may help performance on lower spec servers!##
+    auto-refresh-data:
+      enabled: true
+
+    icon-display-name:
+      #Do you want to use the Clan Name as the title for the icon: [Default value: true]
+      #If below is 'false' the name will be empty.
+      use-clan-name: true
+
+    #This allows you to customise the lore text for the player head icons in the ClanList GUI.
+    lore:
+      header: "&7----------"
+      prefix: "&3Префикс клана: "
+      owner-online: "&3Глава: &d"
+      owner-offline: "&3Глава &7&o(Offline)&3: &d"
+      members: "&3Участники:"
+      allies: "&3Союзники клана:"
+      enemies: "&3Враги Клана:"
+      footer-1: "&7----------"
+      action: "&d&oНажмите, чтобы отправить запрос на вступление."
+      footer-2: "&7----------"
+
+#This is the options for the ClanJoinRequest GUI
+clan-join:
+  #What name would you like the gui to have?
+  name: "&fВы хотите вступить в клан?"
+
+  icons:
+    #This allows you to customise the name text for the icons in the ClanJoinRequest GUI.
+    send-request-name: "&a&oОтправить запрос на вступление?"
+    cancel-request-name: "&4&oОтменить"
