@@ -11,7 +11,6 @@ public class MainInteract implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event){
-        if(event.getCurrentItem() == null){return;}
         Player player = (Player) event.getWhoClicked();
         if(event.getView().getTitle().equals(ChatColor.WHITE+"Скорборд")){
             try{

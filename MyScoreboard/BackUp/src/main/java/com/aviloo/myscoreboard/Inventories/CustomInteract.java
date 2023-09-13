@@ -7,26 +7,33 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-public class MainInteract implements Listener {
+public class CustomInteract implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event){
-        if(event.getCurrentItem() == null){return;}
         Player player = (Player) event.getWhoClicked();
-        if(event.getView().getTitle().equals(ChatColor.WHITE+"Скорборд")){
+        if(event.getView().getTitle().equals(ChatColor.WHITE+"Кастомизация")){
             try{
                 switch (event.getCurrentItem().getType()){
-                    case RED_SHULKER_BOX:
-                        BoardManager.removeScoreboard(player);
+                    case ORANGE_BANNER:
+                        BoardManager.setColor(player,"original");
                         player.closeInventory();
                         break;
-                    case GREEN_SHULKER_BOX:
-                        BoardManager.setBoards(player);
+                    case RED_BANNER:
+                        BoardManager.setColor(player,"red");
                         player.closeInventory();
                         break;
-                    case EXPERIENCE_BOTTLE:
+                    case LIGHT_BLUE_BANNER:
+                        BoardManager.setColor(player,"blue");
                         player.closeInventory();
-                        player.openInventory(CustomInventory.getInv(player));
+                        break;
+                    case PURPLE_BANNER:
+                        BoardManager.setColor(player,"pink");
+                        player.closeInventory();
+                        break;
+                    case LIGHT_GRAY_BANNER:
+                        BoardManager.setColor(player,"gray");
+                        player.closeInventory();
                         break;
                     case BARRIER:
                         player.closeInventory();
