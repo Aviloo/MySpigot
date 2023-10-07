@@ -1,12 +1,16 @@
 name: MyScoreboard
 version: '${project.version}'
 main: com.aviloo.myscoreboard.MyScoreboard
+description: Этот плагин создает скорборд.
 api-version: 1.19
-softdepend: [Vault, PlayerPoints, LuckPerms, PlaceholderAPI, Essentials]
+softdepend: [Vault, PlayerPoints, LuckPerms, PlaceholderAPI, Essentials, MyClans]
 authors: [ Aviloo ]
 commands:
   myscoreboard:
     usage: /<command>
-    description: allow customize you own scoreboard.
+    description: Открывает меню скорборда.
     aliases:
       - mysb
+permissions:
+  myscoreboard.style:
+    description: Позволяет игроку открывать меню стилей,а также использовать стили скорборда.

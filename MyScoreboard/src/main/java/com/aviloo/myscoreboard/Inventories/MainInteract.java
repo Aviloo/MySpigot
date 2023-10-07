@@ -2,6 +2,7 @@ package com.aviloo.myscoreboard.Inventories;
 
 import com.aviloo.myscoreboard.Boards.BoardManager;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,17 +19,21 @@ public class MainInteract implements Listener {
                 switch (event.getCurrentItem().getType()){
                     case RED_SHULKER_BOX:
                         BoardManager.removeScoreboard(player);
+                        player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,3,-5);
                         player.closeInventory();
                         break;
                     case GREEN_SHULKER_BOX:
                         BoardManager.setBoards(player);
+                        player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,3,5);
                         player.closeInventory();
                         break;
                     case EXPERIENCE_BOTTLE:
                         player.closeInventory();
+                        player.playSound(player.getLocation(),Sound.UI_BUTTON_CLICK,3,0);
                         player.openInventory(CustomInventory.getInv(player));
                         break;
                     case BARRIER:
+                        player.playSound(player.getLocation(),Sound.UI_BUTTON_CLICK,3,-5);
                         player.closeInventory();
                         break;
                 }

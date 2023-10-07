@@ -20,9 +20,9 @@ public class StyleInventory {
 
         ItemStack air = new ItemStack(Material.AIR);
 
-        ItemStack close = new ItemStack(Material.BARRIER);
+        ItemStack close = new ItemStack(Material.SPECTRAL_ARROW);
         ItemMeta cMeta = close.getItemMeta();
-        cMeta.setDisplayName(ChatColor.WHITE+"Закрыть");
+        cMeta.setDisplayName(ChatColor.YELLOW+"Назад");
         close.setItemMeta(cMeta);
 
         ItemStack original = new ItemStack(Material.ORANGE_BANNER);

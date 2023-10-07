@@ -21,11 +21,20 @@ public class CustomInteract implements Listener {
                     player.openInventory(MainInventory.getInv(player));
                     break;
                 case RED_DYE:
+                    if(!player.hasPermission("myscoreboard.style")){
+                        player.closeInventory();
+                        player.sendMessage(ChatColor.GRAY+"[Система] "+ChatColor.WHITE+
+                                "У вас недостаточно прав.");
+                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,3,0);
+                        break;
+                    }
                     player.closeInventory();
+                    player.playSound(player.getLocation(),Sound.UI_BUTTON_CLICK,3,0);
                     player.openInventory(StyleInventory.getInv(player));
                     break;
                 case MAP:
                     player.closeInventory();
+                    player.playSound(player.getLocation(),Sound.UI_BUTTON_CLICK,3,0);
                     player.openInventory(StatisticInventory.getInv(player));
                     break;
             }

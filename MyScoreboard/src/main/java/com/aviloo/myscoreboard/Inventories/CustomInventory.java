@@ -34,7 +34,7 @@ public class CustomInventory {
 
         ItemStack stats = new ItemStack(Material.MAP,1);
         ItemMeta statsMeta = stats.getItemMeta();
-        statsMeta.setDisplayName(ChatColor.YELLOW+"Настройки статистики");
+        statsMeta.setDisplayName(ChatColor.YELLOW+"Настройки тэгов");
         ArrayList<String> statsLore = new ArrayList<>();
         statsLore.add(" ");
         statsLore.add(ChatColor.GRAY+"Выбери отображаемую статистику");

@@ -73,17 +73,44 @@ public class StatisticManager implements Listener {
                 if(first_slot.get(player.getUniqueId()).equals("blocks_break")){
                     return " Добыто: &n" + PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block%") +" бл.";
                 }
-                if(first_slot.get(player.getUniqueId()).equals("clan_name")){
-                    if(PlaceholderAPI.setPlaceholders(player,"%simpleclans_in_clan%").equals("no")){
-                        return " Клан: &nОтсутствует";
-                    }
-                    return " Клан: &n" + PlaceholderAPI.setPlaceholders(player, "%simpleclans_clan_name%");
+                if(first_slot.get(player.getUniqueId()).equals("coords")){
+                    return coordinatesHolder(player,true);
                 }
-                if(third_slot.get(player.getUniqueId()).equals("kills_deaths")){
+                if(first_slot.get(player.getUniqueId()).equals("kills_deaths")){
                     return " KD: &n" + killDeathsHolder(player);
                 }
-                if(first_slot.get(player.getUniqueId()).equals("movement_speed")){
-                    return " Скорость: &n" + PlaceholderAPI.setPlaceholders(player, "%player_walk_speed%");
+                if(first_slot.get(player.getUniqueId()).equals("hand_durability")){
+                    if(player.getInventory().getItemInMainHand().getType().isAir()){
+                        return " Прочность: &n-";
+                    }
+                    return " Прочность: &n" + PlaceholderAPI.setPlaceholders(player,"%player_item_in_hand_durability%");
+                }
+                if(first_slot.get(player.getUniqueId()).equals("totem_count")){
+                    return " Тотемов: &n" +PlaceholderAPI.setPlaceholders(player,"%checkitem_amount_mat:totem_of_undying%");
+                }
+                if(first_slot.get(player.getUniqueId()).equals("helmet_durability")){
+                    if(player.getInventory().getHelmet() == null){
+                        return " Шлем: &n-";
+                    }
+                    return " Шлем: &n" + PlaceholderAPI.setPlaceholders(player,"%player_armor_helmet_durability%");
+                }
+                if(first_slot.get(player.getUniqueId()).equals("chestplate_durability")){
+                    if(player.getInventory().getChestplate() == null){
+                        return " Нагрудник: &n-";
+                    }
+                    return " Нагрудник: &n" + PlaceholderAPI.setPlaceholders(player,"%player_armor_chestplate_durability%");
+                }
+                if(first_slot.get(player.getUniqueId()).equals("leggings_durability")){
+                    if(player.getInventory().getLeggings() == null){
+                        return " Поножи: &n-";
+                    }
+                    return " Поножи: &n" + PlaceholderAPI.setPlaceholders(player,"%player_armor_leggings_durability%");
+                }
+                if(first_slot.get(player.getUniqueId()).equals("boots_durability")){
+                    if(player.getInventory().getBoots() == null){
+                        return " Тапки: &n-";
+                    }
+                    return " Тапки: &n" + PlaceholderAPI.setPlaceholders(player,"%player_armor_boots_durability%");
                 }
 
 
@@ -106,17 +133,44 @@ public class StatisticManager implements Listener {
                 if(first_slot.get(player.getUniqueId()).equals("blocks_break")){
                     return " Добыто: &7" + PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block%") +" бл.";
                 }
-                if(first_slot.get(player.getUniqueId()).equals("clan_name")){
-                    if(PlaceholderAPI.setPlaceholders(player,"%simpleclans_in_clan%").equals("no")){
-                        return " Клан: &7Отсутствует";
-                    }
-                    return " Клан: &7" + PlaceholderAPI.setPlaceholders(player, "%simpleclans_clan_name%");
+                if(first_slot.get(player.getUniqueId()).equals("coords")){
+                    return coordinatesHolder(player,false);
                 }
-                if(third_slot.get(player.getUniqueId()).equals("kills_deaths")){
+                if(first_slot.get(player.getUniqueId()).equals("kills_deaths")){
                     return " KD: &7" + killDeathsHolder(player);
                 }
-                if(first_slot.get(player.getUniqueId()).equals("movement_speed")){
-                    return " Скорость: &7" + PlaceholderAPI.setPlaceholders(player, "%player_walk_speed%");
+                if(first_slot.get(player.getUniqueId()).equals("hand_durability")){
+                    if(player.getInventory().getItemInMainHand().getType().isAir()){
+                        return " Прочность: &7-";
+                    }
+                    return " Прочность: &7" + PlaceholderAPI.setPlaceholders(player,"%player_item_in_hand_durability%");
+                }
+                if(first_slot.get(player.getUniqueId()).equals("totem_count")){
+                    return " Тотемов: &7" +PlaceholderAPI.setPlaceholders(player,"%checkitem_amount_mat:totem_of_undying%");
+                }
+                if(first_slot.get(player.getUniqueId()).equals("helmet_durability")){
+                    if(player.getInventory().getHelmet() == null){
+                        return " Шлем: &7-";
+                    }
+                    return " Шлем: &7" + PlaceholderAPI.setPlaceholders(player,"%player_armor_helmet_durability%");
+                }
+                if(first_slot.get(player.getUniqueId()).equals("chestplate_durability")){
+                    if(player.getInventory().getChestplate() == null){
+                        return " Нагрудник: &7-";
+                    }
+                    return " Нагрудник: &7" + PlaceholderAPI.setPlaceholders(player,"%player_armor_chestplate_durability%");
+                }
+                if(first_slot.get(player.getUniqueId()).equals("leggings_durability")){
+                    if(player.getInventory().getLeggings() == null){
+                        return " Поножи: &7-";
+                    }
+                    return " Поножи: &7" + PlaceholderAPI.setPlaceholders(player,"%player_armor_leggings_durability%");
+                }
+                if(first_slot.get(player.getUniqueId()).equals("boots_durability")){
+                    if(player.getInventory().getBoots() == null){
+                        return " Тапки: &7-";
+                    }
+                    return " Тапки: &7" + PlaceholderAPI.setPlaceholders(player,"%player_armor_boots_durability%");
                 }
 
             }
@@ -143,17 +197,44 @@ public class StatisticManager implements Listener {
                 if(second_slot.get(player.getUniqueId()).equals("blocks_break")){
                     return " Добыто: &n" + PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block%") +" бл.";
                 }
-                if(second_slot.get(player.getUniqueId()).equals("clan_name")){
-                    if(PlaceholderAPI.setPlaceholders(player,"%simpleclans_in_clan%").equals("no")){
-                        return " Клан: &nОтсутствует";
-                    }
-                    return " Клан: &n" + PlaceholderAPI.setPlaceholders(player, "%simpleclans_clan_name%");
+                if(second_slot.get(player.getUniqueId()).equals("coords")){
+                    return coordinatesHolder(player,true);
                 }
-                if(third_slot.get(player.getUniqueId()).equals("kills_deaths")){
+                if(second_slot.get(player.getUniqueId()).equals("kills_deaths")){
                     return " KD: &n" + killDeathsHolder(player);
                 }
-                if(second_slot.get(player.getUniqueId()).equals("movement_speed")){
-                    return " Скорость: &n" + PlaceholderAPI.setPlaceholders(player, "%player_walk_speed%");
+                if(second_slot.get(player.getUniqueId()).equals("hand_durability")){
+                    if(player.getInventory().getItemInMainHand().getType().isAir()){
+                        return " Прочность: &n-";
+                    }
+                    return " Прочность: &n" + PlaceholderAPI.setPlaceholders(player,"%player_item_in_hand_durability%");
+                }
+                if(second_slot.get(player.getUniqueId()).equals("totem_count")){
+                    return " Тотемов: &n" +PlaceholderAPI.setPlaceholders(player,"%checkitem_amount_mat:totem_of_undying%");
+                }
+                if(second_slot.get(player.getUniqueId()).equals("helmet_durability")){
+                    if(player.getInventory().getHelmet() == null){
+                        return " Шлем: &n-";
+                    }
+                    return " Шлем: &n" + PlaceholderAPI.setPlaceholders(player,"%player_armor_helmet_durability%");
+                }
+                if(second_slot.get(player.getUniqueId()).equals("chestplate_durability")){
+                    if(player.getInventory().getChestplate() == null){
+                        return " Нагрудник: &n-";
+                    }
+                    return " Нагрудник: &n" + PlaceholderAPI.setPlaceholders(player,"%player_armor_chestplate_durability%");
+                }
+                if(second_slot.get(player.getUniqueId()).equals("leggings_durability")){
+                    if(player.getInventory().getLeggings() == null){
+                        return " Поножи: &n-";
+                    }
+                    return " Поножи: &n" + PlaceholderAPI.setPlaceholders(player,"%player_armor_leggings_durability%");
+                }
+                if(second_slot.get(player.getUniqueId()).equals("boots_durability")){
+                    if(player.getInventory().getBoots() == null){
+                        return " Тапки: &n-";
+                    }
+                    return " Тапки: &n" + PlaceholderAPI.setPlaceholders(player,"%player_armor_boots_durability%");
                 }
 
 
@@ -176,17 +257,44 @@ public class StatisticManager implements Listener {
                 if(second_slot.get(player.getUniqueId()).equals("blocks_break")){
                     return " Добыто: &7" + PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block%") +" бл.";
                 }
-                if(second_slot.get(player.getUniqueId()).equals("clan_name")){
-                    if(PlaceholderAPI.setPlaceholders(player,"%simpleclans_in_clan%").equals("no")){
-                        return " Клан: &7Отсутствует";
-                    }
-                    return " Клан: &7" + PlaceholderAPI.setPlaceholders(player, "%simpleclans_clan_name%");
+                if(second_slot.get(player.getUniqueId()).equals("coords")){
+                    return coordinatesHolder(player,false);
                 }
-                if(third_slot.get(player.getUniqueId()).equals("kills_deaths")){
+                if(second_slot.get(player.getUniqueId()).equals("kills_deaths")){
                     return " KD: &7" + killDeathsHolder(player);
                 }
-                if(second_slot.get(player.getUniqueId()).equals("movement_speed")){
-                    return " Скорость: &7" + PlaceholderAPI.setPlaceholders(player, "%player_walk_speed%");
+                if(second_slot.get(player.getUniqueId()).equals("hand_durability")){
+                    if(player.getInventory().getItemInMainHand().getType().isAir()){
+                        return " Прочность: &7-";
+                    }
+                    return " Прочность: &7" + PlaceholderAPI.setPlaceholders(player,"%player_item_in_hand_durability%");
+                }
+                if(second_slot.get(player.getUniqueId()).equals("totem_count")){
+                    return " Тотемов: &7" +PlaceholderAPI.setPlaceholders(player,"%checkitem_amount_mat:totem_of_undying%");
+                }
+                if(second_slot.get(player.getUniqueId()).equals("helmet_durability")){
+                    if(player.getInventory().getHelmet() == null){
+                        return " Шлем: &7-";
+                    }
+                    return " Шлем: &7" + PlaceholderAPI.setPlaceholders(player,"%player_armor_helmet_durability%");
+                }
+                if(second_slot.get(player.getUniqueId()).equals("chestplate_durability")){
+                    if(player.getInventory().getChestplate() == null){
+                        return " Нагрудник: &7-";
+                    }
+                    return " Нагрудник: &7" + PlaceholderAPI.setPlaceholders(player,"%player_armor_chestplate_durability%");
+                }
+                if(second_slot.get(player.getUniqueId()).equals("leggings_durability")){
+                    if(player.getInventory().getLeggings() == null){
+                        return " Поножи: &7-";
+                    }
+                    return " Поножи: &7" + PlaceholderAPI.setPlaceholders(player,"%player_armor_leggings_durability%");
+                }
+                if(second_slot.get(player.getUniqueId()).equals("boots_durability")){
+                    if(player.getInventory().getBoots() == null){
+                        return " Тапки: &7-";
+                    }
+                    return " Тапки: &7" + PlaceholderAPI.setPlaceholders(player,"%player_armor_boots_durability%");
                 }
 
             }
@@ -212,17 +320,44 @@ public class StatisticManager implements Listener {
                 if(third_slot.get(player.getUniqueId()).equals("blocks_break")){
                     return " Добыто: &n" + PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block%") +" бл.";
                 }
-                if(third_slot.get(player.getUniqueId()).equals("clan_name")){
-                    if(PlaceholderAPI.setPlaceholders(player,"%simpleclans_in_clan%").equals("no")){
-                        return " Клан: &nОтсутствует";
-                    }
-                    return " Клан: &n" + PlaceholderAPI.setPlaceholders(player, "%simpleclans_clan_name%");
+                if(third_slot.get(player.getUniqueId()).equals("coords")){
+                    return coordinatesHolder(player,true);
                 }
                 if(third_slot.get(player.getUniqueId()).equals("kills_deaths")){
                     return " KD: &n" + killDeathsHolder(player);
                 }
-                if(third_slot.get(player.getUniqueId()).equals("movement_speed")){
-                    return " Скорость: &n" + PlaceholderAPI.setPlaceholders(player, "%player_walk_speed%");
+                if(third_slot.get(player.getUniqueId()).equals("hand_durability")){
+                    if(player.getInventory().getItemInMainHand().getType().isAir()){
+                        return " Прочность: &n-";
+                    }
+                    return " Прочность: &n" + PlaceholderAPI.setPlaceholders(player,"%player_item_in_hand_durability%");
+                }
+                if(third_slot.get(player.getUniqueId()).equals("totem_count")){
+                    return " Тотемов: &n" +PlaceholderAPI.setPlaceholders(player,"%checkitem_amount_mat:totem_of_undying%");
+                }
+                if(third_slot.get(player.getUniqueId()).equals("helmet_durability")){
+                    if(player.getInventory().getHelmet() == null){
+                        return " Шлем: &n-";
+                    }
+                    return " Шлем: &n" + PlaceholderAPI.setPlaceholders(player,"%player_armor_helmet_durability%");
+                }
+                if(third_slot.get(player.getUniqueId()).equals("chestplate_durability")){
+                    if(player.getInventory().getChestplate() == null){
+                        return " Нагрудник: &n-";
+                    }
+                    return " Нагрудник: &7" + PlaceholderAPI.setPlaceholders(player,"%player_armor_chestplate_durability%");
+                }
+                if(third_slot.get(player.getUniqueId()).equals("leggings_durability")){
+                    if(player.getInventory().getLeggings() == null){
+                        return " Поножи: &n-";
+                    }
+                    return " Поножи: &n" + PlaceholderAPI.setPlaceholders(player,"%player_armor_leggings_durability%");
+                }
+                if(third_slot.get(player.getUniqueId()).equals("boots_durability")){
+                    if(player.getInventory().getBoots() == null){
+                        return " Тапки: &n-";
+                    }
+                    return " Тапки: &n" + PlaceholderAPI.setPlaceholders(player,"%player_armor_boots_durability%");
                 }
 
 
@@ -245,11 +380,8 @@ public class StatisticManager implements Listener {
                 if(third_slot.get(player.getUniqueId()).equals("blocks_break")){
                     return " Добыто: &7" + PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block%") +" бл.";
                 }
-                if(third_slot.get(player.getUniqueId()).equals("clan_name")){
-                    if(PlaceholderAPI.setPlaceholders(player,"%simpleclans_in_clan%").equals("no")){
-                        return " Клан: &7Отсутствует";
-                    }
-                    return " Клан: &7" + PlaceholderAPI.setPlaceholders(player, "%simpleclans_clan_name%");
+                if(third_slot.get(player.getUniqueId()).equals("coords")){
+                    return coordinatesHolder(player,false);
                 }
                 if(third_slot.get(player.getUniqueId()).equals("kills_deaths")){
                     return " KD: &7" + killDeathsHolder(player);
@@ -324,13 +456,24 @@ public class StatisticManager implements Listener {
     }
 
     public static String getTopic(Player player){
-        if(isTagSelected(player,"clan_name") || isTagSelected(player,"ping")
+        if(isTagSelected(player,"coords") || isTagSelected(player,"ping")
                 || isTagSelected(player,"hand_durability") || isTagSelected(player,"totem_count")
                 || isTagSelected(player,"helmet_durability") || isTagSelected(player,"chestplate_durability")
                 || isTagSelected(player,"leggings_durability") || isTagSelected(player,"boots_durability")){
             return "ИНФОРМАЦИЯ:";
         }
         return "СТАТИСТИКА:";
+    }
+
+    private static String coordinatesHolder(Player player,boolean isGrayStyle){
+        if(isGrayStyle){
+            return " Координаты: &n"+PlaceholderAPI.setPlaceholders(player,"%player_x%")+
+                    " &n"+PlaceholderAPI.setPlaceholders(player,"%player_y%")+
+                    " &n"+PlaceholderAPI.setPlaceholders(player,"%player_z%");
+        }
+        return " Координаты: &7"+PlaceholderAPI.setPlaceholders(player,"%player_x%")+
+                " &7"+PlaceholderAPI.setPlaceholders(player,"%player_y%")+
+                " &7"+PlaceholderAPI.setPlaceholders(player,"%player_z%");
     }
 
 }
