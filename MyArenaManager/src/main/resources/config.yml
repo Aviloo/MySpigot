@@ -1,0 +1,6 @@
+EnableMoneyPlate: true
+EnablePvpChest: true
+EnableAdminDamage: true
+min_limit_players_for_plate: 5
+min_limit_players_for_chest: 5
+EnableDebugCommands: true

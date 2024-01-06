@@ -1,0 +1,24 @@
+name: MyArenaManager
+version: '1.0-SNAPSHOT'
+main: me.aviloo.myarenamanager.MyArenaManager
+api-version: '1.19'
+authors: [Aviloo]
+depend: [Vault]
+softdepend: [PlugManX]
+permissions:
+  ArenaManager.damage:
+    description: Позволяет использовать комманду /admindamage.
+commands:
+  setplate:
+    usage: /<command> true|false
+  arenamanager:
+    usage: /<command> reload
+  admindamage:
+    usage: /<command> default | set
+    description: Увеличивает урон при пвп.
+    aliases:
+      - admg
+  arenachest:
+    usage: /<command> canbeactivate | activated | open
+  getcurrentworldinfo:
+    usage: /<command>
