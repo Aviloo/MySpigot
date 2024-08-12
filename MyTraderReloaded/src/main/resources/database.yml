@@ -1,0 +1,6 @@
+#Файл используется для подключения к MySQL! SQLite, H2, MangoDB и т.д. НЕПОДДЕРЖИВАЕТСЯ!
+host: localhost
+port: 3307
+username: root
+password:
+database: mytrader

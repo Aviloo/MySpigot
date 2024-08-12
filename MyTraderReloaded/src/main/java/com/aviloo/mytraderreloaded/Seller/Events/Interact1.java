@@ -33,7 +33,7 @@ public class Interact1 implements Listener {
                 switch (event.getCurrentItem().getType()) {
                     case CHEST_MINECART:
                         if(!MySQLManager.isConnected()){
-                            LoadScreen.LoadingMenu(player);
+                            LoadScreen.openLoadInventory(player);
                             break;
                         }
                         player.openInventory(ReputationProductInventory.getInv(player));

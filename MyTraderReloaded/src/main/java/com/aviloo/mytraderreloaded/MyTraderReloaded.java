@@ -1,12 +1,15 @@
 package com.aviloo.mytraderreloaded;
 
-import com.aviloo.mytraderreloaded.DonateShop.Commands.OpenShop;
-import com.aviloo.mytraderreloaded.DonateShop.Inventories.Events.*;
-import com.aviloo.mytraderreloaded.DonateShop.Inventories.ShieldInventory;
+import com.aviloo.mytraderreloaded.Files.DatabaseFileManager;
+import com.aviloo.mytraderreloaded.Files.UsermapFileManager;
 import com.aviloo.mytraderreloaded.GeneralCommands.ReloadConfigCommand;
 import com.aviloo.mytraderreloaded.Seller.Commands.*;
 import com.aviloo.mytraderreloaded.Seller.Events.*;
 import com.aviloo.mytraderreloaded.Seller.Events.EpicEvents.*;
+import com.aviloo.mytraderreloaded.Seller.Expansions.ExpansionsTestCommand;
+import com.aviloo.mytraderreloaded.Seller.Expansions.ReputationExpansion;
+import com.aviloo.mytraderreloaded.Seller.Inventories.InfoInventory;
+import com.aviloo.mytraderreloaded.Seller.Inventories.SellerInventory;
 import com.aviloo.mytraderreloaded.Seller.Utils.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -14,8 +17,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 
 public final class MyTraderReloaded extends JavaPlugin {
@@ -31,6 +36,20 @@ public final class MyTraderReloaded extends JavaPlugin {
     //todo 8. Создать таблицу в бд, чтобы каждый день были новые Screen у скупщика.
     // (Например: Вчера был Screen1. Это записалось в бд, и исключило этот скрин из рандома.) (+)
     //todo 9. Оптимизировать экономику
+
+    //New ToDoings
+    //todo 1. Доделать SellerInventory (+-)
+    //todo 2. Создать Interact для SellerInventory
+    //todo 3. Переделать LoadScreen (+)
+    //todo 4. Создать удобное меню с информацией(+)
+    //todo 5. Улучшить Товары за репутацию
+    //todo 6. Добавить денежный бонус к товарам за репу , если на игроке эффект "герой деревни"(+)
+    //todo 7. Добавить таблицу лидеров и в конце дня выдавать награду лучшему игроку
+    //todo 8. Создать конфиг для базы данных (+)
+    //todo 9. Оптимизировать (убрать устаревшие части кода)
+    //todo 10. Побочное задание: Добавить больше товаров.
+    //todo 11. Добавить возможность продать все предметы разом
+    public ConfigManager CustomConfig;
 
     public MySQLManager sql;
 
@@ -108,14 +127,79 @@ public final class MyTraderReloaded extends JavaPlugin {
         saveConfig();
     }
 
+    private void setSellerInventory(){
+        SellerInventory.setInventoryButtonsList();
+        if(Math.random() <= 0.93){
+            isEpicType = false;
+            SellerInventory.setUpDefaultSellerItemsList();
+        }
+        if(Math.random() > 0.94){
+            isEpicType = true;
+            SellerInventory.setUpEpicSellerItemsList();
+        }
+        SellerInventory.generateSellerItems();
+        SellerInventory.inventorySetUp();
+        if(getConfig().getBoolean("useStrokeInGUI")){
+            SellerInventory.setupStroke();
+        }
+
+    }
+
+    //Custom Config Part
+    Logger logger = this.getLogger();
+
+    private static MyTraderReloaded plugin;
+
+    public static MyTraderReloaded getPlugin() {
+        return plugin;
+    }
+
+    public DatabaseFileManager databaseFileManager;
+    public UsermapFileManager usermapFileManager;
+
     @Override
     public void onEnable() {
 
         //General Methods
+        plugin = this;
+
+        // Other methods
         loadConfig();
+        this.CustomConfig = new ConfigManager(this);
         startingAlerts();
-        setSql();
-        MySQLManager.setUpTable();
+
+        //Load database.yml
+        if(getConfig().getBoolean("useSQL")) {
+            this.databaseFileManager = new DatabaseFileManager();
+            databaseFileManager.DatabaseFileManager(this);
+
+            setSql();
+            MySQLManager.setUpTable();
+        }
+
+        //Load usermap.yml
+        if(!getConfig().getBoolean("useSQL")) {
+            this.usermapFileManager = new UsermapFileManager();
+            usermapFileManager.UsermapFileManager(this);
+            if (usermapFileManager.getUsermapConfig().contains("users.data")) {
+                try {
+                    UsermapStorageUtil.restoreUsermap();
+                } catch (IOException e) {
+                    logger.severe(ColorUtils.translateColorCodes("&6MyTrader: &4Failed to load data from usermap.yml!"));
+                    logger.severe(ColorUtils.translateColorCodes("&6MyTrader: &4See below for errors!"));
+                    logger.severe(ColorUtils.translateColorCodes("&6MyTrader: &4Disabling Plugin!"));
+                    e.printStackTrace();
+                    Bukkit.getPluginManager().disablePlugin(this);
+                    return;
+                }
+            }
+        }
+
+        //Expansion
+        if(getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
+            new ReputationExpansion(this).register();
+            getCommand("expansionstestcommand").setExecutor(new ExpansionsTestCommand());
+        }
 
         //GeneralCommands
         getCommand("mytrader").setExecutor(new ReloadConfigCommand(this));
@@ -132,6 +216,10 @@ public final class MyTraderReloaded extends JavaPlugin {
             PlayersStats.updateLeader();
             Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY+"[MyTraderReloaded]"+ChatColor.WHITE
                     +"Вчера был тип - "+YesterdayScreen);
+            setSellerInventory();
+            LoadScreen.setupLoadInventory();
+            InfoInventory.setupInfoInventory();
+            getServer().getPluginManager().registerEvents(new InfoInventory(),this);
 
             //Events (Seller)
                 //Inventory Events (Seller)
@@ -140,6 +228,7 @@ public final class MyTraderReloaded extends JavaPlugin {
             Bukkit.getServer().getPluginManager().registerEvents(new Interact3(), this);
             Bukkit.getServer().getPluginManager().registerEvents(new Interact4(), this);
             Bukkit.getServer().getPluginManager().registerEvents(new Interact5(), this);
+            getServer().getPluginManager().registerEvents(new SellerInteract(),this);
 
             //тестовый класс
             //Bukkit.getServer().getPluginManager().registerEvents(new GeneralInteract(this),this);
@@ -149,6 +238,7 @@ public final class MyTraderReloaded extends JavaPlugin {
             Bukkit.getServer().getPluginManager().registerEvents(new GlobalEvents(this), this);
             Bukkit.getServer().getPluginManager().registerEvents(new PlayerReputation(),this);
             Bukkit.getServer().getPluginManager().registerEvents(new LoadScreen(this),this);
+            getServer().getPluginManager().registerEvents(new SellManager(),this);
 
             //Commands(Seller)
             getCommand("secretsellercommand").setExecutor(new OpenTrader());
@@ -156,36 +246,41 @@ public final class MyTraderReloaded extends JavaPlugin {
             getCommand("sellertype").setExecutor(new ReloadType(this));
             getCommand("traderreputation").setExecutor(new ReputationCommand());
             getCommand("sellersettype").setExecutor(new SetType());
+            getCommand("newseller").setExecutor(new OpenTestMenu());
 
             //Completer`s (Seller)
             getCommand("traderreputation").setTabCompleter(new ReputationCommand());
-        }
-
-        if(this.getConfig().getBoolean("usePluginShop")) {
-            //Events(DonateShop)
-            Bukkit.getServer().getPluginManager().registerEvents(new MainInteract(), this);
-            Bukkit.getServer().getPluginManager().registerEvents(new ShieldInteract(), this);
-            Bukkit.getServer().getPluginManager().registerEvents(new ShieldInventory(), this);
-            Bukkit.getServer().getPluginManager().registerEvents(new VaultInteract(), this);
-            Bukkit.getServer().getPluginManager().registerEvents(new MushroomInteract(), this);
-            Bukkit.getServer().getPluginManager().registerEvents(new EnchantedInteract(), this);
-            Bukkit.getServer().getPluginManager().registerEvents(new EggsInteract(), this);
-            Bukkit.getServer().getPluginManager().registerEvents(new AnotherInteract(), this);
-
-            //Commands(DonateShop)
-            getCommand("secretdonatshopcommand").setExecutor(new OpenShop());
         }
     }
 
     @Override
     public void onDisable(){
-        try {
-            MySQLManager.setDataReputation();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        //Saver usermap to usermap.yml
+        if(!getConfig().getBoolean("useSQL")) {
+            if (!UsermapStorageUtil.getRawUsermapList().isEmpty()) {
+                try {
+                    UsermapStorageUtil.saveUsermap();
+                    logger.info(ColorUtils.translateColorCodes("&6MyTrader: &3All users saved to usermap.yml successfully!"));
+                } catch (IOException e) {
+                    logger.severe(ColorUtils.translateColorCodes("&6MyTrader: &4Failed to save usermap to usermap.yml!"));
+                    logger.severe(ColorUtils.translateColorCodes("&6MyTrader: &4See below error for reason!"));
+                    e.printStackTrace();
+                }
+            }
         }
-        sql.disconnection();
+        // Save DataBase
+        if(getConfig().getBoolean("useSQL")) {
+            try {
+                MySQLManager.setDataReputation();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            sql.disconnection();
+        }
         writeYesterdayScreen(TraderType);
+
+        databaseFileManager = null;
+        usermapFileManager = null;
     }
 
     public void randomTraderType(){
@@ -260,25 +355,8 @@ public final class MyTraderReloaded extends JavaPlugin {
             return;
         }
         startingArtImage();
-        if(!this.getConfig().getBoolean("usePluginShop") && this.getConfig().getBoolean("usePluginTradeSystem")){
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',"" +
-                    "&7[MyTraderReloaded] &4Внимание! В плагине отключена функция донат-магазина." +
-                    " &7(Изменить это можно в конфиге плагина)"));
-        }
-        if(!this.getConfig().getBoolean("usePluginTradeSystem") && this.getConfig().getBoolean("usePluginShop")){
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',"" +
-                    "&7[MyTraderReloaded] &4Внимание! В плагине отключена функция торговца." +
-                    " &7(Изменить это можно в конфиге плагина)"));
-        }
-        if(!this.getConfig().getBoolean("usePluginTradeSystem") && !this.getConfig().getBoolean("usePluginShop")){
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',"" +
-                    "&7[MyTraderReloaded] &4Внимание. В плагине отключены функции магазина и торговца." +
-                    " &7(Изменить это можно в конфиге плагина)"));
-            getServer().getPluginManager().disablePlugin(this); // Останавливает плагин
-        }else {
          Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',"" +
                  "&7[MyTraderReloaded] &aПлагин был успешо загружен."));
-        }
     }
 
     private void startingArtImage(){
@@ -295,4 +373,7 @@ public final class MyTraderReloaded extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(" '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' ");
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA+"                                                                                                                by Aviloo");
     }
+
+    public String StrokeMaterial = getConfig().getString("strokeMaterial");
+
 }

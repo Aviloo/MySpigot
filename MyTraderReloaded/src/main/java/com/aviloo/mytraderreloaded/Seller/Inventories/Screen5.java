@@ -164,8 +164,15 @@ public class Screen5 {
         infoMeta.setDisplayName(ChatColor.YELLOW+"Информация");
         ArrayList<String> infoLore = new ArrayList<>();
         infoLore.add(" ");
-        infoLore.add(ChatColor.WHITE+"Каждый"+ChatColor.GREEN+" день "+ChatColor.WHITE+", реального времени, ");
+        infoLore.add(ChatColor.YELLOW+"➤"+ChatColor.WHITE+"Каждый"+ChatColor.GREEN+" день "+ChatColor.WHITE+
+                ", реального времени, ");
         infoLore.add(ChatColor.WHITE+"торговец обновляеться.");
+        infoLore.add(" ");
+        infoLore.add(ChatColor.YELLOW+"➤"+ChatColor.WHITE+"Очки репутации можно ");
+        infoLore.add(ChatColor.WHITE+"получить продавая предметы скупщику ");
+        infoLore.add(" ");
+        infoLore.add(ChatColor.YELLOW+"➤"+ChatColor.WHITE+"Если продать сразу 64 ед.");
+        infoLore.add(ChatColor.WHITE+"товара, получите дополнительно 9 монет. ");
         infoLore.add(" ");
         infoMeta.setLore(infoLore);
         info.setItemMeta(infoMeta);

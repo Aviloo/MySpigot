@@ -1,6 +1,7 @@
 package com.aviloo.mytraderreloaded.Seller.Utils;
 
 
+import com.aviloo.mytraderreloaded.models.PluginPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -54,4 +55,79 @@ public class PlayerReputation implements Listener {
         }
         return PlayersPlayedToday.get(player.getUniqueId());
     }
+
+    //Usermap part
+    public static void addReputationToUsermap(Player player,int reputation){
+
+        if(!UsermapStorageUtil.isUserExisting(player)) {
+            UsermapStorageUtil.addToUsermap(player);
+            UsermapStorageUtil.addRepToOnlinePlayer(player,
+                    UsermapStorageUtil.getRepByBukkitPlayer(player) + reputation);
+            return;
+        }
+
+        if(UsermapStorageUtil.isUserExisting(player)){
+            UsermapStorageUtil.addRepToOnlinePlayer(player,
+                    UsermapStorageUtil.getRepByBukkitPlayer(player) + reputation);
+        }
+
+    }
+
+    public static int getReputationFromUsermap(Player player){
+        if(!UsermapStorageUtil.isUserExisting(player)) {
+            UsermapStorageUtil.addToUsermap(player);
+            return UsermapStorageUtil.getRepByBukkitPlayer(player);
+        }
+        if(UsermapStorageUtil.isUserExisting(player)){
+            return UsermapStorageUtil.getRepByBukkitPlayer(player);
+        }
+
+        return 0;
+    }
+
+    public static void resetReputationToUsermap(Player player){
+
+        if(!UsermapStorageUtil.isUserExisting(player)) {
+            UsermapStorageUtil.addToUsermap(player);
+            return;
+        }
+
+        if(UsermapStorageUtil.isUserExisting(player)){
+            UsermapStorageUtil.setRepForBukkitPlayer(player, 0);
+        }
+
+    }
+
+    public static void setReputationToUsermap(Player player, int value){
+        if(!UsermapStorageUtil.isUserExisting(player)){
+            UsermapStorageUtil.addToUsermap(player);
+            UsermapStorageUtil.setRepForBukkitPlayer(player,value);
+            return;
+        }
+        if(UsermapStorageUtil.isUserExisting(player)){
+            UsermapStorageUtil.setRepForBukkitPlayer(player,value);
+        }
+
+    }
+
+    public static void takeReputationFromUsermap(Player player,int value){
+        if(!UsermapStorageUtil.isUserExisting(player)) {
+            UsermapStorageUtil.addToUsermap(player);
+            if(UsermapStorageUtil.getRepByBukkitPlayer(player) < value){
+                return;
+            }else {
+                UsermapStorageUtil.takeRepFromBukkitPlayer(player,value);
+                return;
+            }
+        }
+        if(UsermapStorageUtil.isUserExisting(player)){
+            if(UsermapStorageUtil.getRepByBukkitPlayer(player) < value){
+                return;
+            }else {
+                UsermapStorageUtil.takeRepFromBukkitPlayer(player,value);
+            }
+        }
+
+    }
+
 }

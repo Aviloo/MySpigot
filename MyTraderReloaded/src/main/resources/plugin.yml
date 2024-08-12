@@ -4,7 +4,8 @@ main: com.aviloo.mytraderreloaded.MyTraderReloaded
 api-version: 1.19
 authors: [ Aviloo ]
 description: add Trader to your server
-softdepend: [Vault, PlayerPoints, PlaceholderAPI, Essentials]
+softdepend: [Vault, PlayerPoints, Essentials]
+depend: [PlaceholderAPI]
 commands:
   secretsellercommand:
     usage: /<command>
@@ -25,6 +26,12 @@ commands:
     usage: /<command> take|set|add|reset {Ник Игрока} {кол-во очков}
   sellersettype:
     usage: /<command> тип_скупщика
+  expansionstestcommand:
+    description: Тестовая команда для отладки заполнителей
+    usage: /<command>
+  newseller:
+    description: Тестовое меню
+    usage: /<command>
 permissions:
   mytrader.seller:
     description: позволяет использовать комманду /seller

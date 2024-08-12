@@ -3,12 +3,15 @@ package com.aviloo.mytraderreloaded.Seller.Utils;
 import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.sql.*;
 import java.util.UUID;
 
 public class MySQLManager {
+
+    static FileConfiguration databaseFile = MyTraderReloaded.getPlugin().databaseFileManager.getDatabaseConfig();
 
     private static Boolean DataBaseConnectionStatus = false;
 
@@ -28,11 +31,11 @@ public class MySQLManager {
         return connection;
     }
 
-    private String host = "mysql-pl1.joinserver.xyz";
-    private Integer port = 3306;
-    private String username = "u119586_vbSAyd0Ovo";
-    private String password = "r=QtffwUzCaHX8R=!l.bERPh";
-    private String database = "s119586_database";
+    private String host = databaseFile.getString("host");
+    private Integer port = databaseFile.getInt("port");
+    private String username = databaseFile.getString("username");
+    private String password = databaseFile.getString("password");
+    private String database = databaseFile.getString("database");
 
     public void connection() throws ClassNotFoundException, SQLException{
         if(!isConnected()) {

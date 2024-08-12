@@ -1,8 +1,5 @@
-usePluginShop: true
 usePluginTradeSystem: true
-host: localhost
-port: 3307
-username: root
-password:
-database: mytrader
 YesterdayScreen: ScreenE
+useStrokeInGUI: false
+strokeMaterial: GRAY_STAINED_GLASS_PANE
+useSQL: false

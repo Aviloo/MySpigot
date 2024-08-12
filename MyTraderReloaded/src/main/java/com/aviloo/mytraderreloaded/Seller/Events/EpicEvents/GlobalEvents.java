@@ -28,14 +28,14 @@ public class GlobalEvents implements Listener {
     public void onJoin(PlayerJoinEvent event){
         if(!MyTraderReloaded.getIsEpicType()){return;}
         Bukkit.getScheduler().runTaskLater(plugin,() -> {
-            sender(event.getPlayer(),"&7====================================== ",
+            sender(event.getPlayer(),"&7-------------------------------------- ",
                     " ",
                     "&a♦&f&lВнимание - Внимание.&a♦",
                     "&fСегодня - отличный день! На сервере появился &dЭпический скупщик&f. Успей заработать на этом.",
                     " ",
-                    "&7====================================== ");
-            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_ENDER_DRAGON_DEATH,5,1);
-            event.getPlayer().playSound(event.getPlayer().getLocation(),Sound.ENTITY_PLAYER_LEVELUP,4,1);
+                    "&7-------------------------------------- ");
+            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_ENDER_DRAGON_DEATH,3,1);
+            event.getPlayer().playSound(event.getPlayer().getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
         },140);
     }
 }

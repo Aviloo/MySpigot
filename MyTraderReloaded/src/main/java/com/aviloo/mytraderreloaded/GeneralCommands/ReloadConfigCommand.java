@@ -1,5 +1,6 @@
 package com.aviloo.mytraderreloaded.GeneralCommands;
 
+import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
@@ -30,7 +31,8 @@ public class ReloadConfigCommand implements CommandExecutor, TabCompleter {
 
             if(Objects.equals(args[0], "reload")){
                 plugin.reloadConfig();
-                sender.sendMessage(ChatColor.GRAY+"[MyTrader] "+ChatColor.WHITE+"Конфиг успешно перезагружен!");
+                MyTraderReloaded.getPlugin().databaseFileManager.reloadDatabaseConfig();
+                sender.sendMessage(ChatColor.GRAY+"[MyTrader] "+ChatColor.WHITE+"Конфиги успешно перезагружен!");
                 return true;
             }
         }
