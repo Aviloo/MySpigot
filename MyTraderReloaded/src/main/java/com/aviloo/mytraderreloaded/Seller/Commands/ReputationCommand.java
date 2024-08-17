@@ -8,6 +8,7 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,10 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReputationCommand implements CommandExecutor, TabCompleter {
+
+    private static FileConfiguration messagesConfig =
+            MyTraderReloaded.getPlugin().messagesFileManager.getMessagesConfig();
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(!(sender instanceof Player) && !(sender instanceof ConsoleCommandSender)){
-            sender.sendMessage(ChatColor.RED+"[Ошибка] "+ChatColor.WHITE+"Вы не можете сделать это!");
+            sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("prefix_error")+
+                    messagesConfig.getString("command_only_console_can_use")));
             return true;
         }
 
@@ -29,7 +35,8 @@ public class ReputationCommand implements CommandExecutor, TabCompleter {
             String PlayerName = args[1];
             Player argPlayer = Bukkit.getServer().getPlayer(PlayerName);
             if (argPlayer == null) {
-                sender.sendMessage(ChatColor.RED+"[Ошибка] "+ChatColor.WHITE+"Данный игрок оффлайн.");
+                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("prefix_error")+
+                        messagesConfig.getString("command_player_not_found")));
                 return true;
             }
 

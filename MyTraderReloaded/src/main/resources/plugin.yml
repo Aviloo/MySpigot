@@ -16,11 +16,8 @@ commands:
   sellertype:
     usage: /<command> reload
     description: команда позволяет перезагружать тип скупщика.
-  secretdonatshopcommand:
-    usage: /<command>
-    description: команда позволяет открыть меню донат магазина
   mytrader:
-    usage: /<command>
+    usage: /<command> reload
     description: позволяет перезагружать конфиг плагина.
   traderreputation:
     usage: /<command> take|set|add|reset {Ник Игрока} {кол-во очков}
@@ -32,6 +29,9 @@ commands:
   newseller:
     description: Тестовое меню
     usage: /<command>
+  earnedplayer:
+    description: Редактирует ЗАПИСАННУЮ сумму ,которую заработал игрок.
+    usage: /<command> set|reset|get {ник_игрока} {кол-во очков}
 permissions:
   mytrader.seller:
     description: позволяет использовать комманду /seller

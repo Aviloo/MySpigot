@@ -1,17 +1,21 @@
 package com.aviloo.mytraderreloaded;
 
 import com.aviloo.mytraderreloaded.Files.DatabaseFileManager;
+import com.aviloo.mytraderreloaded.Files.MessagesFileManager;
 import com.aviloo.mytraderreloaded.Files.UsermapFileManager;
 import com.aviloo.mytraderreloaded.GeneralCommands.ReloadConfigCommand;
 import com.aviloo.mytraderreloaded.Seller.Commands.*;
 import com.aviloo.mytraderreloaded.Seller.Events.*;
 import com.aviloo.mytraderreloaded.Seller.Events.EpicEvents.*;
+import com.aviloo.mytraderreloaded.Seller.Expansions.EarnedExpansion;
 import com.aviloo.mytraderreloaded.Seller.Expansions.ExpansionsTestCommand;
 import com.aviloo.mytraderreloaded.Seller.Expansions.ReputationExpansion;
 import com.aviloo.mytraderreloaded.Seller.Inventories.InfoInventory;
 import com.aviloo.mytraderreloaded.Seller.Inventories.SellerInventory;
 import com.aviloo.mytraderreloaded.Seller.Utils.*;
 import net.milkbowl.vault.economy.Economy;
+import org.black_ixx.playerpoints.PlayerPoints;
+import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -62,6 +66,8 @@ public final class MyTraderReloaded extends JavaPlugin {
 
         return (eco != null);
     }
+
+    public PlayerPointsAPI ppAPI;
 
     private void setSql(){
         this.sql = new MySQLManager();
@@ -156,6 +162,7 @@ public final class MyTraderReloaded extends JavaPlugin {
 
     public DatabaseFileManager databaseFileManager;
     public UsermapFileManager usermapFileManager;
+    public MessagesFileManager messagesFileManager;
 
     @Override
     public void onEnable() {
@@ -166,8 +173,11 @@ public final class MyTraderReloaded extends JavaPlugin {
         // Other methods
         loadConfig();
         this.CustomConfig = new ConfigManager(this);
+        if (Bukkit.getPluginManager().isPluginEnabled("PlayerPoints")) {
+            this.ppAPI = PlayerPoints.getInstance().getAPI();
+        }
         startingAlerts();
-
+        PlayerStats.giveRewardToTrader();
         //Load database.yml
         if(getConfig().getBoolean("useSQL")) {
             this.databaseFileManager = new DatabaseFileManager();
@@ -176,6 +186,9 @@ public final class MyTraderReloaded extends JavaPlugin {
             setSql();
             MySQLManager.setUpTable();
         }
+        //Load messages
+        this.messagesFileManager = new MessagesFileManager();
+        messagesFileManager.MessagesFileManager(this);
 
         //Load usermap.yml
         if(!getConfig().getBoolean("useSQL")) {
@@ -198,6 +211,7 @@ public final class MyTraderReloaded extends JavaPlugin {
         //Expansion
         if(getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
             new ReputationExpansion(this).register();
+            new EarnedExpansion(this).register();
             getCommand("expansionstestcommand").setExecutor(new ExpansionsTestCommand());
         }
 
@@ -210,10 +224,8 @@ public final class MyTraderReloaded extends JavaPlugin {
 
         if(this.getConfig().getBoolean("usePluginTradeSystem")) {
             //Methods(Seller)
-            Bukkit.getServer().getPluginManager().registerEvents(new PlayersStats(this),this); // not move
             randomTraderType();
             PriceManager.allProductSetUp();
-            PlayersStats.updateLeader();
             Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY+"[MyTraderReloaded]"+ChatColor.WHITE
                     +"Вчера был тип - "+YesterdayScreen);
             setSellerInventory();
@@ -239,6 +251,7 @@ public final class MyTraderReloaded extends JavaPlugin {
             Bukkit.getServer().getPluginManager().registerEvents(new PlayerReputation(),this);
             Bukkit.getServer().getPluginManager().registerEvents(new LoadScreen(this),this);
             getServer().getPluginManager().registerEvents(new SellManager(),this);
+            getServer().getPluginManager().registerEvents(new PlayerStats(this), this);
 
             //Commands(Seller)
             getCommand("secretsellercommand").setExecutor(new OpenTrader());
@@ -247,9 +260,11 @@ public final class MyTraderReloaded extends JavaPlugin {
             getCommand("traderreputation").setExecutor(new ReputationCommand());
             getCommand("sellersettype").setExecutor(new SetType());
             getCommand("newseller").setExecutor(new OpenTestMenu());
+            getCommand("earnedplayer").setExecutor(new EarnedCommand());
 
             //Completer`s (Seller)
             getCommand("traderreputation").setTabCompleter(new ReputationCommand());
+            getCommand("earnedplayer").setTabCompleter(new EarnedCommand());
         }
     }
 
@@ -281,6 +296,7 @@ public final class MyTraderReloaded extends JavaPlugin {
 
         databaseFileManager = null;
         usermapFileManager = null;
+        messagesFileManager = null;
     }
 
     public void randomTraderType(){

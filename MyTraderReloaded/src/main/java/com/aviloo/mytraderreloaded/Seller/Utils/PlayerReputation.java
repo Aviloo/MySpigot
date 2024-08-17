@@ -1,6 +1,7 @@
 package com.aviloo.mytraderreloaded.Seller.Utils;
 
 
+import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import com.aviloo.mytraderreloaded.models.PluginPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,14 +36,18 @@ public class PlayerReputation implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) throws SQLException {
         Player player = event.getPlayer();
-        if(isPlayerPlayedToday(player)){return;}
-        if(!player.hasPlayedBefore()){ // todo Пока не подключю бд ,будет криво работать!
-            Reputation.put(player.getUniqueId(),0);
-            PlayersPlayedToday.put(player.getUniqueId(),true);
-        }
-        if(!isPlayerPlayedToday(player)){
-            MySQLManager.getDataReputation(player);
-            PlayersPlayedToday.put(player.getUniqueId(),true);
+        if(MyTraderReloaded.getPlugin().getConfig().getBoolean("useSQL")) {
+            if (isPlayerPlayedToday(player)) {
+                return;
+            }
+            if (!player.hasPlayedBefore()) { // todo Пока не подключю бд ,будет криво работать!
+                Reputation.put(player.getUniqueId(), 0);
+                PlayersPlayedToday.put(player.getUniqueId(), true);
+            }
+            if (!isPlayerPlayedToday(player)) {
+                MySQLManager.getDataReputation(player);
+                PlayersPlayedToday.put(player.getUniqueId(), true);
+            }
         }
     }
 

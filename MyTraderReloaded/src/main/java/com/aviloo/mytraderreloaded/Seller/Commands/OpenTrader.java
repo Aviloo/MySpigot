@@ -6,21 +6,28 @@ import com.aviloo.mytraderreloaded.Seller.Inventories.NonOptimizedScreens.Screen
 import com.aviloo.mytraderreloaded.Seller.Inventories.NonOptimizedScreens.Screen7;
 import com.aviloo.mytraderreloaded.Seller.Inventories.NonOptimizedScreens.Screen8;
 import com.aviloo.mytraderreloaded.Seller.Inventories.NonOptimizedScreens.Screen9;
+import com.aviloo.mytraderreloaded.Seller.Utils.ColorUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
 
 public class OpenTrader implements CommandExecutor {
+
+    private static FileConfiguration messagesConfig =
+            MyTraderReloaded.getPlugin().messagesFileManager.getMessagesConfig();
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(!(sender instanceof ConsoleCommandSender)){
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&7[Система] &fВы не можете использовать эту команду."));
+            sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("prefix_error")+
+                    messagesConfig.getString("command_only_console_can_use")));
             return true;
         }
 
@@ -31,7 +38,8 @@ public class OpenTrader implements CommandExecutor {
             String PlayerName = args[0];
             Player argPlayer = Bukkit.getServer().getPlayer(PlayerName);
             if (argPlayer == null) {
-                sender.sendMessage("Данный игрок оффлайн.");
+                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("prefix_error")+
+                        messagesConfig.getString("command_player_not_found")));
                 return true;
             }
 

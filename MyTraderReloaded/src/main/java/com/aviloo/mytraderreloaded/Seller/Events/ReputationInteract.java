@@ -1,7 +1,9 @@
 package com.aviloo.mytraderreloaded.Seller.Events;
 
 import com.aviloo.mytraderreloaded.MyTraderReloaded;
+import com.aviloo.mytraderreloaded.Seller.Inventories.InfoInventory;
 import com.aviloo.mytraderreloaded.Seller.Inventories.Screen1;
+import com.aviloo.mytraderreloaded.Seller.Inventories.SellerInventory;
 import com.aviloo.mytraderreloaded.Seller.Utils.EconomyManager;
 import com.aviloo.mytraderreloaded.Seller.Utils.PriceManager;
 import org.bukkit.ChatColor;
@@ -18,24 +20,14 @@ import java.util.Objects;
 
 public class ReputationInteract implements Listener {
 
-    private void screenBack(Player player){
-        if(Objects.equals(MyTraderReloaded.getTraderType(), "Screen1")){
-            player.openInventory(Screen1.sellInventory(player));
+    private void sellProduct(Player player,String ProductType,int amount){
+        bonusByEffectHeroOfVillage(player,ProductType,amount);
+        player.getInventory().removeItem(new ItemStack(Material.valueOf(ProductType), amount));
+        if(amount == 1){
+            EconomyManager.giveMoney(player, PriceManager.getCurrentPrice(ProductType));
         }
-        if(Objects.equals(MyTraderReloaded.getTraderType(), "Screen2")){
-            player.openInventory(Screen1.sellInventory(player));
-        }
-        if(Objects.equals(MyTraderReloaded.getTraderType(), "Screen3")){
-            player.openInventory(Screen1.sellInventory(player));
-        }
-        if(Objects.equals(MyTraderReloaded.getTraderType(), "Screen4")){
-            player.openInventory(Screen1.sellInventory(player));
-        }
-        if(Objects.equals(MyTraderReloaded.getTraderType(), "Screen5")){
-            player.openInventory(Screen1.sellInventory(player));
-        }
-        if(Objects.equals(MyTraderReloaded.getTraderType(), "ScreenE")){
-            player.openInventory(Screen1.sellInventory(player));
+        if(amount == 64){
+            EconomyManager.giveMoney(player, PriceManager.getCurrentPriceFor64(ProductType));
         }
     }
 
@@ -56,19 +48,19 @@ public class ReputationInteract implements Listener {
     public void onClick(InventoryClickEvent event){
         if(event.getCurrentItem() == null){return;}
         Player player = (Player) event.getWhoClicked();
-        if(event.getView().getTitle().equals(ChatColor.WHITE+"Товары за репутацию")){
+        if(event.getView().getTitle().equals(ChatColor.GRAY+"Товары за репутацию")){
             switch (event.getCurrentItem().getType()){
                 case SPECTRAL_ARROW:
-                    screenBack(player);
+                    player.openInventory(SellerInventory.inventory);
                     player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT,5,1);
                     break;
                 case BARRIER:
-                    player.sendMessage(ChatColor.GRAY+"[Скупщик] "+ChatColor.RED+"Вы еще не разблокировали этот" +
+                    player.sendMessage(ChatColor.GRAY+"[Скупщик] "+ChatColor.RED+"Вы еще не разблокировали этот " +
                             "товар.");
                     player.closeInventory();
                     break;
-                case RED_DYE:
-                    player.closeInventory();
+                case PAPER:
+                    player.openInventory(InfoInventory.inventory);
                     break;
                 case GOLD_NUGGET:
                     if(event.isRightClick()){
@@ -77,8 +69,7 @@ public class ReputationInteract implements Listener {
                             break;
                         }
                         player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Золотой самородок.");
-                        EconomyManager.giveMoney(player, PriceManager.getCurrentPrice("GOLD_NUGGET"));
-                        bonusByEffectHeroOfVillage(player,"GOLD_NUGGET",1);
+                        sellProduct(player,"GOLD_NUGGET",1);
                     }
                     if(event.isLeftClick()){
                         if (!player.getInventory().containsAtLeast(new ItemStack(Material.GOLD_NUGGET), 64)) {
@@ -86,8 +77,7 @@ public class ReputationInteract implements Listener {
                             break;
                         }
                         player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Золотой самородок.");
-                        EconomyManager.giveMoney(player, PriceManager.getCurrentPriceFor64("GOLD_NUGGET"));
-                        bonusByEffectHeroOfVillage(player,"GOLD_NUGGET",64);
+                        sellProduct(player,"GOLD_NUGGET",64);
                     }
                     break;
                 case WHEAT:
@@ -97,8 +87,7 @@ public class ReputationInteract implements Listener {
                             break;
                         }
                         player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Пшеница.");
-                        EconomyManager.giveMoney(player, PriceManager.getCurrentPrice("WHEAT"));
-                        bonusByEffectHeroOfVillage(player,"WHEAT",1);
+                        sellProduct(player,"WHEAT",1);
                     }
                     if(event.isLeftClick()){
                         if (!player.getInventory().containsAtLeast(new ItemStack(Material.WHEAT), 64)) {
@@ -106,8 +95,7 @@ public class ReputationInteract implements Listener {
                             break;
                         }
                         player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Пшеница.");
-                        EconomyManager.giveMoney(player, PriceManager.getCurrentPriceFor64("WHEAT"));
-                        bonusByEffectHeroOfVillage(player,"WHEAT",64);
+                        sellProduct(player,"WHEAT",64);
                     }
                     break;
                 case LAPIS_LAZULI:
@@ -117,8 +105,7 @@ public class ReputationInteract implements Listener {
                             break;
                         }
                         player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Лазурит.");
-                        EconomyManager.giveMoney(player, PriceManager.getCurrentPrice("LAPIS_LAZULI"));
-                        bonusByEffectHeroOfVillage(player,"LAPIS_LAZULI",1);
+                        sellProduct(player,"LAPIS_LAZULI",1);
                     }
                     if(event.isLeftClick()){
                         if (!player.getInventory().containsAtLeast(new ItemStack(Material.LAPIS_LAZULI), 64)) {
@@ -126,8 +113,7 @@ public class ReputationInteract implements Listener {
                             break;
                         }
                         player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Лазурит.");
-                        EconomyManager.giveMoney(player, PriceManager.getCurrentPriceFor64("LAPIS_LAZULI"));
-                        bonusByEffectHeroOfVillage(player,"LAPIS_LAZULI",64);
+                        sellProduct(player,"LAPIS_LAZULI",64);
                     }
                     break;
                 case TOTEM_OF_UNDYING:
@@ -137,8 +123,7 @@ public class ReputationInteract implements Listener {
                             break;
                         }
                         player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Тотем.");
-                        EconomyManager.giveMoney(player, PriceManager.getCurrentPrice("TOTEM_OF_UNDYING"));
-                        bonusByEffectHeroOfVillage(player,"TOTEM_OF_UNDYING",1);
+                        sellProduct(player,"TOTEM_OF_UNDYING",1);
                     }
                     if(event.isLeftClick()){
                         if (!player.getInventory().containsAtLeast(new ItemStack(Material.TOTEM_OF_UNDYING), 64)) {
@@ -146,8 +131,7 @@ public class ReputationInteract implements Listener {
                             break;
                         }
                         player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Тотем.");
-                        EconomyManager.giveMoney(player, PriceManager.getCurrentPriceFor64("TOTEM_OF_UNDYING"));
-                        bonusByEffectHeroOfVillage(player,"TOTEM_OF_UNDYING",64);
+                        sellProduct(player,"TOTEM_OF_UNDYING",64);
                     }
                     break;
                 case CAKE:
@@ -157,8 +141,7 @@ public class ReputationInteract implements Listener {
                             break;
                         }
                         player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Торт.");
-                        EconomyManager.giveMoney(player, PriceManager.getCurrentPrice("CAKE"));
-                        bonusByEffectHeroOfVillage(player,"CAKE",1);
+                        sellProduct(player,"CAKE",1);
                     }
                     if(event.isLeftClick()){
                         if (!player.getInventory().containsAtLeast(new ItemStack(Material.CAKE), 64)) {
@@ -166,8 +149,7 @@ public class ReputationInteract implements Listener {
                             break;
                         }
                         player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Торт.");
-                        EconomyManager.giveMoney(player, PriceManager.getCurrentPriceFor64("CAKE"));
-                        bonusByEffectHeroOfVillage(player,"CAKE",64);
+                        sellProduct(player,"CAKE",64);
                     }
                     break;
                 case DIAMOND_ORE:
@@ -177,8 +159,7 @@ public class ReputationInteract implements Listener {
                             break;
                         }
                         player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Алм. руды.");
-                        EconomyManager.giveMoney(player, PriceManager.getCurrentPrice("DIAMOND_ORE"));
-                        bonusByEffectHeroOfVillage(player,"DIAMOND_ORE",1);
+                        sellProduct(player,"DIAMOND_ORE",1);
                     }
                     if(event.isLeftClick()){
                         if (!player.getInventory().containsAtLeast(new ItemStack(Material.DIAMOND_ORE), 64)) {
@@ -186,8 +167,7 @@ public class ReputationInteract implements Listener {
                             break;
                         }
                         player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Алм. руды.");
-                        EconomyManager.giveMoney(player, PriceManager.getCurrentPriceFor64("DIAMOND_ORE"));
-                        bonusByEffectHeroOfVillage(player,"DIAMOND_ORE",64);
+                        sellProduct(player,"DIAMOND_ORE",64);
                     }
                     break;
             }

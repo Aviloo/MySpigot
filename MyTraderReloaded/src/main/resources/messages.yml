@@ -1,0 +1,18 @@
+#Префиксы
+prefix_seller: "&7[&fСкупщик&7] "
+prefix_error: "&7[&4Ошибка&7] "
+prefix_system: "&7[&fСистема&7] "
+prefix_plugin: "&4MyTraderReloaded "
+prefix_plugin_with_brackets: "&7[&6MyTraderReloaded&7] "
+
+#Сообщения
+#Команды
+command_player_not_found: "&fИгрок не найден!"
+command_player_is_not_online: "&fИгрок не в сети."
+command_dont_have_perm: "&fУ вас недостаточно прав."
+command_only_player_can_use: "&fТолько игрок может использовать эту команду."
+command_only_console_can_use: "&fВы не можете использовать эту команду."
+command_config_has_been_reloaded: "&fКонфиги успешно перезагружены!"
+command_args_is_not_num: "&fАргумент не является числом!"
+#Ошибки
+error_database_and_usermap_not_available: "&fДанная функция не доступна. Пожалуйста, сообщите об этом администрации."

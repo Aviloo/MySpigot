@@ -1,8 +1,10 @@
 package com.aviloo.mytraderreloaded.GeneralCommands;
 
 import com.aviloo.mytraderreloaded.MyTraderReloaded;
+import com.aviloo.mytraderreloaded.Seller.Utils.ColorUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -18,11 +20,15 @@ public class ReloadConfigCommand implements CommandExecutor, TabCompleter {
         this.plugin = plugin;
     }
 
+    private static FileConfiguration messagesConfig =
+            MyTraderReloaded.getPlugin().messagesFileManager.getMessagesConfig();
+
     //Command Path
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(!(sender instanceof Player) && !(sender instanceof ConsoleCommandSender)){
-            sender.sendMessage("You cannot use this command");
+            sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("prefix_error") +
+                    messagesConfig.getString("command_only_console_can_use")));
             return true;
         }
         if(command.getName().equalsIgnoreCase("mytrader")){
@@ -32,7 +38,8 @@ public class ReloadConfigCommand implements CommandExecutor, TabCompleter {
             if(Objects.equals(args[0], "reload")){
                 plugin.reloadConfig();
                 MyTraderReloaded.getPlugin().databaseFileManager.reloadDatabaseConfig();
-                sender.sendMessage(ChatColor.GRAY+"[MyTrader] "+ChatColor.WHITE+"Конфиги успешно перезагружен!");
+                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("prefix_plugin_with_brackets")+
+                        messagesConfig.getString("command_config_has_been_reloaded")));
                 return true;
             }
         }

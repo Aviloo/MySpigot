@@ -137,7 +137,8 @@ public class InfoInventory implements Listener {
 
         ItemStack sixth = new ItemStack(Material.PAPER,1);
         ItemMeta sixthMeta = sixth.getItemMeta();
-        sixthMeta.setDisplayName(ChatColor.YELLOW+"Эффект «Герой деревни». &4&lNEW");
+        sixthMeta.setDisplayName(ColorUtils.translateColorCodes(
+                "&eЭффект «Герой деревни». &4&lNEW"));
         ArrayList<String> sixthLore = new ArrayList<>();
         setLore(sixthLore,"&aКак он влияет на скупщика?:",
                 "&fЭтот эффект позволяет продавать товары",

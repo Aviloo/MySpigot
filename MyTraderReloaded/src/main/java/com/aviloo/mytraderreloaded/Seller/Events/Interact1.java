@@ -65,8 +65,6 @@ public class Interact1 implements Listener {
                                     //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " "+
                                             //PriceManager.getCurrentPrice("REDSTONE"));
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. красной пыли.");
-                                    PlayersStats.addSoldCount(player,1);
-                                    PlayersStats.addEarned(player, PriceManager.getCurrentPrice("REDSTONE"));
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE), 1)) {
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
@@ -85,8 +83,6 @@ public class Interact1 implements Listener {
                                     //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + player.getName() + " "
                                             //+PriceManager.getCurrentPriceFor64("REDSTONE"));
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. красной пыли.");
-                                    PlayersStats.addSoldCount(player,64);
-                                    PlayersStats.addEarned(player, PriceManager.getCurrentPriceFor64("REDSTONE"));
                                 }
                                 if (!player.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE), 64)) {
                                     player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");

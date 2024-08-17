@@ -1,5 +1,6 @@
 package com.aviloo.mytraderreloaded.Seller.Inventories;
 
+import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import com.aviloo.mytraderreloaded.Seller.Utils.PlayerReputation;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,23 +18,45 @@ public class ReputationProductInventory {
         Material material, String name,Integer index,String ... lore){
         ItemMeta meta = item.getItemMeta();
         ArrayList<String> LoreList = new ArrayList<>();
-        if(PlayerReputation.getReputation(player) < NeedRep){
-            meta.setDisplayName(ChatColor.WHITE+"Недоступно");
-            LoreList.add(ChatColor.translateAlternateColorCodes('&'," "));
-            LoreList.add(ChatColor.translateAlternateColorCodes('&',
-                    "&7Товар разблокируется, когда у вас будет - &b"+NeedRep));
-            LoreList.add(ChatColor.translateAlternateColorCodes('&',"&7очков репутации."));
-            LoreList.add(ChatColor.translateAlternateColorCodes('&',"У вас сейчас - &f"+
-                    PlayerReputation.getReputation(player)+" &7очков."));
-            LoreList.add(" ");
-        }
-        if(PlayerReputation.getReputation(player) >= NeedRep) {
-            item.setType(material);
-            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
-            for (String str : lore) {
-                LoreList.add(ChatColor.translateAlternateColorCodes('&', str));
+        if(MyTraderReloaded.getPlugin().getConfig().getBoolean("useSQL")) {
+            if (PlayerReputation.getReputation(player) < NeedRep) {
+                meta.setDisplayName(ChatColor.WHITE + "Недоступно");
+                LoreList.add(ChatColor.translateAlternateColorCodes('&', " "));
+                LoreList.add(ChatColor.translateAlternateColorCodes('&',
+                        "&7Товар разблокируется, когда у вас будет - &b" + NeedRep));
+                LoreList.add(ChatColor.translateAlternateColorCodes('&', "&7очков репутации."));
+                LoreList.add(ChatColor.translateAlternateColorCodes('&', "&7У вас сейчас - &f" +
+                        PlayerReputation.getReputation(player) + " &7очков."));
+                LoreList.add(" ");
+            }
+            if (PlayerReputation.getReputation(player) >= NeedRep) {
+                item.setType(material);
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+                for (String str : lore) {
+                    LoreList.add(ChatColor.translateAlternateColorCodes('&', str));
+                }
             }
         }
+        if(!MyTraderReloaded.getPlugin().getConfig().getBoolean("useSQL")) {
+            if (PlayerReputation.getReputationFromUsermap(player) < NeedRep) {
+                meta.setDisplayName(ChatColor.WHITE + "Недоступно");
+                LoreList.add(ChatColor.translateAlternateColorCodes('&', " "));
+                LoreList.add(ChatColor.translateAlternateColorCodes('&',
+                        "&7Товар разблокируется, когда у вас будет - &b" + NeedRep));
+                LoreList.add(ChatColor.translateAlternateColorCodes('&', "&7очков репутации."));
+                LoreList.add(ChatColor.translateAlternateColorCodes('&', "&7У вас сейчас - &f" +
+                        PlayerReputation.getReputationFromUsermap(player) + " &7очков."));
+                LoreList.add(" ");
+            }
+            if (PlayerReputation.getReputationFromUsermap(player) >= NeedRep) {
+                item.setType(material);
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+                for (String str : lore) {
+                    LoreList.add(ChatColor.translateAlternateColorCodes('&', str));
+                }
+            }
+        }
+
         LoreList.add(" ");
         meta.setLore(LoreList);
         item.setItemMeta(meta);
@@ -41,31 +64,32 @@ public class ReputationProductInventory {
     }
 
     public static Inventory getInv(Player player){
-        Inventory inv = Bukkit.createInventory(player,45, ChatColor.WHITE+"Товары за репутацию");
+        Inventory inv = Bukkit.createInventory(player,45, ChatColor.GRAY+"Товары за репутацию");
 
         ItemStack back = new ItemStack(Material.SPECTRAL_ARROW,1);
         ItemMeta bMeta = back.getItemMeta();
         bMeta.setDisplayName(ChatColor.YELLOW+"Назад");
         back.setItemMeta(bMeta);
-        inv.setItem(41,back);
+        inv.setItem(39,back);
 
         ItemStack info = new ItemStack(Material.PAPER,1);
-        ItemMeta iMeta = info.getItemMeta();
-        iMeta.setDisplayName(ChatColor.YELLOW+"Информация");
-        ArrayList<String> iLore = new ArrayList<>();
-        iLore.add("");
-        iMeta.setLore(iLore);
-        info.setItemMeta(iMeta);
-        inv.setItem(40,info);
+        ItemMeta infoMeta = info.getItemMeta();
+        infoMeta.setDisplayName(ChatColor.YELLOW+"Информация");
+        ArrayList<String> infoLore = new ArrayList<>();
+        infoLore.add(" ");
+        infoLore.add(ChatColor.GRAY+"< Нажмите, чтобы узнать подробнее. >");
+        infoLore.add(" ");
+        infoMeta.setLore(infoLore);
+        info.setItemMeta(infoMeta);
+        inv.setItem(41,info);
 
-        ItemStack exit = new ItemStack(Material.RED_DYE,1);
+        ItemStack exit = new ItemStack(Material.BARRIER,1);
         ItemMeta eMeta = exit.getItemMeta();
         eMeta.setDisplayName(ChatColor.YELLOW+"Выход");
         ArrayList<String> eLore = new ArrayList<>();
         eLore.add(" ");
         eMeta.setLore(eLore);
         exit.setItemMeta(eMeta);
-        inv.setItem(39,exit);
 
         ItemStack first = new ItemStack(Material.BARRIER,1);
         ReputationItemRedactor(inv,player,100,first,Material.GOLD_INGOT,"&fЗолотой слиток",

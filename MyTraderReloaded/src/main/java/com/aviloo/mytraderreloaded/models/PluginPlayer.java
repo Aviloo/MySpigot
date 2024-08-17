@@ -2,16 +2,18 @@ package com.aviloo.mytraderreloaded.models;
 
 public class PluginPlayer {
 
-    private String name;
+    private String gameName;
     private String javaUUID;
     private int reputation;
 
     public PluginPlayer(String name, String uuid) {
+        javaUUID = uuid;
+        gameName = name;
         reputation = 0;
     }
 
     public String getName() {
-        return name;
+        return gameName;
     }
 
     public String getJavaUUID() {

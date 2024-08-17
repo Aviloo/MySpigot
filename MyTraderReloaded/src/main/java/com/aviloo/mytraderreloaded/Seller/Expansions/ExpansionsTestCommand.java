@@ -18,7 +18,10 @@ public class ExpansionsTestCommand implements CommandExecutor {
             if(!sender.isOp()){return true;}
 
             Player player = (Player) sender;
-            player.sendMessage(PlaceholderAPI.setPlaceholders(player,"%seller_reputation%"));
+            player.sendMessage(PlaceholderAPI.setPlaceholders(player,"%seller_rep%") +
+                    " - репутации.");
+            player.sendMessage(PlaceholderAPI.setPlaceholders(player,"%EarnedBySeller_earned%") +
+                    " - заработанно.");
             return true;
         }
         return true;

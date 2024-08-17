@@ -42,10 +42,7 @@ public class PriceManager {
     }
 
     public static Boolean isQuantityBlocked(String ProductType){
-        if(SoldQuantity.get(ProductType).equals(BlockQuantity.get(ProductType))){
-            return true;
-        }
-        return false;
+        return SoldQuantity.get(ProductType) >= BlockQuantity.get(ProductType);
     }
 
     public static void addSoldQuantity(String ProductType,Integer count){
