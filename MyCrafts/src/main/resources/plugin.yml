@@ -1,0 +1,8 @@
+name: MyCrafts
+version: '${project.version}'
+main: me.aviloo.mycrafts.MyCrafts
+api-version: '1.19'
+depend: [WorldEdit, Vault, PlaceholderAPI]
+commands:
+  mycrafts:
+    usage: /<command>
