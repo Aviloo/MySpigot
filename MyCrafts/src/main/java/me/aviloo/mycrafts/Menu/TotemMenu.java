@@ -15,9 +15,9 @@ public class TotemMenu {
             null,54, ChatColor.GRAY+"Уникальные крафты");
 
     TotemMenu(){
-        inventory.setItem(3, TotemsManager.getTotemOfAgility());
-        inventory.setItem(4, TotemsManager.getTotemOfStrength());
-        inventory.setItem(5, TotemsManager.getTotemOfPower());
+        inventory.setItem(3, TotemsManager.TotemOfAgility);
+        inventory.setItem(4, TotemsManager.TotemOfStrength);
+        inventory.setItem(5, TotemsManager.TotemOfPower);
         inventory.setItem(50, MenuUtil.createItemStack());
         inventory.setItem(48, MenuUtil.createCraftItem());
         inventory.setItem(49, MenuUtil.createInfoItem());

@@ -13,6 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TotemsManager {
+    public static ItemStack TotemOfAgility = new ItemStack(Material.TOTEM_OF_UNDYING);
+    public static ItemStack TotemOfStrength= new ItemStack(Material.TOTEM_OF_UNDYING);
+    public static ItemStack TotemOfPower= new ItemStack(Material.TOTEM_OF_UNDYING);
+
+    public static void init(){
+        TotemOfAgility = getTotemOfAgility();
+        TotemOfStrength = getTotemOfStrength();
+        TotemOfPower = getTotemOfPower();
+    }
 
     public static ItemStack getTotemOfAgility(){
         ItemStack item = new ItemStack(Material.TOTEM_OF_UNDYING,1);

@@ -18,6 +18,16 @@ import java.util.List;
 
 public class SphereManager {
 
+    public static ItemStack SphereEnd= new ItemStack(Material.PLAYER_HEAD);
+    public static ItemStack SphereNether= new ItemStack(Material.PLAYER_HEAD);
+    public static ItemStack SphereOcean= new ItemStack(Material.PLAYER_HEAD);
+
+    public static void init(){
+        SphereEnd = getSphereEnd();
+        SphereNether = getSphereNether();
+        SphereOcean = getSphereOcean();
+    }
+
     private static FileConfiguration items =
             MyCrafts.getPlugin().itemsFileManager.getItemsConfig();
 

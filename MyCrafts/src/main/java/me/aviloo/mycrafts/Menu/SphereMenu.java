@@ -14,9 +14,9 @@ public class SphereMenu {
                 null, 54, ChatColor.GRAY + "Уникальные крафты");
 
     SphereMenu() {
-        inventory.setItem(3, SphereManager.getSphereOcean());
-        inventory.setItem(4, SphereManager.getSphereNether());
-        inventory.setItem(5, SphereManager.getSphereEnd());
+        inventory.setItem(3, SphereManager.SphereOcean);
+        inventory.setItem(4, SphereManager.SphereNether);
+        inventory.setItem(5, SphereManager.SphereEnd);
         inventory.setItem(50, MenuUtil.createItemStack());
         inventory.setItem(48, MenuUtil.createCraftItem());
         inventory.setItem(21,new ItemStack(Material.HEART_OF_THE_SEA,1));

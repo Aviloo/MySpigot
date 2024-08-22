@@ -6,6 +6,17 @@ import me.aviloo.mycrafts.Items.TNTManager;
 import me.aviloo.mycrafts.Items.TotemsManager;
 import me.aviloo.mycrafts.Items.Trap.TrapManager;
 import me.aviloo.mycrafts.Menu.*;
+import me.aviloo.mycrafts.Menu.EnchantedMenu;
+import me.aviloo.mycrafts.Menu.EnchantedMenus.DamageMenu;
+import me.aviloo.mycrafts.Menu.SpecialMenu;
+import me.aviloo.mycrafts.Menu.SpecialMenus.TrapMenu;
+import me.aviloo.mycrafts.Menu.SphereMenu;
+import me.aviloo.mycrafts.Menu.BlackMenu;
+import me.aviloo.mycrafts.Menu.RedMenu;
+import me.aviloo.mycrafts.Menu.SphereMenus.OceanMenu;
+import me.aviloo.mycrafts.Menu.TNTMenus.RedTNTMenu;
+import me.aviloo.mycrafts.Menu.TotemMenu;
+import me.aviloo.mycrafts.Menu.TotemMenus.AgilityMenu;
 import me.aviloo.mycrafts.Utils.CraftUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -19,6 +30,10 @@ import org.bukkit.inventory.ItemStack;
 
 public class MenuEvents implements Listener {
 
+    private void setCraftItem(Player player,Inventory inventory) {
+        inventory.setItem(48,CraftUtils.createCraftItem(player));
+    }
+
     @EventHandler
     public void onMenuClick(InventoryClickEvent event) {
         if(event.getInventory() != Menu.instance.inventory){return;}
@@ -28,34 +43,34 @@ public class MenuEvents implements Listener {
         Player player = (Player) event.getWhoClicked();
         switch (event.getCurrentItem().getType()){
             case TOTEM_OF_UNDYING:
-                CraftUtils.setSelectedItem(player, TotemsManager.getTotemOfAgility());
+                CraftUtils.setSelectedItem(player, TotemsManager.TotemOfAgility);
                 player.playSound(player.getLocation(),
                         Sound.UI_BUTTON_CLICK,5,0);
-                player.openInventory(TotemMenu.instance.inventory);
+                player.openInventory(AgilityMenu.getInventory(player));
                 break;
             case PLAYER_HEAD:
-                CraftUtils.setSelectedItem(player, SphereManager.getSphereOcean());
+                CraftUtils.setSelectedItem(player, SphereManager.SphereOcean);
                 player.playSound(player.getLocation(),
                         Sound.UI_BUTTON_CLICK,5,0);
-                player.openInventory(SphereMenu.instance.inventory);
+                player.openInventory(OceanMenu.getInventory(player));
                 break;
             case ENCHANTED_BOOK:
                 CraftUtils.setSelectedItem(player, EnchantedManager.getDamageBook());
                 player.playSound(player.getLocation(),
                         Sound.UI_BUTTON_CLICK,5,0);
-                player.openInventory(EnchantedMenu.instance.inventory);
+                player.openInventory(DamageMenu.getInventory(player));
                 break;
             case NETHERITE_SCRAP:
                 CraftUtils.setSelectedItem(player, TrapManager.Trap);
                 player.playSound(player.getLocation(),
                         Sound.UI_BUTTON_CLICK,5,0);
-                player.openInventory(SpecialMenu.instance.inventory);
+                player.openInventory(TrapMenu.getInventory(player));
                 break;
             case TNT:
                 CraftUtils.setSelectedItem(player, TNTManager.itemRed);
                 player.playSound(player.getLocation(),
                         Sound.UI_BUTTON_CLICK,5,0);
-                player.openInventory(TNTMenu.instance.inventory);
+                player.openInventory(RedTNTMenu.getInventory(player));
                 break;
             case SPECTRAL_ARROW:
                 player.playSound(player.getLocation(),
@@ -86,7 +101,7 @@ public class MenuEvents implements Listener {
                 if(!event.getCurrentItem().getItemMeta().hasEnchants()){break;}
                 if(event.getCurrentItem().getItemMeta().
                         hasEnchant(Enchantment.DIG_SPEED)){
-                    CraftUtils.setSelectedItem(player, TotemsManager.getTotemOfAgility());
+                    CraftUtils.setSelectedItem(player, TotemsManager.TotemOfAgility);
                     event.getInventory().setItem(21,new ItemStack(
                             Material.TOTEM_OF_UNDYING,1));
                     event.getInventory().setItem(22,new ItemStack(
@@ -100,7 +115,7 @@ public class MenuEvents implements Listener {
                 }
                 if(event.getCurrentItem().getItemMeta().
                         hasEnchant(Enchantment.DAMAGE_UNDEAD)){
-                    CraftUtils.setSelectedItem(player, TotemsManager.getTotemOfStrength());
+                    CraftUtils.setSelectedItem(player, TotemsManager.TotemOfStrength);
                     event.getInventory().setItem(21,new ItemStack(
                             Material.TOTEM_OF_UNDYING,1));
                     event.getInventory().setItem(22,new ItemStack(
@@ -116,7 +131,7 @@ public class MenuEvents implements Listener {
                 }
                 if(event.getCurrentItem().getItemMeta().
                         hasEnchant(Enchantment.ARROW_KNOCKBACK)){
-                    CraftUtils.setSelectedItem(player, TotemsManager.getTotemOfPower());
+                    CraftUtils.setSelectedItem(player, TotemsManager.TotemOfPower);
                     event.getInventory().setItem(21,new ItemStack(
                             Material.TOTEM_OF_UNDYING,1));
                     event.getInventory().setItem(22,new ItemStack(
@@ -176,7 +191,7 @@ public class MenuEvents implements Listener {
             case PLAYER_HEAD:
                 if(!event.getCurrentItem().getItemMeta().hasEnchants()){break;}
                 if(event.getCurrentItem().getItemMeta().hasEnchant(Enchantment.FROST_WALKER)){
-                    CraftUtils.setSelectedItem(player, SphereManager.getSphereOcean());
+                    CraftUtils.setSelectedItem(player, SphereManager.SphereOcean);
                     event.getInventory().setItem(21,new ItemStack(
                             Material.HEART_OF_THE_SEA,1));
                     event.getInventory().setItem(22,new ItemStack(
@@ -194,7 +209,7 @@ public class MenuEvents implements Listener {
                 }
                 if(event.getCurrentItem().getItemMeta().hasEnchant(
                         Enchantment.ARROW_FIRE)) {
-                    CraftUtils.setSelectedItem(player, SphereManager.getSphereNether());
+                    CraftUtils.setSelectedItem(player, SphereManager.SphereNether);
                     event.getInventory().setItem(21,new ItemStack(
                             Material.NETHERITE_INGOT,1));
                     event.getInventory().setItem(22,new ItemStack(
@@ -212,7 +227,7 @@ public class MenuEvents implements Listener {
                 }
                 if(event.getCurrentItem().getItemMeta().hasEnchant(
                         Enchantment.DIG_SPEED)) {
-                    CraftUtils.setSelectedItem(player, SphereManager.getSphereEnd());
+                    CraftUtils.setSelectedItem(player, SphereManager.SphereEnd);
                     event.getInventory().setItem(21,new ItemStack(
                             Material.ENDER_EYE,3));
                     event.getInventory().setItem(22,new ItemStack(
@@ -307,41 +322,63 @@ public class MenuEvents implements Listener {
 
     @EventHandler
     public void onTNTClick(InventoryClickEvent event){
-        if(event.getInventory() != TNTMenu.instance.inventory){return;}
+        if(event.getInventory() != RedMenu.instance.inventory &&
+        event.getInventory() != BlackMenu.instance.inventory){return;}
         if(event.getCurrentItem() == null){return;}
         event.setCancelled(true);
         Player player = (Player) event.getWhoClicked();
 
-        switch (event.getCurrentItem().getType()) {
-            case SPECTRAL_ARROW:
-                player.openInventory(Menu.instance.inventory);
-                player.playSound(player.getLocation(),
-                        Sound.ENTITY_ENDERMAN_TELEPORT, 5, 0);
-                break;
-            case CRAFTING_TABLE:
-                CraftUtils.craft(player);
-                break;
-            case TNT:
-                Inventory inventory = event.getInventory();
-                if(!event.getCurrentItem().getItemMeta().hasEnchants()){break;}
-                if(event.getCurrentItem().getItemMeta().hasEnchant(
-                        Enchantment.ARROW_DAMAGE)){
-                    CraftUtils.setSelectedItem(player, TNTManager.itemRed);
-                    inventory.setItem(21,new ItemStack(Material.TNT,10));
-                    inventory.setItem(22,new ItemStack(Material.FLINT_AND_STEEL,1));
-                    inventory.setItem(23,new ItemStack(Material.GUNPOWDER,3));
+        if(event.getInventory() == RedMenu.instance.inventory) {
+            switch (event.getCurrentItem().getType()) {
+                case SPECTRAL_ARROW:
+                    player.openInventory(Menu.instance.inventory);
                     player.playSound(player.getLocation(),
-                            Sound.UI_BUTTON_CLICK,5,0);
-                }
-                if(event.getCurrentItem().getItemMeta().hasEnchant(
-                        Enchantment.ARROW_FIRE)){
-                    CraftUtils.setSelectedItem(player, TNTManager.itemBlack);
-                    inventory.setItem(21,new ItemStack(Material.TNT,5));
-                    inventory.setItem(22,new ItemStack(Material.OBSIDIAN,1));
-                    inventory.setItem(23,new ItemStack(Material.GUNPOWDER,10));
+                            Sound.ENTITY_ENDERMAN_TELEPORT, 5, 0);
+                    break;
+                case CRAFTING_TABLE:
+                    CraftUtils.craft(player);
+                    break;
+                case TNT:
+                    Inventory inventory = event.getInventory();
+                    if (!event.getCurrentItem().getItemMeta().hasEnchants()) {
+                        break;
+                    }
+                    if (event.getCurrentItem().getItemMeta().hasEnchant(
+                            Enchantment.ARROW_FIRE)) {
+                        CraftUtils.setSelectedItem(player, TNTManager.itemBlack);
+                        player.openInventory(BlackMenu.instance.inventory);
+                        setCraftItem(player,BlackMenu.instance.inventory);
+                        player.playSound(player.getLocation(),
+                                Sound.UI_BUTTON_CLICK, 5, 0);
+                        break;
+                    }
+            }
+        }
+        if(event.getInventory() == BlackMenu.instance.inventory) {
+            switch (event.getCurrentItem().getType()) {
+                case SPECTRAL_ARROW:
+                    player.openInventory(Menu.instance.inventory);
                     player.playSound(player.getLocation(),
-                            Sound.UI_BUTTON_CLICK,5,0);
-                }
+                            Sound.ENTITY_ENDERMAN_TELEPORT, 5, 0);
+                    break;
+                case CRAFTING_TABLE:
+                    CraftUtils.craft(player);
+                    break;
+                case TNT:
+                    Inventory inventory = event.getInventory();
+                    if (!event.getCurrentItem().getItemMeta().hasEnchants()) {
+                        break;
+                    }
+                    if (event.getCurrentItem().getItemMeta().hasEnchant(
+                            Enchantment.ARROW_DAMAGE)) {
+                        CraftUtils.setSelectedItem(player, TNTManager.itemRed);
+                        player.openInventory(RedMenu.instance.inventory);
+                        setCraftItem(player,RedMenu.instance.inventory);
+                        player.playSound(player.getLocation(),
+                                Sound.UI_BUTTON_CLICK, 5, 0);
+                        break;
+                    }
+            }
         }
 
     }

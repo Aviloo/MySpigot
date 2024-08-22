@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
@@ -128,18 +129,45 @@ public class CraftUtils {
 
     }
 
-    public static void getCraftLore(Player player, ArrayList<String> lore) {
+    public static ItemStack createCraftItem(Player player) {
+        ItemStack item = new ItemStack(Material.CRAFTING_TABLE);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ColorUtils.translateColorCodes("&eПопытаться создать"));
+        List<String> lore = new ArrayList<>();
         lore.add(" ");
         lore.add(ColorUtils.translateColorCodes("&7Выбранный предмет: "
                 + getSelectedItem(player).getItemMeta().getDisplayName()));
-        lore.add(ColorUtils.translateColorCodes("&7Шанс крафта: &6" +
-                getChanceOfCraft(getSelectedItem(player).getType()) + "&f%"));
+        if(player.hasPermission("mycrafts.chancex2")) {
+            if(getChanceOfCraft(getSelectedItem(player).getType())*2 > 100){
+                lore.add(ColorUtils.translateColorCodes("&7Шанс крафта: &6100&f %"));
+            }
+            if(getChanceOfCraft(getSelectedItem(player).getType())*2 <= 100) {
+                lore.add(ColorUtils.translateColorCodes("&7Шанс крафта: &6" +
+                        getChanceOfCraft(getSelectedItem(player).getType()) * 2 + "&f %"));
+            }
+        }
+        if(!player.hasPermission("mycrafts.chancex2")) {
+            lore.add(ColorUtils.translateColorCodes("&7Шанс крафта: &6" +
+                    getChanceOfCraft(getSelectedItem(player).getType()) + "&f %"));
+        }
         lore.add(ColorUtils.translateColorCodes("&7Стоимость: &6" +
                 getPriceOfCraft(getSelectedItem(player).getType()) + "&f Монет"));
         lore.add(" ");
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+
+        return item;
     }
 
     private static boolean isPlayerHasIngredients(Player player) {
+        if(getSelectedItem(player) == null){
+            player.sendMessage("selected item is null");
+            return false;
+        }
+        if(ingredientsOfItems.get(getSelectedItem(player)) == null){
+            player.sendMessage("Set is null");
+            return false;
+        }
        for(ItemStack items : ingredientsOfItems.get(getSelectedItem(player))) {
            if(!player.getInventory().contains(items.getType(),items.getAmount())) {
                return false;
@@ -161,7 +189,7 @@ public class CraftUtils {
         ingredientsTotemOfAgility.add(new ItemStack(Material.RABBIT_FOOT,5));
         ingredientsTotemOfAgility.add(new ItemStack(Material.SUGAR,16));
         ingredientsTotemOfAgility.add(new ItemStack(Material.ECHO_SHARD,3));
-        ingredientsOfItems.put(TotemsManager.getTotemOfAgility(), ingredientsTotemOfAgility);
+        ingredientsOfItems.put(TotemsManager.TotemOfAgility, ingredientsTotemOfAgility);
         //TotemOfStrength
         Set<ItemStack> ingredientsTotemOfStrength = new HashSet<>();
         ingredientsTotemOfStrength.add(new ItemStack(Material.TOTEM_OF_UNDYING,1));
@@ -169,14 +197,14 @@ public class CraftUtils {
         ingredientsTotemOfStrength.add(new ItemStack(Material.IRON_INGOT,7));
         ingredientsTotemOfStrength.add(new ItemStack(Material.FERMENTED_SPIDER_EYE,2));
         ingredientsTotemOfStrength.add(new ItemStack(Material.SUGAR,8));
-        ingredientsOfItems.put(TotemsManager.getTotemOfStrength(), ingredientsTotemOfStrength);
+        ingredientsOfItems.put(TotemsManager.TotemOfStrength, ingredientsTotemOfStrength);
         //TotemOfPower
         Set<ItemStack> ingredientsTotemOfPower = new HashSet<>();
         ingredientsTotemOfPower.add(new ItemStack(Material.TOTEM_OF_UNDYING,1));
         ingredientsTotemOfPower.add(new ItemStack(Material.IRON_INGOT,7));
         ingredientsTotemOfPower.add(new ItemStack(Material.SLIME_BALL,3));
         ingredientsTotemOfPower.add(new ItemStack(Material.EGG,6));
-        ingredientsOfItems.put(TotemsManager.getTotemOfPower(), ingredientsTotemOfPower);
+        ingredientsOfItems.put(TotemsManager.TotemOfPower, ingredientsTotemOfPower);
         //SphereOfOcean
         Set<ItemStack> ingredientsSphereOfOcean = new HashSet<>();
         ingredientsSphereOfOcean.add(new ItemStack(Material.HEART_OF_THE_SEA,1));
@@ -185,7 +213,7 @@ public class CraftUtils {
         ingredientsSphereOfOcean.add(new ItemStack(Material.FERMENTED_SPIDER_EYE,5));
         ingredientsSphereOfOcean.add(new ItemStack(Material.SLIME_BALL,7));
         ingredientsSphereOfOcean.add(new ItemStack(Material.GLOW_INK_SAC,4));
-        ingredientsOfItems.put(SphereManager.getSphereOcean(), ingredientsSphereOfOcean);
+        ingredientsOfItems.put(SphereManager.SphereOcean, ingredientsSphereOfOcean);
         //SphereOfNether
         Set<ItemStack> ingredientsSphereOfNether = new HashSet<>();
         ingredientsSphereOfNether.add(new ItemStack(Material.NETHERITE_INGOT,1));
@@ -194,7 +222,7 @@ public class CraftUtils {
         ingredientsSphereOfNether.add(new ItemStack(Material.GHAST_TEAR,1));
         ingredientsSphereOfNether.add(new ItemStack(Material.SUGAR,3));
         ingredientsSphereOfNether.add(new ItemStack(Material.RABBIT_FOOT,1));
-        ingredientsOfItems.put(SphereManager.getSphereNether(), ingredientsSphereOfNether);
+        ingredientsOfItems.put(SphereManager.SphereNether, ingredientsSphereOfNether);
         //SphereOfEnd
         Set<ItemStack> ingredientsSphereOfEnd = new HashSet<>();
         ingredientsSphereOfEnd.add(new ItemStack(Material.ENDER_EYE,3));
@@ -203,7 +231,7 @@ public class CraftUtils {
         ingredientsSphereOfEnd.add(new ItemStack(Material.GLOWSTONE_DUST,6));
         ingredientsSphereOfEnd.add(new ItemStack(Material.SUGAR,15));
         ingredientsSphereOfEnd.add(new ItemStack(Material.FERMENTED_SPIDER_EYE,3));
-        ingredientsOfItems.put(SphereManager.getSphereEnd(), ingredientsSphereOfEnd);
+        ingredientsOfItems.put(SphereManager.SphereEnd, ingredientsSphereOfEnd);
         //Trap
         Set<ItemStack> ingredientsTrap = new HashSet<>();
         ingredientsTrap.add(new ItemStack(Material.OBSIDIAN,8));
