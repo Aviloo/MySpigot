@@ -22,6 +22,10 @@ public class TrapManager {
         meta.setDisplayName(ColorUtils.translateColorCodes("&4Ловушка"));
         List<String> lore = new ArrayList();
         lore.add(" ");
+        lore.add(ColorUtils.translateColorCodes(
+                "&7Создает коробку из обсидиана"));
+        lore.add(ColorUtils.translateColorCodes("&7вокруг игрока."));
+        lore.add(" ");
         meta.setLore(lore);
         item.setItemMeta(meta);
         Trap = item;

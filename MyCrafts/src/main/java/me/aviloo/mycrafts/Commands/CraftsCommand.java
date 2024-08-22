@@ -2,6 +2,7 @@ package me.aviloo.mycrafts.Commands;
 
 import me.aviloo.mycrafts.Commands.subCommands.GetItemsSubCommand;
 import me.aviloo.mycrafts.Commands.subCommands.reloadSubCommand;
+import me.aviloo.mycrafts.Menu.Menu;
 import me.aviloo.mycrafts.MyCrafts;
 import me.aviloo.mycrafts.Utils.ColorUtils;
 import org.bukkit.command.Command;
@@ -25,6 +26,12 @@ public class CraftsCommand implements CommandExecutor {
             );
             return true;
         }
+
+        if(command.getName().equalsIgnoreCase("uc")){
+            ((Player) sender).openInventory(Menu.instance.inventory);
+            return true;
+        }
+
         if(!sender.isOp()){
             sender.sendMessage(ColorUtils.translateColorCodes(
                     messagesConfig.getString("prefix.system") +

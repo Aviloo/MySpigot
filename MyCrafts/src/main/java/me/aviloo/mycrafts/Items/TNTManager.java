@@ -67,6 +67,7 @@ public class TNTManager {
         tnt.setYield(25);
         tnt.setIsIncendiary(true);
         tnt.setFireTicks(80);
+        tnt.setIsIncendiary(true);
 
     }
 

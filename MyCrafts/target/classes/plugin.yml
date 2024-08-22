@@ -6,3 +6,8 @@ depend: [WorldEdit, Vault, PlaceholderAPI]
 commands:
   mycrafts:
     usage: /<command>
+  uc:
+    usage: /<command>
+permissions:
+  mycrafts.chancex2:
+    description: Добавляет x2 шанс на успешный крафт.

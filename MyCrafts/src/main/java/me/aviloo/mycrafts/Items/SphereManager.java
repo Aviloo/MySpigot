@@ -26,7 +26,7 @@ public class SphereManager {
                 getSkullByBase64EncodedTextureUrl(items.getString("first_sphere_url")).clone();
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ColorUtils.translateColorCodes("&5Сфера Энда"));
-        AttributeModifier speedModifier = new AttributeModifier("speedModifier",0.07, AttributeModifier.Operation.ADD_NUMBER);
+        AttributeModifier speedModifier = new AttributeModifier("speedModifier",0.09, AttributeModifier.Operation.ADD_NUMBER);
         AttributeModifier attackSpeedModifier = new AttributeModifier("attackSpeedModifier",0.5, AttributeModifier.Operation.ADD_NUMBER);
         AttributeModifier armorModifier = new AttributeModifier("armorModifier",-1.5, AttributeModifier.Operation.ADD_NUMBER);
         AttributeModifier damageModifier = new AttributeModifier("damageModifier",-1.0, AttributeModifier.Operation.ADD_NUMBER);
@@ -39,7 +39,7 @@ public class SphereManager {
         lore.add(" ");
         lore.add(ColorUtils.translateColorCodes("&7Когда в руке:"));
         lore.add(ColorUtils.translateColorCodes("&9+0.5 Скорость атаки"));
-        lore.add(ColorUtils.translateColorCodes("&9+0.07 Скорость"));
+        lore.add(ColorUtils.translateColorCodes("&9+0.09 Скорость"));
         lore.add(ColorUtils.translateColorCodes("&c-1 Урон"));
         lore.add(ColorUtils.translateColorCodes("&c-1.5 Броня"));
         lore.add(" ");
