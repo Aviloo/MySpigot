@@ -1,0 +1,6 @@
+me\aviloo\myrtp\MyRTP.class
+me\aviloo\myrtp\Utils\ColorUtils.class
+me\aviloo\myrtp\Utils\TeleportUtils$1.class
+me\aviloo\myrtp\Files\MessagesFileManager.class
+me\aviloo\myrtp\Utils\TeleportUtils.class
+me\aviloo\myrtp\Commands\DefaultTeleportCommand.class

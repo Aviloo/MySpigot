@@ -1,0 +1,7 @@
+name: MyRTP
+version: '${project.version}'
+main: me.aviloo.myrtp.MyRTP
+api-version: '1.19'
+commands:
+  rtp:
+    usage: /<command>
