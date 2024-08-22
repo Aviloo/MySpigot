@@ -1,7 +1,6 @@
 package me.aviloo.mycrafts.Menu.EnchantedMenus;
 
 import me.aviloo.mycrafts.Items.EnchantedManager;
-import me.aviloo.mycrafts.Menu.EnchantedMenu;
 import me.aviloo.mycrafts.Menu.Menu;
 import me.aviloo.mycrafts.Utils.CraftUtils;
 import me.aviloo.mycrafts.Utils.MenuUtil;

@@ -56,8 +56,8 @@ public class BlackTNTMenu implements Listener {
                 }
                 if (event.getCurrentItem().getItemMeta().hasEnchant(
                         Enchantment.ARROW_DAMAGE)) {
-                    CraftUtils.setSelectedItem(player, TNTManager.itemBlack);
-                    player.openInventory(BlackTNTMenu.inventory);
+                    CraftUtils.setSelectedItem(player, TNTManager.itemRed);
+                    player.openInventory(RedTNTMenu.getInventory(player));
                     player.playSound(player.getLocation(),
                             Sound.UI_BUTTON_CLICK, 5, 0);
                     break;

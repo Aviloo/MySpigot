@@ -80,14 +80,7 @@ public class PowerMenu implements Listener {
                     if(event.getCurrentItem().getItemMeta().
                             hasEnchant(Enchantment.ARROW_KNOCKBACK)){
                         CraftUtils.setSelectedItem(player, TotemsManager.TotemOfPower);
-                        event.getInventory().setItem(21,new ItemStack(
-                                Material.TOTEM_OF_UNDYING,1));
-                        event.getInventory().setItem(22,new ItemStack(
-                                Material.IRON_INGOT,7));
-                        event.getInventory().setItem(23,new ItemStack(
-                                Material.SLIME_BALL,3));
-                        event.getInventory().setItem(30,new ItemStack(
-                                Material.EGG,6));
+                        player.openInventory(getInventory(player));
                         player.playSound(player.getLocation(),
                                 Sound.UI_BUTTON_CLICK,5,0);
                     }

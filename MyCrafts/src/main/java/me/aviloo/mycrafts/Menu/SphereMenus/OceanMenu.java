@@ -2,7 +2,6 @@ package me.aviloo.mycrafts.Menu.SphereMenus;
 
 import me.aviloo.mycrafts.Items.SphereManager;
 import me.aviloo.mycrafts.Menu.Menu;
-import me.aviloo.mycrafts.Menu.SphereMenu;
 import me.aviloo.mycrafts.Utils.CraftUtils;
 import me.aviloo.mycrafts.Utils.MenuUtil;
 import org.bukkit.Bukkit;

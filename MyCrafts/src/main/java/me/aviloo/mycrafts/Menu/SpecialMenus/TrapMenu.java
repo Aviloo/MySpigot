@@ -2,22 +2,18 @@ package me.aviloo.mycrafts.Menu.SpecialMenus;
 
 import me.aviloo.mycrafts.Items.Trap.TrapManager;
 import me.aviloo.mycrafts.Menu.Menu;
-import me.aviloo.mycrafts.Menu.SpecialMenu;
 import me.aviloo.mycrafts.Utils.CraftUtils;
 import me.aviloo.mycrafts.Utils.MenuUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
-import javax.swing.*;
 
 public class TrapMenu implements Listener {
 

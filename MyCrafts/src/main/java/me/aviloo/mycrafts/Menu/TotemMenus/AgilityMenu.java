@@ -2,7 +2,6 @@ package me.aviloo.mycrafts.Menu.TotemMenus;
 
 import me.aviloo.mycrafts.Items.TotemsManager;
 import me.aviloo.mycrafts.Menu.Menu;
-import me.aviloo.mycrafts.Menu.TotemMenu;
 import me.aviloo.mycrafts.Utils.CraftUtils;
 import me.aviloo.mycrafts.Utils.MenuUtil;
 import org.bukkit.Bukkit;
@@ -76,14 +75,7 @@ public class AgilityMenu implements Listener {
                 if(event.getCurrentItem().getItemMeta().
                         hasEnchant(Enchantment.ARROW_KNOCKBACK)){
                     CraftUtils.setSelectedItem(player, TotemsManager.TotemOfPower);
-                    event.getInventory().setItem(21,new ItemStack(
-                            Material.TOTEM_OF_UNDYING,1));
-                    event.getInventory().setItem(22,new ItemStack(
-                            Material.IRON_INGOT,7));
-                    event.getInventory().setItem(23,new ItemStack(
-                            Material.SLIME_BALL,3));
-                    event.getInventory().setItem(30,new ItemStack(
-                            Material.EGG,6));
+                    player.openInventory(PowerMenu.getInventory(player));
                     player.playSound(player.getLocation(),
                             Sound.UI_BUTTON_CLICK,5,0);
                 }
