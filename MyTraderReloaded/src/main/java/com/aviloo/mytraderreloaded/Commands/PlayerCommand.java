@@ -1,4 +1,4 @@
-package com.aviloo.mytraderreloaded.Seller.Commands;
+package com.aviloo.mytraderreloaded.Commands;
 
 import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import com.aviloo.mytraderreloaded.Seller.Inventories.SellerInventory;
@@ -10,26 +10,29 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class OpenTestMenu implements CommandExecutor {
+public class PlayerCommand implements CommandExecutor {
 
     private static FileConfiguration messagesConfig =
             MyTraderReloaded.getPlugin().messagesFileManager.getMessagesConfig();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(!(sender instanceof Player)){
+        if(!(sender instanceof Player)) {
             sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("prefix_error")+
-                    messagesConfig.getString("command_dont_have_perm")));
+                    messagesConfig.getString("command_only_player_can_use")));
             return true;
         }
 
-        if(command.getName().equalsIgnoreCase("newseller")){
-            if(!sender.isOp()){return true;}
-
-            ((Player) sender).openInventory(SellerInventory.inventory);
+        if(command.getName().equalsIgnoreCase("seller")) {
+            Player player = (Player) sender;
+            if (!player.hasPermission("mytrader.seller")) {
+                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("prefix_error") +
+                        messagesConfig.getString("command_dont_have_perm")));
+                return true;
+            }
+            player.openInventory(SellerInventory.inventory);
             return true;
         }
-
         return true;
     }
 }

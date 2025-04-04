@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.UUID;
@@ -24,27 +25,19 @@ public class SellManager implements Listener {
         return sellPatternMap.get(player.getUniqueId());
     }
 
-    public static void patternLoreSetup(Player player, ArrayList<String> lore){
-        lore.add(" ");
+    public static String getPatternLore(@Nullable Player player){
+        if(player == null) return ChatColor.WHITE+"Тип: "+ChatColor.GRAY+"Продать 1 шт.";
         if(sellPatternMap.get(player.getUniqueId()).equals("1")){
-            lore.add(ChatColor.translateAlternateColorCodes('&',
-                    "&e⬥ &f&lПродать 1 шт."));
-            lore.add(ChatColor.WHITE+"Продать 64 шт.");
-            lore.add(ChatColor.WHITE+"Подать все");
+            return ChatColor.WHITE+"Тип: "+ChatColor.GRAY+"Продать 1 шт.";
         }
         if(sellPatternMap.get(player.getUniqueId()).equals("64")){
-            lore.add(ChatColor.WHITE+"Продать 1 шт.");
-            lore.add(ChatColor.translateAlternateColorCodes('&',
-                    "&e⬥ &f&lПродать 64 шт."));
-            lore.add(ChatColor.WHITE+"Подать все");
+            return ChatColor.WHITE+"Тип: "+ChatColor.GRAY+"Продать 64 шт.";
         }
         if(sellPatternMap.get(player.getUniqueId()).equals("all")){
-            lore.add(ChatColor.WHITE+"Подать 1 шт.");
-            lore.add(ChatColor.WHITE+"Продать 64 шт.");
-            lore.add(ChatColor.translateAlternateColorCodes('&',
-                    "&e⬥ &f&lПродать все."));
+            return ChatColor.WHITE+"Тип: "+ChatColor.GRAY+"Продать всё.";
         }
-        lore.add(" ");
+
+        return "Тип: -";
     }
 
 

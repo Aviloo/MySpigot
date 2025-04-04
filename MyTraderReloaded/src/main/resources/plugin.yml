@@ -3,35 +3,15 @@ version: '${project.version}'
 main: com.aviloo.mytraderreloaded.MyTraderReloaded
 api-version: 1.19
 authors: [ Aviloo ]
-description: add Trader to your server
+description: Плагин на скупщика
 softdepend: [Vault, PlayerPoints, Essentials]
 depend: [PlaceholderAPI]
 commands:
-  secretsellercommand:
+  mytrader:
     usage: /<command>
-    description: command for players. Use by NPC
   seller:
     usage: /<command>
     description: команда для донатеров. Использовать можно где угодно
-  sellertype:
-    usage: /<command> reload
-    description: команда позволяет перезагружать тип скупщика.
-  mytrader:
-    usage: /<command> reload
-    description: позволяет перезагружать конфиг плагина.
-  traderreputation:
-    usage: /<command> take|set|add|reset {Ник Игрока} {кол-во очков}
-  sellersettype:
-    usage: /<command> тип_скупщика
-  expansionstestcommand:
-    description: Тестовая команда для отладки заполнителей
-    usage: /<command>
-  newseller:
-    description: Тестовое меню
-    usage: /<command>
-  earnedplayer:
-    description: Редактирует ЗАПИСАННУЮ сумму ,которую заработал игрок.
-    usage: /<command> set|reset|get {ник_игрока} {кол-во очков}
 permissions:
   mytrader.seller:
-    description: позволяет использовать комманду /seller
+    description: позволяет использовать команду /seller

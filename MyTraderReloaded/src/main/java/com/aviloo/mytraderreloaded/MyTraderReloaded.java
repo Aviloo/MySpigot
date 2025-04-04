@@ -1,16 +1,14 @@
 package com.aviloo.mytraderreloaded;
 
-import com.aviloo.mytraderreloaded.Files.DatabaseFileManager;
-import com.aviloo.mytraderreloaded.Files.MessagesFileManager;
-import com.aviloo.mytraderreloaded.Files.UsermapFileManager;
-import com.aviloo.mytraderreloaded.GeneralCommands.ReloadConfigCommand;
-import com.aviloo.mytraderreloaded.Seller.Commands.*;
+import com.aviloo.mytraderreloaded.Commands.AdminCommand;
+import com.aviloo.mytraderreloaded.Commands.PlayerCommand;
+import com.aviloo.mytraderreloaded.Commands.commandTabCompleter.adminCompleter;
+import com.aviloo.mytraderreloaded.Files.*;
 import com.aviloo.mytraderreloaded.Seller.Events.*;
 import com.aviloo.mytraderreloaded.Seller.Events.EpicEvents.*;
-import com.aviloo.mytraderreloaded.Seller.Expansions.EarnedExpansion;
-import com.aviloo.mytraderreloaded.Seller.Expansions.ExpansionsTestCommand;
 import com.aviloo.mytraderreloaded.Seller.Expansions.ReputationExpansion;
 import com.aviloo.mytraderreloaded.Seller.Inventories.InfoInventory;
+import com.aviloo.mytraderreloaded.Seller.Inventories.LoadScreen;
 import com.aviloo.mytraderreloaded.Seller.Inventories.SellerInventory;
 import com.aviloo.mytraderreloaded.Seller.Utils.*;
 import net.milkbowl.vault.economy.Economy;
@@ -23,7 +21,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Objects;
 import java.util.logging.Logger;
 
 
@@ -86,69 +83,11 @@ public final class MyTraderReloaded extends JavaPlugin {
         }
     }
 
-    private static String TraderType = "Screen1";
-
     private static Boolean isEpicType = false;
 
     public static Boolean getIsEpicType(){
         Boolean bool = isEpicType;
         return bool;
-    }
-
-    public static String getTraderType(){
-        String string = TraderType;
-        return string;
-    }
-
-    public static void setTraderType(String type){
-        if(Objects.equals(type, "Screen1")){
-            TraderType = type;
-        }
-        if(Objects.equals(type, "Screen2")){
-            TraderType = type;
-        }
-        if(Objects.equals(type, "Screen3")){
-            TraderType = type;
-        }
-        if(Objects.equals(type, "Screen4")){
-            TraderType = type;
-        }
-        if(Objects.equals(type, "Screen5")){
-            TraderType = type;
-        }
-        if(Objects.equals(type, "ScreenE")){
-            TraderType = type;
-            isEpicType = true;
-        }else {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&4[Ошибка] &fВы не можете присвоить этот тип. &7(Возможно, его не существует или" +
-                            "&7 вы ошиблись в написании!)"));
-        }
-    }
-
-    private final String YesterdayScreen = getConfig().getString("YesterdayScreen");
-
-    private void writeYesterdayScreen(String ScreenType){
-        this.getConfig().set("YesterdayScreen",ScreenType);
-        saveConfig();
-    }
-
-    private void setSellerInventory(){
-        SellerInventory.setInventoryButtonsList();
-        if(Math.random() <= 0.93){
-            isEpicType = false;
-            SellerInventory.setUpDefaultSellerItemsList();
-        }
-        if(Math.random() > 0.94){
-            isEpicType = true;
-            SellerInventory.setUpEpicSellerItemsList();
-        }
-        SellerInventory.generateSellerItems();
-        SellerInventory.inventorySetUp();
-        if(getConfig().getBoolean("useStrokeInGUI")){
-            SellerInventory.setupStroke();
-        }
-
     }
 
     //Custom Config Part
@@ -163,21 +102,18 @@ public final class MyTraderReloaded extends JavaPlugin {
     public DatabaseFileManager databaseFileManager;
     public UsermapFileManager usermapFileManager;
     public MessagesFileManager messagesFileManager;
+    public SellerSettingsFileManager sellerSettingsFileManager;
+    public MenuFileManager menuFileManager;
+    public ErrorFileManager errorFileManager;
 
     @Override
     public void onEnable() {
-
         //General Methods
         plugin = this;
 
         // Other methods
         loadConfig();
         this.CustomConfig = new ConfigManager(this);
-        if (Bukkit.getPluginManager().isPluginEnabled("PlayerPoints")) {
-            this.ppAPI = PlayerPoints.getInstance().getAPI();
-        }
-        startingAlerts();
-        PlayerStats.giveRewardToTrader();
         //Load database.yml
         if(getConfig().getBoolean("useSQL")) {
             this.databaseFileManager = new DatabaseFileManager();
@@ -186,9 +122,18 @@ public final class MyTraderReloaded extends JavaPlugin {
             setSql();
             MySQLManager.setUpTable();
         }
-        //Load messages
+        //Load messages.yml
         this.messagesFileManager = new MessagesFileManager();
         messagesFileManager.MessagesFileManager(this);
+        //Load settings.yml
+        this.sellerSettingsFileManager = new SellerSettingsFileManager();
+        sellerSettingsFileManager.SettingsSellerFileManager(this);
+        //Load gui.yml
+        this.menuFileManager = new MenuFileManager();
+        menuFileManager.MenuFileManager(this);
+        //Load error.yml
+        this.errorFileManager = new ErrorFileManager();
+        errorFileManager.ErrorFileManager(this);
 
         //Load usermap.yml
         if(!getConfig().getBoolean("useSQL")) {
@@ -207,65 +152,52 @@ public final class MyTraderReloaded extends JavaPlugin {
                 }
             }
         }
+        if (Bukkit.getPluginManager().isPluginEnabled("PlayerPoints")) {
+            this.ppAPI = PlayerPoints.getInstance().getAPI();
+        }
+        startingAlerts();
+        //Leader Stats
+        Bukkit.getScheduler().runTaskTimer(this, () ->{
+            LeaderUtils.updateLeader();
+        },1,6000);
 
         //Expansion
         if(getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
             new ReputationExpansion(this).register();
-            new EarnedExpansion(this).register();
-            getCommand("expansionstestcommand").setExecutor(new ExpansionsTestCommand());
         }
-
-        //GeneralCommands
-        getCommand("mytrader").setExecutor(new ReloadConfigCommand(this));
-        getCommand("mytrader").setTabCompleter(new ReloadConfigCommand(this));
 
         //General Events
         getServer().getPluginManager().registerEvents(new EconomyManager(this),this);
 
-        if(this.getConfig().getBoolean("usePluginTradeSystem")) {
-            //Methods(Seller)
-            randomTraderType();
-            PriceManager.allProductSetUp();
-            Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY+"[MyTraderReloaded]"+ChatColor.WHITE
-                    +"Вчера был тип - "+YesterdayScreen);
-            setSellerInventory();
-            LoadScreen.setupLoadInventory();
-            InfoInventory.setupInfoInventory();
-            getServer().getPluginManager().registerEvents(new InfoInventory(),this);
+        //Methods(Seller)
+        PriceManager.allProductSetUp();
+        PriceManager.allReputationProductsSetUp();
+        setSellerInventory();
+        LoadScreen.setupLoadInventory();
+        InfoInventory.setupInfoInventory();
+        getServer().getPluginManager().registerEvents(new InfoInventory(),this);
 
-            //Events (Seller)
-                //Inventory Events (Seller)
-            Bukkit.getServer().getPluginManager().registerEvents(new Interact1(this), this);
-            Bukkit.getServer().getPluginManager().registerEvents(new Interact2(), this);
-            Bukkit.getServer().getPluginManager().registerEvents(new Interact3(), this);
-            Bukkit.getServer().getPluginManager().registerEvents(new Interact4(), this);
-            Bukkit.getServer().getPluginManager().registerEvents(new Interact5(), this);
-            getServer().getPluginManager().registerEvents(new SellerInteract(),this);
+        //Events (Seller)
+            //Inventory Events (Seller)
+        getServer().getPluginManager().registerEvents(new SellerInteract(),this);
 
-            //тестовый класс
-            //Bukkit.getServer().getPluginManager().registerEvents(new GeneralInteract(this),this);
-            Bukkit.getServer().getPluginManager().registerEvents(new ReputationInteract(),this);
-            Bukkit.getServer().getPluginManager().registerEvents(new InteractE(), this);
-                //General Events (Seller)
-            Bukkit.getServer().getPluginManager().registerEvents(new GlobalEvents(this), this);
-            Bukkit.getServer().getPluginManager().registerEvents(new PlayerReputation(),this);
-            Bukkit.getServer().getPluginManager().registerEvents(new LoadScreen(this),this);
-            getServer().getPluginManager().registerEvents(new SellManager(),this);
-            getServer().getPluginManager().registerEvents(new PlayerStats(this), this);
+        //тестовый класс
+        Bukkit.getServer().getPluginManager().registerEvents(new ReputationInteract(),this);
+            //General Events (Seller)
+        Bukkit.getServer().getPluginManager().registerEvents(new GlobalEvents(this), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new PlayerReputation(),this);
+        Bukkit.getServer().getPluginManager().registerEvents(new LoadScreen(this),this);
+        getServer().getPluginManager().registerEvents(new SellManager(),this);
+        getServer().getPluginManager().registerEvents(new LeaderUtils(), this);
 
-            //Commands(Seller)
-            getCommand("secretsellercommand").setExecutor(new OpenTrader());
-            getCommand("seller").setExecutor(new TraderForDonate());
-            getCommand("sellertype").setExecutor(new ReloadType(this));
-            getCommand("traderreputation").setExecutor(new ReputationCommand());
-            getCommand("sellersettype").setExecutor(new SetType());
-            getCommand("newseller").setExecutor(new OpenTestMenu());
-            getCommand("earnedplayer").setExecutor(new EarnedCommand());
+        //Commands(Seller)
+        Bukkit.getServer().getPluginCommand("seller").setExecutor(new PlayerCommand());
+        Bukkit.getServer().getPluginCommand("mytrader").setExecutor(new AdminCommand());
 
-            //Completer`s (Seller)
-            getCommand("traderreputation").setTabCompleter(new ReputationCommand());
-            getCommand("earnedplayer").setTabCompleter(new EarnedCommand());
-        }
+
+        //Completer`s (Seller)
+        Bukkit.getServer().getPluginCommand("mytrader").setTabCompleter(new adminCompleter());
+
     }
 
     @Override
@@ -292,70 +224,15 @@ public final class MyTraderReloaded extends JavaPlugin {
             }
             sql.disconnection();
         }
-        writeYesterdayScreen(TraderType);
 
         databaseFileManager = null;
         usermapFileManager = null;
         messagesFileManager = null;
+        sellerSettingsFileManager = null;
+        menuFileManager = null;
+        errorFileManager = null;
     }
 
-    public void randomTraderType(){
-        double chance = Math.random();
-        if(chance < 0.21){
-            if(!(Objects.equals(YesterdayScreen, "Screen1"))) {
-                TraderType = "Screen1";
-                isEpicType = false;
-                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen1"));
-                return;
-            }
-        }
-        if(chance >= 0.21 && chance < 0.42){
-            if(!(Objects.equals(YesterdayScreen, "Screen2"))) {
-                TraderType = "Screen2";
-                isEpicType = false;
-                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen2"));
-                return;
-            }
-        }
-        if(chance >= 0.42 && chance < 0.63){
-            if(!(Objects.equals(YesterdayScreen, "Screen3"))) {
-                TraderType = "Screen3";
-                isEpicType = false;
-                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen3"));
-                return;
-            }
-        }
-        if(chance >= 0.63 && chance < 0.81){
-            if(!(Objects.equals(YesterdayScreen, "Screen4"))) {
-                TraderType = "Screen4";
-                isEpicType = false;
-                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen4"));
-                return;
-            }
-        }
-        if(chance >= 0.81 && chance < 0.96){
-            if(!(Objects.equals(YesterdayScreen, "Screen5"))) {
-                TraderType = "Screen5";
-                isEpicType = false;
-                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&7[MyTraderReloaded] &fСегодня скупщик типа - Screen5"));
-                return;
-            }
-        }
-        if(chance >= 0.96){
-            if(!(Objects.equals(YesterdayScreen, "ScreenE"))) {
-                TraderType = "ScreenE";
-                isEpicType = true;
-                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&7[MyTraderReloaded] &fСегодня скупщик типа - &dScreenE"));
-                return;
-            }
-        }
-    }
 
     private void loadConfig() {
         getConfig().options().copyDefaults(true);
@@ -390,6 +267,30 @@ public final class MyTraderReloaded extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA+"                                                                                                                by Aviloo");
     }
 
-    public String StrokeMaterial = getConfig().getString("strokeMaterial");
+    public String StrokeMaterial(){
+        if(menuFileManager == null){
+            logger.severe("menuFileManager is null!");
+            return "GRAY_STAINED_GLASS_PANE";
+        }
+        return menuFileManager.getMenuConfig().getString("strokeMaterial");
+    }
+
+    public void setSellerInventory(){
+        SellerInventory.setInventoryButtonsList();
+        if(Math.random() <= getConfig().getDouble("chanceOfEpicSeller") - 0.01){
+            isEpicType = false;
+            SellerInventory.setUpDefaultSellerItemsList();
+        }
+        if(Math.random() > getConfig().getDouble("chanceOfEpicSeller")){
+            isEpicType = true;
+            SellerInventory.setUpEpicSellerItemsList();
+        }
+        SellerInventory.generateSellerItems();
+        SellerInventory.inventorySetUp();
+        if(menuFileManager.getMenuConfig().getBoolean("useStrokeInGUI")){
+            SellerInventory.setupStroke();
+        }
+
+    }
 
 }

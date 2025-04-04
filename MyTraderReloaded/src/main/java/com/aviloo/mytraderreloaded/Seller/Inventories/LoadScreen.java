@@ -1,4 +1,4 @@
-package com.aviloo.mytraderreloaded.Seller.Utils;
+package com.aviloo.mytraderreloaded.Seller.Inventories;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

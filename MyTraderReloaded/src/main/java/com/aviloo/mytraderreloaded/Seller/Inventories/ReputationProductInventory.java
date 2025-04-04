@@ -2,9 +2,11 @@ package com.aviloo.mytraderreloaded.Seller.Inventories;
 
 import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import com.aviloo.mytraderreloaded.Seller.Utils.PlayerReputation;
+import com.aviloo.mytraderreloaded.Seller.Utils.PriceManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -13,6 +15,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 
 public class ReputationProductInventory {
+
+    private static FileConfiguration settingsConfig =
+            MyTraderReloaded.getPlugin().sellerSettingsFileManager.getSettingsSellerConfig();
 
     private static void ReputationItemRedactor(Inventory inv,Player player,Integer NeedRep,ItemStack item,
         Material material, String name,Integer index,String ... lore){
@@ -83,58 +88,56 @@ public class ReputationProductInventory {
         info.setItemMeta(infoMeta);
         inv.setItem(41,info);
 
-        ItemStack exit = new ItemStack(Material.BARRIER,1);
-        ItemMeta eMeta = exit.getItemMeta();
-        eMeta.setDisplayName(ChatColor.YELLOW+"Выход");
-        ArrayList<String> eLore = new ArrayList<>();
-        eLore.add(" ");
-        eMeta.setLore(eLore);
-        exit.setItemMeta(eMeta);
-
         ItemStack first = new ItemStack(Material.BARRIER,1);
-        ReputationItemRedactor(inv,player,100,first,Material.GOLD_INGOT,"&fЗолотой слиток",
-                12,"&eЦена за 1 штуку - 1.3",
-                "&eЦена за 64 штуки - 83,3",
+        ReputationItemRedactor(inv,player, PriceManager.getNeedReputation("GOLD_NUGGET_R"),
+                first,Material.GOLD_NUGGET,"&fЗолотой слиток",
+                12,"&eЦена за 1 штуку - "+PriceManager.getPriceReputation("GOLD_NUGGET_R"),
+                "&eЦена за 64 штуки - "+PriceManager.getPriceReputation64("GOLD_NUGGET_R"),
                 " ",
                 "&7Чтобы продать 1 ед. , нажмите ПКМ",
                 "&7Чтобы продать 64 ед. , нажмите ЛКМ");
 
         ItemStack second = new ItemStack(Material.BARRIER,1);
-        ReputationItemRedactor(inv,player,200,second,Material.WHEAT,"&fПшеница",
-                13,"&eЦена за 1 штуку - 0.3",
-                "&eЦена за 64 штуки - 19,3",
+        ReputationItemRedactor(inv,player,PriceManager.getNeedReputation("WHEAT_R"),
+                second,Material.WHEAT,"&fПшеница",
+                13,"&eЦена за 1 штуку - "+PriceManager.getPriceReputation("WHEAT_R"),
+                "&eЦена за 64 штуки - "+PriceManager.getPriceReputation64("WHEAT_R"),
                 " ",
                 "&7Чтобы продать 1 ед. , нажмите ПКМ",
                 "&7Чтобы продать 64 ед. , нажмите ЛКМ");
 
         ItemStack third = new ItemStack(Material.BARRIER,1);
-        ReputationItemRedactor(inv,player,300,third,Material.LAPIS_LAZULI,"&fЛазурит",
-                14,"&eЦена за 1 штуку - 0.9",
-                "&eЦена за 64 штуки - 57,6",
+        ReputationItemRedactor(inv,player,PriceManager.getNeedReputation("LAPIS_LAZULI_R"),
+                third,Material.LAPIS_LAZULI,"&fЛазурит",
+                14,"&eЦена за 1 штуку - "+PriceManager.getPriceReputation("LAPIS_LAZULI_R"),
+                "&eЦена за 64 штуки - "+PriceManager.getPriceReputation64("LAPIS_LAZULI_R"),
                 " ",
                 "&7Чтобы продать 1 ед. , нажмите ПКМ",
                 "&7Чтобы продать 64 ед. , нажмите ЛКМ");
 
         ItemStack fourth = new ItemStack(Material.BARRIER,1);
-        ReputationItemRedactor(inv,player,400,fourth,Material.TOTEM_OF_UNDYING,"&fТотем",
-                21,"&eЦена за 1 штуку - 6",
-                "&eЦена за 64 штуки - 384",
+        ReputationItemRedactor(inv,player,PriceManager.getNeedReputation("TOTEM_OF_UNDYING_R"),
+                fourth,Material.TOTEM_OF_UNDYING,"&fТотем",
+                21,"&eЦена за 1 штуку - "+PriceManager.getPriceReputation("TOTEM_OF_UNDYING_R"),
+                "&eЦена за 64 штуки - "+PriceManager.getPriceReputation64("TOTEM_OF_UNDYING_R"),
                 " ",
                 "&7Чтобы продать 1 ед. , нажмите ПКМ",
                 "&7Чтобы продать 64 ед. , нажмите ЛКМ");
 
         ItemStack fifth = new ItemStack(Material.BARRIER,1);
-        ReputationItemRedactor(inv,player,500,fifth,Material.CAKE,"&fТорт",
-                22,"&eЦена за 1 штуку - 5.3",
-                "&eЦена за 64 штуки - 339,3",
+        ReputationItemRedactor(inv,player,PriceManager.getNeedReputation("CAKE_R"),
+                fifth,Material.CAKE,"&fТорт",
+                22,"&eЦена за 1 штуку - "+PriceManager.getPriceReputation("CAKE_R"),
+                "&eЦена за 64 штуки - "+PriceManager.getPriceReputation64("CAKE_R"),
                 " ",
                 "&7Чтобы продать 1 ед. , нажмите ПКМ",
                 "&7Чтобы продать 64 ед. , нажмите ЛКМ");
 
         ItemStack sixth = new ItemStack(Material.BARRIER,1);
-        ReputationItemRedactor(inv,player,600,sixth,Material.DIAMOND_ORE,"&fАлмазная руда",
-                23,"&eЦена за 1 штуку - 1.5",
-                "&eЦена за 64 штуки - 96",
+        ReputationItemRedactor(inv,player,PriceManager.getNeedReputation("DIAMOND_ORE_R"),
+                sixth,Material.DIAMOND_ORE,"&fАлмазная руда",
+                23,"&eЦена за 1 штуку - "+PriceManager.getPriceReputation("DIAMOND_ORE_R"),
+                "&eЦена за 64 штуки - "+PriceManager.getPriceReputation64("DIAMOND_ORE_R"),
                 " ",
                 "&7Чтобы продать 1 ед. , нажмите ПКМ",
                 "&7Чтобы продать 64 ед. , нажмите ЛКМ");

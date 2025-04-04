@@ -1,7 +1,7 @@
 package com.aviloo.mytraderreloaded.Seller.Inventories;
 
 import com.aviloo.mytraderreloaded.MyTraderReloaded;
-import com.aviloo.mytraderreloaded.Seller.Utils.PriceManager;
+import com.aviloo.mytraderreloaded.Seller.Utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -143,77 +143,115 @@ public class SellerInventory implements Listener {
         ItemStack diamond = new ItemStack(Material.DIAMOND,1);
         ItemStack blaze = new ItemStack(Material.BLAZE_ROD,1);
         ItemStack tnt = new ItemStack(Material.TNT,1);
-        ItemStack breath = new ItemStack(Material.DRAGON_BREATH,1);
         ItemStack brick = new ItemStack(Material.BRICK,1);
         ItemStack nuggets = new ItemStack(Material.GOLD_NUGGET,1);
         ItemStack zHead = new ItemStack(Material.ZOMBIE_HEAD,1);
-        ItemStack shell = new ItemStack(Material.SHULKER_SHELL,1);
         ItemStack heart = new ItemStack(Material.HEART_OF_THE_SEA,1);
+        ItemStack totem = new ItemStack(Material.TOTEM_OF_UNDYING,1);
+        ItemStack sculk = new ItemStack(Material.SCULK);
 
         epicSellerItemsList.add(diamond);
         epicSellerItemsList.add(blaze);
         epicSellerItemsList.add(tnt);
-        epicSellerItemsList.add(breath);
         epicSellerItemsList.add(brick);
         epicSellerItemsList.add(nuggets);
         epicSellerItemsList.add(zHead);
-        epicSellerItemsList.add(shell);
         epicSellerItemsList.add(heart);
+        epicSellerItemsList.add(totem);
+        epicSellerItemsList.add(sculk);
     }
 
     private static ArrayList<ItemStack> generatedSellerItems = new ArrayList<>();
 
     public static void generateSellerItems(){
-        if(MyTraderReloaded.getIsEpicType()){
-            for (int i = 0; i < 9; i++) {
-                // Создаем генератор случайных чисел
-                Random random = new Random();
+        int attempts = 0;
+        boolean success = false;
+        while (attempts < 15 && !success) {
+            try {
+                if (MyTraderReloaded.getIsEpicType()) {
+                    for (int i = 0; i < 9; i++) {
+                        // Создаем генератор случайных чисел
+                        Random random = new Random();
 
-                // Генерируем случайный индекс в пределах размера ArrayList
-                int randomIndex = random.nextInt(epicSellerItemsList.size());
+                        // Генерируем случайный индекс в пределах размера ArrayList
+                        int randomIndex = random.nextInt(epicSellerItemsList.size());
 
-                generatedSellerItems.add(epicSellerItemsList.get(randomIndex));
-                epicSellerItemsList.remove(randomIndex);
+                        generatedSellerItems.add(epicSellerItemsList.get(randomIndex));
+                        epicSellerItemsList.remove(randomIndex);
+                    }
+
+                }
+                if (!MyTraderReloaded.getIsEpicType()) {
+                    for (int i = 0; i < 9; i++) {
+                        // Создаем генератор случайных чисел
+                        Random random = new Random();
+
+                        // Генерируем случайный индекс в пределах размера ArrayList
+                        int randomIndex = random.nextInt(defaultSellerItemsList.size());
+
+                        generatedSellerItems.add(defaultSellerItemsList.get(randomIndex));
+                        defaultSellerItemsList.remove(randomIndex);
+                    }
+
+                }
+                success = true;
+            }catch (IllegalArgumentException e){
+                attempts++;
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"Ошибка: "+ e.getMessage());
+                Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW+"Попытка: "+attempts+"/15");
+                if(attempts >= 15){
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED+
+                            "Превышенно максимальное кол-во попыток перезагрузки метода." );
+                    ErrorStorageUtils.saveError("Плагин не смог загрузить предметы более 15 раз.");
+                    Bukkit.getServer().shutdown();
+                }
+
             }
-
-        }
-        if(!MyTraderReloaded.getIsEpicType()){
-            for (int i = 0; i < 9; i++) {
-                // Создаем генератор случайных чисел
-                Random random = new Random();
-
-                // Генерируем случайный индекс в пределах размера ArrayList
-                int randomIndex = random.nextInt(defaultSellerItemsList.size());
-
-                generatedSellerItems.add(defaultSellerItemsList.get(randomIndex));
-                defaultSellerItemsList.remove(randomIndex);
-            }
-
         }
 
     }
 
     public static void inventorySetUp(){
-        //Buttons set up
-        for(int i = 0; i < 3; i++){
-            inventory.setItem(48+i,inventoryButtonsList.get(i));
-        }
-        //Seller Items
-        for(int i = 0; i < 3; i++){
-            inventory.setItem(12+i,generatedSellerItems.get(i));
-        }
-        for(int i = 3; i < 6; i++){
-            inventory.setItem(21+i-3,generatedSellerItems.get(i));
-        }
-        for(int i = 6; i < 9; i++){
-            inventory.setItem(30+i-6,generatedSellerItems.get(i));
-        }
+        int attempts = 0;
+        boolean success = false;
 
-        if(!MyTraderReloaded.getIsEpicType()) {
-            loadMetaForGeneratedDefaultItems();
-        }
-        if(MyTraderReloaded.getIsEpicType()){
-            loadMetaForGeneratedEpicItems();
+        while(attempts < 15 &&!success) {
+            try {
+                //Buttons set up
+                for (int i = 0; i < 3; i++) {
+                    inventory.setItem(48 + i, inventoryButtonsList.get(i));
+                }
+                //Seller Items
+                for (int i = 0; i < 3; i++) {
+                    inventory.setItem(12 + i, generatedSellerItems.get(i));
+                }
+                for (int i = 3; i < 6; i++) {
+                    inventory.setItem(21 + i - 3, generatedSellerItems.get(i));
+                }
+                for (int i = 6; i < 9; i++) {
+                    inventory.setItem(30 + i - 6, generatedSellerItems.get(i));
+                }
+
+                if (!MyTraderReloaded.getIsEpicType()) {
+                    loadMetaForGeneratedDefaultItems();
+                }
+                if (MyTraderReloaded.getIsEpicType()) {
+                    loadMetaForGeneratedEpicItems();
+                }
+
+                inventory.setItem(45, LeaderUtils.traderItem());
+                success = true;
+            } catch (IllegalArgumentException e) {
+                attempts++;
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"Ошибка: "+ e.getMessage());
+                Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW+"Попытка: "+attempts+"/15");
+                if(attempts >= 15){
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED+
+                            "Превышенно максимальное кол-во попыток перезагрузки метода." );
+                    ErrorStorageUtils.saveError("Плагин не смог загрузить предметы более 15 раз.");
+                    Bukkit.getServer().shutdown();
+                }
+            }
         }
     }
 
@@ -362,9 +400,6 @@ public class SellerInventory implements Listener {
             if(items.getType().equals(Material.TNT)){
                 updateTNTEpicMeta(items);
             }
-            if(items.getType().equals(Material.DRAGON_BREATH)){
-                updateBreathEpicMeta(items);
-            }
             if(items.getType().equals(Material.BRICK)){
                 updateBrickEpicMeta(items);
             }
@@ -374,11 +409,17 @@ public class SellerInventory implements Listener {
             if(items.getType().equals(Material.ZOMBIE_HEAD)){
                 updateZombieHeadEpicMeta(items);
             }
-            if(items.getType().equals(Material.SHULKER_SHELL)){
-                updateShellEpicMeta(items);
-            }
             if(items.getType().equals(Material.HEART_OF_THE_SEA)){
                 updateHeartEpicMeta(items);
+            }
+            if(items.getType().equals(Material.TOTEM_OF_UNDYING)){
+                updateTotemEpicMeta(items);
+            }
+            if(items.getType().equals(Material.SCULK)){
+                updateSculkEpicMeta(items);
+            }
+            if(items.getType().equals(Material.BLAZE_ROD)){
+                updateBlazeEpicMeta(items);
             }
 
         }
@@ -397,6 +438,7 @@ public class SellerInventory implements Listener {
         redLore.add(" ");
         redLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         redLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        redLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         redMeta.setLore(redLore);
         item.setItemMeta(redMeta);
     }
@@ -410,6 +452,7 @@ public class SellerInventory implements Listener {
         gunLore.add(" ");
         gunLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         gunLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        gunLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         gunMeta.setLore(gunLore);
         item.setItemMeta(gunMeta);
     }
@@ -423,6 +466,7 @@ public class SellerInventory implements Listener {
         roseLore.add(" ");
         roseLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         roseLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        roseLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         roseMeta.setLore(roseLore);
         item.setItemMeta(roseMeta);
     }
@@ -436,6 +480,7 @@ public class SellerInventory implements Listener {
         clayLore.add(" ");
         clayLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         clayLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        clayLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         clayMeta.setLore(clayLore);
         item.setItemMeta(clayMeta);
     }
@@ -449,6 +494,7 @@ public class SellerInventory implements Listener {
         quartzLore.add(" ");
         quartzLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         quartzLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        quartzLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         quartzMeta.setLore(quartzLore);
         item.setItemMeta(quartzMeta);
     }
@@ -462,6 +508,7 @@ public class SellerInventory implements Listener {
         caneLore.add(" ");
         caneLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         caneLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        caneLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         caneMeta.setLore(caneLore);
         item.setItemMeta(caneMeta);
     }
@@ -475,6 +522,7 @@ public class SellerInventory implements Listener {
         deadLore.add(" ");
         deadLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         deadLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        deadLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         deadMeta.setLore(deadLore);
         item.setItemMeta(deadMeta);
     }
@@ -488,6 +536,7 @@ public class SellerInventory implements Listener {
         wheatLore.add(" ");
         wheatLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         wheatLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        wheatLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         wheatMeta.setLore(wheatLore);
         item.setItemMeta(wheatMeta);
     }
@@ -501,6 +550,7 @@ public class SellerInventory implements Listener {
         blazeLore.add(" ");
         blazeLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         blazeLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        blazeLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         blazeMeta.setLore(blazeLore);
         item.setItemMeta(blazeMeta);
     }
@@ -514,6 +564,7 @@ public class SellerInventory implements Listener {
         appleLore.add(" ");
         appleLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         appleLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        appleLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         appleMeta.setLore(appleLore);
         item.setItemMeta(appleMeta);
     }
@@ -527,6 +578,7 @@ public class SellerInventory implements Listener {
         sugarLore.add(" ");
         sugarLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         sugarLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        sugarLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         sugarMeta.setLore(sugarLore);
         item.setItemMeta(sugarMeta);
     }
@@ -540,6 +592,7 @@ public class SellerInventory implements Listener {
         dragonLore.add(" ");
         dragonLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         dragonLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        dragonLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         dragonMeta.setLore(dragonLore);
         item.setItemMeta(dragonMeta);
     }
@@ -553,6 +606,7 @@ public class SellerInventory implements Listener {
         membraneLore.add(" ");
         membraneLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         membraneLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        membraneLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         membraneMeta.setLore(membraneLore);
         item.setItemMeta(membraneMeta);
     }
@@ -566,6 +620,7 @@ public class SellerInventory implements Listener {
         melonLore.add(" ");
         melonLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         melonLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        melonLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         melonMeta.setLore(melonLore);
         item.setItemMeta(melonMeta);
     }
@@ -579,6 +634,7 @@ public class SellerInventory implements Listener {
         bottleLore.add(" ");
         bottleLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         bottleLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        bottleLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         bottleMeta.setLore(bottleLore);
         item.setItemMeta(bottleMeta);
     }
@@ -592,6 +648,7 @@ public class SellerInventory implements Listener {
         inkLore.add(" ");
         inkLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         inkLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        inkLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         inkMeta.setLore(inkLore);
         item.setItemMeta(inkMeta);
     }
@@ -605,6 +662,7 @@ public class SellerInventory implements Listener {
         sweetLore.add(" ");
         sweetLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         sweetLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        sweetLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         sweetMeta.setLore(sweetLore);
         item.setItemMeta(sweetMeta);
     }
@@ -618,6 +676,7 @@ public class SellerInventory implements Listener {
         seedsLore.add(" ");
         seedsLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         seedsLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        seedsLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         seedsMeta.setLore(seedsLore);
         item.setItemMeta(seedsMeta);
     }
@@ -631,6 +690,7 @@ public class SellerInventory implements Listener {
         RawLore.add(" ");
         RawLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         RawLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        RawLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         RawMeta.setLore(RawLore);
         item.setItemMeta(RawMeta);
     }
@@ -644,6 +704,7 @@ public class SellerInventory implements Listener {
         EyeLore.add(" ");
         EyeLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         EyeLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        EyeLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         EyeMeta.setLore(EyeLore);
         item.setItemMeta(EyeMeta);
     }
@@ -657,6 +718,7 @@ public class SellerInventory implements Listener {
         cobleLore.add(" ");
         cobleLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         cobleLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        cobleLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         cobleMeta.setLore(cobleLore);
         item.setItemMeta(cobleMeta);
     }
@@ -670,6 +732,7 @@ public class SellerInventory implements Listener {
         magmaLore.add(" ");
         magmaLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         magmaLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        magmaLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         magmaMeta.setLore(magmaLore);
         item.setItemMeta(magmaMeta);
     }
@@ -683,6 +746,7 @@ public class SellerInventory implements Listener {
         strLore.add(" ");
         strLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         strLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        strLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         strMeta.setLore(strLore);
         item.setItemMeta(strMeta);
     }
@@ -696,6 +760,7 @@ public class SellerInventory implements Listener {
         sandLore.add(" ");
         sandLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         sandLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        sandLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         sandMeta.setLore(sandLore);
         item.setItemMeta(sandMeta);
     }
@@ -709,6 +774,7 @@ public class SellerInventory implements Listener {
         coalLore.add(" ");
         coalLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         coalLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        coalLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         coalMeta.setLore(coalLore);
         item.setItemMeta(coalMeta);
     }
@@ -722,6 +788,7 @@ public class SellerInventory implements Listener {
         arrowLore.add(" ");
         arrowLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         arrowLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        arrowLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         arrowMeta.setLore(arrowLore);
         item.setItemMeta(arrowMeta);
     }
@@ -735,6 +802,7 @@ public class SellerInventory implements Listener {
         zombieLore.add(" ");
         zombieLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         zombieLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        zombieLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         zombieMeta.setLore(zombieLore);
         item.setItemMeta(zombieMeta);
     }
@@ -748,6 +816,7 @@ public class SellerInventory implements Listener {
         kelpLore.add(" ");
         kelpLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         kelpLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        kelpLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         kelpMeta.setLore(kelpLore);
         item.setItemMeta(kelpMeta);
     }
@@ -761,6 +830,7 @@ public class SellerInventory implements Listener {
         plantsLore.add(" ");
         plantsLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         plantsLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        plantsLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         plantsMeta.setLore(plantsLore);
         item.setItemMeta(plantsMeta);
     }
@@ -774,6 +844,7 @@ public class SellerInventory implements Listener {
         HoneyLore.add(" ");
         HoneyLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         HoneyLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        HoneyLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         HoneyMeta.setLore(HoneyLore);
         item.setItemMeta(HoneyMeta);
     }
@@ -787,6 +858,7 @@ public class SellerInventory implements Listener {
         railLore.add(" ");
         railLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         railLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        railLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         railMeta.setLore(railLore);
         item.setItemMeta(railMeta);
     }
@@ -801,6 +873,7 @@ public class SellerInventory implements Listener {
         shellLore.add(" ");
         shellLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         shellLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        shellLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         shellMeta.setLore(shellLore);
         item.setItemMeta(shellMeta);
     }
@@ -815,6 +888,7 @@ public class SellerInventory implements Listener {
         boneLore.add(" ");
         boneLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         boneLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        boneLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         boneMeta.setLore(boneLore);
         item.setItemMeta(boneMeta);
     }
@@ -829,6 +903,7 @@ public class SellerInventory implements Listener {
         copperLore.add(" ");
         copperLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         copperLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        copperLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         copperMeta.setLore(copperLore);
         item.setItemMeta(copperMeta);
     }
@@ -843,6 +918,7 @@ public class SellerInventory implements Listener {
         stLore.add(" ");
         stLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         stLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        stLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         stMeta.setLore(stLore);
         item.setItemMeta(stMeta);
     }
@@ -857,6 +933,7 @@ public class SellerInventory implements Listener {
         saLore.add(" ");
         saLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         saLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        saLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         saMeta.setLore(saLore);
         item.setItemMeta(saMeta);
     }
@@ -871,6 +948,7 @@ public class SellerInventory implements Listener {
         puLore.add(" ");
         puLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         puLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        puLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         puMeta.setLore(puLore);
         item.setItemMeta(puMeta);
     }
@@ -885,6 +963,7 @@ public class SellerInventory implements Listener {
         trLore.add(" ");
         trLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         trLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        trLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         trMeta.setLore(trLore);
         item.setItemMeta(trMeta);
     }
@@ -899,6 +978,7 @@ public class SellerInventory implements Listener {
         boLore.add(" ");
         boLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         boLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        boLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         boMeta.setLore(boLore);
         item.setItemMeta(boMeta);
     }
@@ -913,6 +993,7 @@ public class SellerInventory implements Listener {
         leLore.add(" ");
         leLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         leLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        leLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         leMeta.setLore(leLore);
         item.setItemMeta(leMeta);
     }
@@ -927,6 +1008,7 @@ public class SellerInventory implements Listener {
         moLore.add(" ");
         moLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         moLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        moLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         moMeta.setLore(moLore);
         item.setItemMeta(moMeta);
     }
@@ -941,6 +1023,7 @@ public class SellerInventory implements Listener {
         tuLore.add(" ");
         tuLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         tuLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        tuLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         tuMeta.setLore(tuLore);
         item.setItemMeta(tuMeta);
     }
@@ -957,6 +1040,7 @@ public class SellerInventory implements Listener {
         dLore.add(" ");
         dLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         dLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        dLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         dMeta.setLore(dLore);
         item.setItemMeta(dMeta);
     }
@@ -971,6 +1055,7 @@ public class SellerInventory implements Listener {
         bLore.add(" ");
         bLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         bLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        bLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         bMeta.setLore(bLore);
         item.setItemMeta(bMeta);
     }
@@ -985,22 +1070,9 @@ public class SellerInventory implements Listener {
         tLore.add(" ");
         tLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         tLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        tLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         tMeta.setLore(tLore);
         item.setItemMeta(tMeta);
-    }
-
-    private static void updateBreathEpicMeta(@NotNull ItemStack item){
-        ItemMeta brMeta = item.getItemMeta();
-        brMeta.setDisplayName(ChatColor.WHITE+"Дыхание дракона");
-        ArrayList<String> brLore = new ArrayList<>();
-        brLore.add(ChatColor.YELLOW+"Цена за 1 штуку - "+ PriceManager.getCurrentPriceString("DRAGON_BREATH"));
-        brLore.add(ChatColor.YELLOW+"Цена за 64 штуку - "
-                +PriceManager.getCurrentPriceFor64String("DRAGON_BREATH"));
-        brLore.add(" ");
-        brLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
-        brLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
-        brMeta.setLore(brLore);
-        item.setItemMeta(brMeta);
     }
 
     private static void updateBrickEpicMeta(@NotNull ItemStack item){
@@ -1013,6 +1085,7 @@ public class SellerInventory implements Listener {
         briLore.add(" ");
         briLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         briLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        briLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         briMeta.setLore(briLore);
         item.setItemMeta(briMeta);
     }
@@ -1027,6 +1100,7 @@ public class SellerInventory implements Listener {
         nLore.add(" ");
         nLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         nLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        nLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         nMeta.setLore(nLore);
         item.setItemMeta(nMeta);
     }
@@ -1041,22 +1115,9 @@ public class SellerInventory implements Listener {
         zLore.add(" ");
         zLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         zLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        zLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         zMeta.setLore(zLore);
         item.setItemMeta(zMeta);
-    }
-
-    private static void updateShellEpicMeta(@NotNull ItemStack item){
-        ItemMeta sMeta = item.getItemMeta();
-        sMeta.setDisplayName(ChatColor.WHITE+"Панцирь шалкера");
-        ArrayList<String> sLore = new ArrayList<>();
-        sLore.add(ChatColor.YELLOW+"Цена за 1 штуку - "+ PriceManager.getCurrentPriceString("SHULKER_SHELL"));
-        sLore.add(ChatColor.YELLOW+"Цена за 64 штуку - "
-                +PriceManager.getCurrentPriceFor64String("SHULKER_SHELL"));
-        sLore.add(" ");
-        sLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
-        sLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
-        sMeta.setLore(sLore);
-        item.setItemMeta(sMeta);
     }
 
     private static void updateHeartEpicMeta(@NotNull ItemStack item){
@@ -1069,6 +1130,7 @@ public class SellerInventory implements Listener {
         hLore.add(" ");
         hLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
         hLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        hLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
         hLore.add(" ");
         hLore.add(ChatColor.GOLD+"Это особенный товар!");
         hLore.add(ChatColor.WHITE+"Снижение цены произойдет после 3-х");
@@ -1080,12 +1142,42 @@ public class SellerInventory implements Listener {
         item.setItemMeta(hMeta);
     }
 
+    private static void updateTotemEpicMeta(@NotNull ItemStack item){
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.WHITE+"Тотем бессмертия");
+        ArrayList<String> hLore = new ArrayList<>();
+        hLore.add(ChatColor.YELLOW+"Цена за 1 штуку - "+ PriceManager.getCurrentPriceString("TOTEM_OF_UNDYING"));
+        hLore.add(ChatColor.YELLOW+"Цена за 64 штуку - "
+                +PriceManager.getCurrentPriceFor64String("TOTEM_OF_UNDYING"));
+        hLore.add(" ");
+        hLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
+        hLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        hLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
+        meta.setLore(hLore);
+        item.setItemMeta(meta);
+    }
+
+    private static void updateSculkEpicMeta(@NotNull ItemStack item){
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.WHITE+"Скалк");
+        ArrayList<String> hLore = new ArrayList<>();
+        hLore.add(ChatColor.YELLOW+"Цена за 1 штуку - "+ PriceManager.getCurrentPriceString("SCULK"));
+        hLore.add(ChatColor.YELLOW+"Цена за 64 штуку - "
+                +PriceManager.getCurrentPriceFor64String("SCULK"));
+        hLore.add(" ");
+        hLore.add(ChatColor.GRAY+"Чтобы продать 1 ед. , нажмите ПКМ");
+        hLore.add(ChatColor.GRAY+"Чтобы продать 64 ед. , нажмите ЛКМ");
+        hLore.add(ChatColor.GRAY+"Чтобы продать всё, кликните и зажмите Shift");
+        meta.setLore(hLore);
+        item.setItemMeta(meta);
+    }
+
     public static void setupStroke(){
         // item part
         ItemStack item = new ItemStack(Material.GRAY_STAINED_GLASS_PANE,1);
-        if(MyTraderReloaded.getPlugin().StrokeMaterial != null){
+        if(MyTraderReloaded.getPlugin().StrokeMaterial() != null){
             try{
-                item.setType(Material.valueOf(MyTraderReloaded.getPlugin().StrokeMaterial));
+                item.setType(Material.valueOf(MyTraderReloaded.getPlugin().StrokeMaterial()));
             }catch (IllegalArgumentException lae){
                 item.setType(Material.GRAY_STAINED_GLASS_PANE);
                 MyTraderReloaded.getPlugin().getLogger().
@@ -1094,7 +1186,7 @@ public class SellerInventory implements Listener {
             }catch (NullPointerException npe){
                 item.setType(Material.GRAY_STAINED_GLASS_PANE);
                 MyTraderReloaded.getPlugin().getLogger().
-                        severe("Материал обводки не может отутствовать!");
+                        severe("Материал обводки не может отсутствовать!");
             }
         }
         ItemMeta meta = item.getItemMeta();

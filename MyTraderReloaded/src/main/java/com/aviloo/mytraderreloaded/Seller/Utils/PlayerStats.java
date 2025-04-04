@@ -2,19 +2,20 @@ package com.aviloo.mytraderreloaded.Seller.Utils;
 
 import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 public class PlayerStats implements Listener {
-
-    private static MyTraderReloaded plugin;
-    public PlayerStats(MyTraderReloaded plugin){
-        this.plugin = plugin;
-    }
 
     private static HashMap<UUID,Double> EarnedHashMap = new HashMap<>();
 
@@ -26,7 +27,7 @@ public class PlayerStats implements Listener {
         EarnedHashMap.put(uuid,earned);
     }
 
-    public static void addEarnedPlayerStats(UUID uuid,String ProductType,int ProductCount){
+    public static void addEarnedPlayerStats(UUID uuid, String ProductType, int ProductCount){
         EarnedHashMap.put(uuid, EarnedHashMap.getOrDefault(uuid, 0.0)
                 + PriceManager.getCurrentPrice(ProductType) * ProductCount);
 
@@ -60,7 +61,7 @@ public class PlayerStats implements Listener {
     }
 
     public static void giveRewardToTrader(){
-        Bukkit.getScheduler().runTaskLater(plugin,() -> {
+        Bukkit.getScheduler().runTaskLater(MyTraderReloaded.getPlugin(),() -> {
             PlayerStats.getBestTraderUUID();
             if(PlayerStats.bestTrader == null){
                 Bukkit.getConsoleSender().sendMessage("Лучший игрок невыявлен.");
@@ -83,5 +84,30 @@ public class PlayerStats implements Listener {
         },1080000); // через 15 часов
     }
 
+    //ItemStack
+    public static ItemStack traderItem(){
+        ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        meta.setDisplayName(ChatColor.GREEN+"Лучший торговец сегодня");
+        ArrayList<String> lore = new ArrayList<>();
+        if(bestTrader != null) {
+            meta.setOwningPlayer(Bukkit.getOfflinePlayer(PlayerStats.bestTrader));
+            lore.add(" ");
+            lore.add(ChatColor.WHITE+"Ник: " +ChatColor.GRAY+
+                    Bukkit.getOfflinePlayer(bestTrader).getName());
+            lore.add(ChatColor.WHITE+"Заработал: "+ChatColor.GRAY+
+                    Math.ceil(getEarnedPlayerStats(bestTrader)));
+            lore.add(" ");
+        }else {
+            lore.add(" ");
+            lore.add(ChatColor.WHITE+"Ник: "+ChatColor.GRAY+"-");
+            lore.add(ChatColor.WHITE+"Заработал: "+ChatColor.GRAY+"-");
+            lore.add(" ");
+        }
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+
+        return item;
+    }
 
 }

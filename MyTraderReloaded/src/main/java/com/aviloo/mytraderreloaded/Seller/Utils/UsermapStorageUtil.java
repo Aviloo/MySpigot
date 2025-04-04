@@ -26,7 +26,6 @@ public class UsermapStorageUtil {
 
     public static void saveUsermap() throws IOException{
         for(Map.Entry<UUID, PluginPlayer> entry : usermap.entrySet()){
-            usermapConfig.set("users.data."+entry.getKey() + ".gameName", entry.getValue().getName());
             usermapConfig.set("users.data."+entry.getKey() + ".javaUUID", entry.getValue().getJavaUUID());
             usermapConfig.set("users.data."+entry.getKey() + ".rep", entry.getValue().getReputation());
 
@@ -41,10 +40,9 @@ public class UsermapStorageUtil {
             UUID uuid = UUID.fromString(key);
 
             String javaUUID = usermapConfig.getString("users.data." + key + ".javaUUID");
-            String name = usermapConfig.getString("users.data." + key + ".gameName");
             int rep = usermapConfig.getInt("users.data." + key + ".rep");
 
-            PluginPlayer pluginPlayer = new PluginPlayer(javaUUID, name);
+            PluginPlayer pluginPlayer = new PluginPlayer(javaUUID);
 
             pluginPlayer.setReputation(rep);
 
@@ -55,8 +53,7 @@ public class UsermapStorageUtil {
     public static void addToUsermap(Player player){
         UUID uuid = player.getUniqueId();
         String javaUUID = uuid.toString();
-        String name = player.getName();
-        PluginPlayer pluginPlayer = new PluginPlayer(javaUUID, name);
+        PluginPlayer pluginPlayer = new PluginPlayer(javaUUID);
         usermap.put(uuid, pluginPlayer);
     }
 
@@ -90,32 +87,6 @@ public class UsermapStorageUtil {
             logger.warning(ColorUtils.translateColorCodes(ColorUtils.translateColorCodes(
                             "&4[Ошибка] &fИгрок не найден.")
                     .replace(PLAYER_PLACEHOLDER, offlinePlayer.getName())));
-        }
-        return null;
-    }
-
-    public static Player getBukkitPlayerByName(String name){
-        for (PluginPlayer pluginPlayer : usermap.values()){
-            if (pluginPlayer.getName().equalsIgnoreCase(name)){
-                return Bukkit.getPlayer(pluginPlayer.getName());
-            }else {
-                logger.warning(ColorUtils.translateColorCodes(ColorUtils.translateColorCodes(
-                                "&4[Ошибка] &fИгрок не найден.")
-                        .replace(PLAYER_PLACEHOLDER, name)));
-            }
-        }
-        return null;
-    }
-
-    public static OfflinePlayer getBukkitOfflinePlayerByName(String name){
-        for (PluginPlayer pluginPlayer : usermap.values()){
-            if (pluginPlayer.getName().equalsIgnoreCase(name)){
-                return Bukkit.getOfflinePlayer(UUID.fromString(pluginPlayer.getJavaUUID()));
-            }else {
-                logger.warning(ColorUtils.translateColorCodes(ColorUtils.translateColorCodes(
-                                "&4[Ошибка] &fИгрок не найден.")
-                        .replace(PLAYER_PLACEHOLDER, name)));
-            }
         }
         return null;
     }

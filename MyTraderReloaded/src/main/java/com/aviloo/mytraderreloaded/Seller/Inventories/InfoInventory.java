@@ -106,18 +106,22 @@ public class InfoInventory implements Listener {
 
         ItemStack fourth = new ItemStack(Material.PAPER,1);
         ItemMeta fourthMeta = fourth.getItemMeta();
-        fourthMeta.setDisplayName(ChatColor.YELLOW+"Лидеры продаж.");
+        fourthMeta.setDisplayName(ChatColor.YELLOW+"Лучший продавец.");
         ArrayList<String> fourthLore = new ArrayList<>();
-        setLore(fourthLore,"&aКто это такие?",
-                "&fЭто игроки, которые продали товаров",
+        setLore(fourthLore,"&aКто это такой?",
+                "&fЭто игрок, который продал товаров",
                 "&fна наибольшую сумму.",
-                "&aКакие бонусы они получают?",
-                "&fПервые три места получают донат-валюту ",
-                "&fв размере:",
-                " ",
-                "&f1 Место - &640 &fДонат-валюты.",
-                "&f2 Место - &625 &fДонат-валюты.",
-                "&f3 Место - &615 &fДонат-валюты.",
+                "&aКакие бонусы он получит?",
+                "&fОн получит в награду донат-валюту ",
+                "&fв размере: 45 донат-валюты",
+                "&aКогда выдается награда?",
+                "&fЧерез 15 часов после рестарта.",
+                "&7(Обычно это 21:01 по МСК",
+                "&7Но бывают исключения)",
+                "&aЧто делать если не выдали награду?",
+                "&fСообщить о проблеме администрации. &7(/links)",
+                "&fЕсли вы не получили свою награду, необходимо",
+                "&fбудет доказать, что аккаунт принадлежит вам.",
                 " ");
         fourthMeta.setLore(fourthLore);
         fourth.setItemMeta(fourthMeta);

@@ -1,0 +1,246 @@
+#Обозначения:
+#StartPrice - начальная цена
+#NextStepQuantity - Кол-во проданных единиц товара до следующего снижения цены.
+#StopTreadingQuantity - Кол-во проданных единиц товара до прекращения возможности продать его.
+
+#    Правила пользования конфигом:
+# 1. NextStepQuantity при делении на StopTreadingQuantity НЕ ДОЛЖНО превышать 6, иначе будут ошибки.
+# 2. Быть внимательным с дублированием товаров, во избежание ошибок
+# 3. Если ставить цену меньше 1, то уменьшать кол-во продаж, так как после 0.1 Vault перестанет
+# выдавать валюту!
+# 4. StartPrice указывать с десятыми. NextStepQuantity и StopTreadingQuantity указывать целыми.
+
+REDSTONE:
+  StartPrice: 3.0
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+GUNPOWDER:
+  StartPrice: 5.0
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+ROSE_BUSH:
+  StartPrice: 3.5
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+CLAY_BALL:
+  StartPrice: 2.4
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+QUARTZ:
+  StartPrice: 1.5
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+SUGAR_CANE:
+  StartPrice: 2.1
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+DEAD_BUSH:
+  StartPrice: 5.1
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+WHEAT:
+  StartPrice: 2.1
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+BLAZE_POWDER:
+  StartPrice: 7.3
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+
+APPLE:
+  StartPrice: 4.3
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+SUGAR:
+  StartPrice: 2.1
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+DRAGON_BREATH:
+  StartPrice: 24.0
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+PHANTOM_MEMBRANE:
+  StartPrice: 15.0
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+MELON_SLICE:
+  StartPrice: 3.3
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+GLASS_BOTTLE:
+  StartPrice: 2.5
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+INK_SAC:
+  StartPrice: 2.7
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+SWEET_BERRIES:
+  StartPrice: 2.4
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+WHEAT_SEEDS:
+  StartPrice: 2.4
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+
+COOKED_COD:
+  StartPrice: 3.3
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+SPIDER_EYE:
+  StartPrice: 5.1
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+COBBLESTONE:
+  StartPrice: 0.5
+  NextStepQuantity: 300
+  StopTreadingQuantity: 350
+MAGMA_BLOCK:
+  StartPrice: 1.5
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+STRING:
+  StartPrice: 1.9
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+SAND:
+  StartPrice: 0.4
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+COAL:
+  StartPrice: 1.0
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+ARROW:
+  StartPrice: 4.3
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+ROTTEN_FLESH:
+  StartPrice: 1.9
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+
+DRIED_KELP:
+  StartPrice: 2.5
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+WARPED_PLANKS:
+  StartPrice: 1.9
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+HONEY_BOTTLE:
+  StartPrice: 5.0
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+RAIL:
+  StartPrice: 2.7
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+SHULKER_SHELL:
+  StartPrice: 6.0
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+BONE:
+  StartPrice: 1.1
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+COPPER_BLOCK:
+  StartPrice: 3.3
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+DIORITE_STAIRS:
+  StartPrice: 1.8
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+SALMON:
+  StartPrice: 2.7
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+
+PUFFERFISH:
+  StartPrice: 3.1
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+TROPICAL_FISH:
+  StartPrice: 3.9
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+BOWL:
+  StartPrice: 0.5
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+LEATHER:
+  StartPrice: 2.9
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+MOSS_BLOCK:
+  StartPrice: 1.6
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+TUBE_CORAL:
+  StartPrice: 3.0
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+
+
+DIAMOND:
+  StartPrice: 7.0
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+BLAZE_ROD:
+  StartPrice: 4.1
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+TNT:
+  StartPrice: 5.8
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+BRICK:
+  StartPrice: 3.1
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+GOLD_NUGGET:
+  StartPrice: 2.5
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+ZOMBIE_HEAD:
+  StartPrice: 51.5
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+HEART_OF_THE_SEA:
+  StartPrice: 330.0
+  NextStepQuantity: 3
+  StopTreadingQuantity: 9
+TOTEM_OF_UNDYING:
+  StartPrice: 51.0
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+SCULK:
+  StartPrice: 7.0
+  NextStepQuantity: 100
+  StopTreadingQuantity: 150
+
+#Товары за репутацию
+#Обозначения:
+#Price - цена
+#NeedRep - необходимое кол-во очков репутации, чтобы разблокировать.
+#Окончание "_R" - нужно, чтобы не возникали ошибки.
+GOLD_NUGGET_R:
+  Price: 1.3
+  NeedRep: 100
+WHEAT_R:
+  Price: 0.3
+  NeedRep: 200
+LAPIS_LAZULI_R:
+  Price: 0.9
+  NeedRep: 300
+TOTEM_OF_UNDYING_R:
+  Price: 6
+  NeedRep: 400
+CAKE_R:
+  Price: 5.3
+  NeedRep: 500
+DIAMOND_ORE_R:
+  Price: 1.5
+  NeedRep: 600

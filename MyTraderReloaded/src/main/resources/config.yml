@@ -1,5 +1,2 @@
-usePluginTradeSystem: true
-YesterdayScreen: ScreenE
-useStrokeInGUI: false
-strokeMaterial: GRAY_STAINED_GLASS_PANE
 useSQL: false
+chanceOfEpicSeller: 0.94

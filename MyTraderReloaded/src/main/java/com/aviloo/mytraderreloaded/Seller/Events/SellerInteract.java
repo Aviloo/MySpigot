@@ -2,6 +2,7 @@ package com.aviloo.mytraderreloaded.Seller.Events;
 
 import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import com.aviloo.mytraderreloaded.Seller.Inventories.InfoInventory;
+import com.aviloo.mytraderreloaded.Seller.Inventories.LoadScreen;
 import com.aviloo.mytraderreloaded.Seller.Inventories.ReputationProductInventory;
 import com.aviloo.mytraderreloaded.Seller.Inventories.SellerInventory;
 import com.aviloo.mytraderreloaded.Seller.Utils.*;
@@ -10,16 +11,78 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import static org.bukkit.Material.CLAY_BALL;
 
 public class SellerInteract implements Listener {
+
+    private int getItemCount(Player player, Material material) {
+        int count = 0;
+        for (ItemStack item : player.getInventory()) {
+            if (item != null && item.getType() == material) {
+                count += item.getAmount();
+            }
+        }
+        return count;
+    }
+
+    private void removeItem(Player player,Material material, int amount) {
+        PlayerInventory inventory = player.getInventory();
+        for (int i = 0; i < inventory.getSize(); i++) {
+            ItemStack item = inventory.getItem(i);
+            if (item == null || item.getType() != material) continue;
+
+            int itemAmount = item.getAmount();
+            if (amount >= itemAmount) {
+                inventory.clear(i);
+                amount -= itemAmount;
+            } else {
+                item.setAmount(itemAmount - amount);
+                break;
+            }
+
+            if (amount <= 0) break;
+        }
+    }
+
+    private void removeItems(Player player, String ProductType, int tryToSell) {
+        if(tryToSell > PriceManager.getProductAmountLeft(ProductType)) {
+            removeItem(player,
+                    Material.valueOf(ProductType),
+                            PriceManager.getProductAmountLeft(ProductType));
+
+            if(PriceManager.getProductAmountLeft(ProductType) >= 64){
+                EconomyManager.giveMoney(player,PriceManager.getCurrentPrice(ProductType)
+                        * PriceManager.getProductAmountLeft(ProductType) + (Math.ceil(
+                        (double) PriceManager.getProductAmountLeft(ProductType) / 64) * 9));
+            }
+            if(PriceManager.getProductAmountLeft(ProductType) < 64){
+                EconomyManager.giveMoney(player,PriceManager.getCurrentPrice(ProductType) *
+                        PriceManager.getProductAmountLeft(ProductType));
+            }
+        }else {
+            removeItem(player,Material.valueOf(ProductType),
+                    tryToSell);
+            if(tryToSell >= 64){
+                EconomyManager.giveMoney(player,PriceManager.getCurrentPrice(ProductType) *
+                        tryToSell + (Math.ceil((double) tryToSell / 64) * 9));
+            }
+            if(tryToSell < 64){
+                EconomyManager.giveMoney(player,PriceManager.getCurrentPrice(ProductType)
+                * tryToSell);
+            }
+        }
+
+    }
 
     private static void ProductBlocked(Player player, Inventory inventory,int slot) {
         ItemStack item = new ItemStack(Material.BARRIER);
@@ -32,22 +95,74 @@ public class SellerInteract implements Listener {
         inventory.setItem(slot,item);
     }
 
+    private String getProductName(String ProductType){
+        ItemStack item = new ItemStack(Material.valueOf(ProductType));
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(item.getTranslationKey());
+        item.setItemMeta(meta);
+
+        return meta.getDisplayName();
+    }
+
     private static FileConfiguration messagesConfig =
             MyTraderReloaded.getPlugin().messagesFileManager.getMessagesConfig();
 
     private void sellProduct(Player player,String ProductType, int amount){
         PriceManager.addSoldQuantity(ProductType,amount);
         PriceManager.priceChecker(ProductType);
-        player.getInventory().removeItem(new ItemStack(Material.valueOf(ProductType), amount));
-        PlayerStats.addEarnedPlayerStats(player.getUniqueId(),ProductType,amount);
-        if(amount == 1) {
-            EconomyManager.giveMoney(player, PriceManager.getCurrentPrice(ProductType));
+        LeaderUtils.addPlayerEarned(player.getUniqueId(),
+                PriceManager.getCurrentPrice(ProductType) * amount);
+        removeItems(player,ProductType,amount);
+        if(!MyTraderReloaded.getIsEpicType()) {
+            SellerInventory.loadMetaForGeneratedDefaultItems();
         }
-        if(amount == 64) {
-            EconomyManager.giveMoney(player, PriceManager.getCurrentPriceFor64(ProductType));
+        if(MyTraderReloaded.getIsEpicType()){
+            SellerInventory.loadMetaForGeneratedEpicItems();
         }
-        SellerInventory.loadMetaForGeneratedDefaultItems();
+        player.updateInventory();
     }
+
+    private void sellProductController(ClickType click, Player player,
+                                       String ProductType){
+        if(!click.isShiftClick() && !click.isLeftClick() && !click.isRightClick()){return;}
+
+        if (click.isRightClick() && !click.isShiftClick()) {
+            if (player.getInventory().containsAtLeast(new ItemStack(Material.valueOf(ProductType)),
+                    1)) {
+                sellProduct(player,ProductType,1);
+                player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт."
+                +getProductName(ProductType)+".");
+            }
+            if (!player.getInventory().containsAtLeast(new ItemStack(Material.valueOf(ProductType)),
+                    1)) {
+                player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+            }
+        }
+        if (click.isLeftClick() && !click.isShiftClick()) {
+            if (player.getInventory().containsAtLeast(new ItemStack(Material.valueOf(ProductType))
+                    , 64)) {
+                sellProduct(player,ProductType,64);
+                player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. "+
+                        getProductName(ProductType)+".");
+            }
+            if (!player.getInventory().containsAtLeast(new ItemStack(Material.valueOf(ProductType)),
+                    64)) {
+                player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+            }
+        }
+        if(click.isShiftClick()){
+            if(player.getInventory().containsAtLeast(new ItemStack(Material.valueOf(ProductType)),
+                    getItemCount(player,Material.valueOf(ProductType)))) {
+                sellProduct(player, ProductType, getItemCount(player,
+                        Material.valueOf(ProductType)));
+            }
+            if(!player.getInventory().containsAtLeast(new ItemStack(Material.valueOf(ProductType)),
+                    getItemCount(player,Material.valueOf(ProductType)))) {
+                player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+            }
+        }
+    }
+
 
     @EventHandler
     public void onClick(InventoryClickEvent event){
@@ -81,7 +196,7 @@ public class SellerInteract implements Listener {
                         ProductBlocked(player,event.getInventory(),event.getSlot());
                         break;
                     }
-                    if (event.getClick().isRightClick()) {
+                    if (event.getClick().isRightClick() && !event.getClick().isShiftClick()) {
                         if (player.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE), 1)) {
                             sellProduct(player,"REDSTONE",1);
                             player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. красной пыли.");
@@ -89,13 +204,26 @@ public class SellerInteract implements Listener {
                         if (!player.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE), 1)) {
                             player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
                         }
+                        break;
                     }
-                    if (event.getClick().isLeftClick()) {
+                    if (event.getClick().isLeftClick() && !event.getClick().isShiftClick()) {
                         if (player.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE), 64)) {
                             sellProduct(player,"REDSTONE",64);
                             player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. красной пыли.");
                         }
                         if (!player.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE), 64)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                        break;
+                    }
+                    if(event.getClick().isShiftClick()){
+                        if(player.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE),
+                                getItemCount(player,Material.valueOf("REDSTONE")))) {
+                            sellProduct(player, "REDSTONE", getItemCount(player,
+                                    Material.valueOf("REDSTONE")));
+                        }
+                        if(!player.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE),
+                                getItemCount(player,Material.valueOf("REDSTONE")))) {
                             player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
                         }
                     }
@@ -1090,6 +1218,223 @@ public class SellerInteract implements Listener {
                             player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. TUBE_CORAL.");
                         }
                         if (!player.getInventory().containsAtLeast(new ItemStack(Material.TUBE_CORAL), 64)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                    }
+                    break;
+                case DIAMOND:
+                    if (PriceManager.isQuantityBlocked("DIAMOND")){
+                        ProductBlocked(player,event.getInventory(),event.getSlot());
+                        break;
+                    }
+                    if (event.getClick().isRightClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.DIAMOND), 1)) {
+                            sellProduct(player,"DIAMOND",1);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Алмаз.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.DIAMOND), 1)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                    }
+                    if (event.getClick().isLeftClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.DIAMOND), 64)) {
+                            sellProduct(player,"DIAMOND",64);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Алмаз.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.DIAMOND), 64)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                    }
+                    break;
+                case BLAZE_ROD:
+                    if (PriceManager.isQuantityBlocked("BLAZE_ROD")){
+                        ProductBlocked(player,event.getInventory(),event.getSlot());
+                        break;
+                    }
+                    if (event.getClick().isRightClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.BLAZE_ROD), 1)) {
+                            sellProduct(player,"BLAZE_ROD",1);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Стержень блейза.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.BLAZE_ROD), 1)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                    }
+                    if (event.getClick().isLeftClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.BLAZE_ROD), 64)) {
+                            sellProduct(player,"BLAZE_ROD",64);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Стержень блейза.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.BLAZE_ROD), 64)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+
+                    }
+                    break;
+                case TNT:
+                    if (PriceManager.isQuantityBlocked("TNT")){
+                        ProductBlocked(player,event.getInventory(),event.getSlot());
+                        break;
+                    }
+                    if (event.getClick().isRightClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.TNT), 1)) {
+                            sellProduct(player,"TNT",1);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Динамит.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.TNT), 1)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                    }
+                    if (event.getClick().isLeftClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.TNT), 64)) {
+                            sellProduct(player,"TNT",64);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Динамит.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.TNT), 64)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                    }
+                    break;
+                case BRICK:
+                    if (PriceManager.isQuantityBlocked("BRICK")){
+                        ProductBlocked(player,event.getInventory(),event.getSlot());
+                        break;
+                    }
+                    if (event.getClick().isRightClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.BRICK), 1)) {
+                            sellProduct(player,"BRICK",1);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Кирпич.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.BRICK), 1)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                    }
+                    if (event.getClick().isLeftClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.BRICK), 64)) {
+                            sellProduct(player,"BRICK",64);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Кирпич.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.BRICK), 64)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                    }
+                    break;
+                case GOLD_NUGGET:
+                    if (PriceManager.isQuantityBlocked("GOLD_NUGGET")){
+                        ProductBlocked(player,event.getInventory(),event.getSlot());
+                        break;
+                    }
+                    if (event.getClick().isRightClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.GOLD_NUGGET), 1)) {
+                            sellProduct(player,"GOLD_NUGGET",1);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Кусочек золота.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.GOLD_NUGGET), 1)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                    }
+                    if (event.getClick().isLeftClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.GOLD_NUGGET), 64)) {
+                            sellProduct(player,"GOLD_NUGGET",64);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Кусочек золота.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.GOLD_NUGGET), 64)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                    }
+                    break;
+                case ZOMBIE_HEAD:
+                    if (PriceManager.isQuantityBlocked("ZOMBIE_HEAD")){
+                        ProductBlocked(player,event.getInventory(),event.getSlot());
+                        break;
+                    }
+                    if (event.getClick().isRightClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.ZOMBIE_HEAD), 1)) {
+                            sellProduct(player,"ZOMBIE_HEAD",1);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Голова зомби.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.ZOMBIE_HEAD), 1)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                    }
+                    if (event.getClick().isLeftClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.ZOMBIE_HEAD), 64)) {
+                            sellProduct(player,"ZOMBIE_HEAD",64);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Голова зомби.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.ZOMBIE_HEAD), 64)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                    }
+                    break;
+                case HEART_OF_THE_SEA:
+                    if (PriceManager.isQuantityBlocked("HEART_OF_THE_SEA")){
+                        ProductBlocked(player,event.getInventory(),event.getSlot());
+                        break;
+                    }
+                    if (event.getClick().isRightClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.HEART_OF_THE_SEA), 1)) {
+                            sellProduct(player,"HEART_OF_THE_SEA",1);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Сердце моря.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.HEART_OF_THE_SEA), 1)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                    }
+                    if (event.getClick().isLeftClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.HEART_OF_THE_SEA), 64)) {
+                            sellProduct(player,"HEART_OF_THE_SEA",64);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Сердце моря.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.HEART_OF_THE_SEA), 64)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                    }
+                    break;
+                case TOTEM_OF_UNDYING:
+                    if (PriceManager.isQuantityBlocked("TOTEM_OF_UNDYING")){
+                        ProductBlocked(player,event.getInventory(),event.getSlot());
+                        break;
+                    }
+                    if (event.getClick().isRightClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.TOTEM_OF_UNDYING), 1)) {
+                            sellProduct(player,"TOTEM_OF_UNDYING",1);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. тотемов.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.TOTEM_OF_UNDYING), 1)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                    }
+                    if (event.getClick().isLeftClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.TOTEM_OF_UNDYING), 64)) {
+                            sellProduct(player,"TOTEM_OF_UNDYING",64);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. тотемов.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.TOTEM_OF_UNDYING), 64)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                    }
+                    break;
+                case SCULK:
+                    if (PriceManager.isQuantityBlocked("SCULK")){
+                        ProductBlocked(player,event.getInventory(),event.getSlot());
+                        break;
+                    }
+                    if (event.getClick().isRightClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.SCULK), 1)) {
+                            sellProduct(player,"SCULK",1);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. скалк.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.SCULK), 1)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                        }
+                    }
+                    if (event.getClick().isLeftClick()) {
+                        if (player.getInventory().containsAtLeast(new ItemStack(Material.SCULK), 64)) {
+                            sellProduct(player,"SCULK",64);
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. скалк.");
+                        }
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.SCULK), 64)) {
                             player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
                         }
                     }

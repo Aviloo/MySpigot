@@ -2,6 +2,7 @@ package com.aviloo.mytraderreloaded.Seller.Expansions;
 
 import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import com.aviloo.mytraderreloaded.Seller.Utils.PlayerReputation;
+import com.aviloo.mytraderreloaded.Seller.Utils.PlayerStats;
 import com.aviloo.mytraderreloaded.Seller.Utils.UsermapStorageUtil;
 import com.aviloo.mytraderreloaded.models.PluginPlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -34,9 +35,6 @@ public class ReputationExpansion extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player player, String params) {
-        if(params.equalsIgnoreCase("demo")){
-            return "Hello World";
-        }
 
         if(params.equalsIgnoreCase("rep")){
             if(MyTraderReloaded.getPlugin().getConfig().getBoolean("useSQL")) {
@@ -45,6 +43,9 @@ public class ReputationExpansion extends PlaceholderExpansion {
             if(!MyTraderReloaded.getPlugin().getConfig().getBoolean("useSQL")) {
                 return String.valueOf(PlayerReputation.getReputationFromUsermap(player));
             }
+        }
+        if(params.equalsIgnoreCase("earned")){
+            return String.valueOf(PlayerStats.getEarnedPlayerStats(player.getUniqueId()));
         }
 
         return null; // Placeholder is unknown by the Expansion
