@@ -209,12 +209,12 @@ public class PriceManager {
     }
 
     public static void allReputationProductsSetUp(){
-        setReputationProduct("GOLD_NUGGET_R",settings.getDouble("GOLD_NUGGET_R.Price"),settings.getInt("GOLD_NUGGET_R.NeedRep"));
-        setReputationProduct("WHEAT_R",settings.getDouble("WHEAT_R.Price"),settings.getInt("WHEAT_R.NeedRep"));
         setReputationProduct("LAPIS_LAZULI_R",settings.getDouble("LAPIS_LAZULI_R.Price"),settings.getInt("LAPIS_LAZULI_R.NeedRep"));
-        setReputationProduct("TOTEM_OF_UNDYING_R",settings.getDouble("TOTEM_OF_UNDYING_R.Price"),settings.getInt("TOTEM_OF_UNDYING_R.NeedRep"));
-        setReputationProduct("CAKE_R",settings.getDouble("CAKE_R.Price"),settings.getInt("CAKE_R.NeedRep"));
-        setReputationProduct("DIAMOND_ORE_R",settings.getDouble("DIAMOND_ORE_R.Price"),settings.getInt("DIAMOND_ORE_R.NeedRep"));
+        setReputationProduct("BONE_R",settings.getDouble("BONE_R.Price"),settings.getInt("BONE_R.NeedRep"));
+        setReputationProduct("BAKED_POTATO_R",settings.getDouble("BAKED_POTATO_R.Price"),settings.getInt("BAKED_POTATO_R.NeedRep"));
+        setReputationProduct("CACTUS_R",settings.getDouble("CACTUS_R.Price"),settings.getInt("CACTUS_R.NeedRep"));
+        setReputationProduct("SUGAR_CANE_R",settings.getDouble("SUGAR_CANE_R.Price"),settings.getInt("SUGAR_CANE_R.NeedRep"));
+        setReputationProduct("GUNPOWDER_R",settings.getDouble("GUNPOWDER_R.Price"),settings.getInt("GUNPOWDER_R.NeedRep"));
     }
 
     public static double getPriceReputation(String ProductType){

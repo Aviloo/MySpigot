@@ -1,2 +1,9 @@
 useSQL: false
 chanceOfEpicSeller: 0.94
+reward: 45
+rewardHours: 21
+rewardMinutes: 0
+NPCLocationX: 0.0
+NPCLocationY: 0.0
+NPCLocationZ: 0.0
+NPCLocationWorld: "world"

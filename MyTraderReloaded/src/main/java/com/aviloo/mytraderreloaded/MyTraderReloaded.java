@@ -8,7 +8,6 @@ import com.aviloo.mytraderreloaded.Seller.Events.*;
 import com.aviloo.mytraderreloaded.Seller.Events.EpicEvents.*;
 import com.aviloo.mytraderreloaded.Seller.Expansions.ReputationExpansion;
 import com.aviloo.mytraderreloaded.Seller.Inventories.InfoInventory;
-import com.aviloo.mytraderreloaded.Seller.Inventories.LoadScreen;
 import com.aviloo.mytraderreloaded.Seller.Inventories.SellerInventory;
 import com.aviloo.mytraderreloaded.Seller.Utils.*;
 import net.milkbowl.vault.economy.Economy;
@@ -19,6 +18,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Logger;
@@ -40,16 +41,23 @@ public final class MyTraderReloaded extends JavaPlugin {
 
     //New ToDoings
     //todo 1. Доделать SellerInventory (+-)
-    //todo 2. Создать Interact для SellerInventory
+    //todo 2. Создать Interact для SellerInventory(+)
     //todo 3. Переделать LoadScreen (+)
     //todo 4. Создать удобное меню с информацией(+)
     //todo 5. Улучшить Товары за репутацию
     //todo 6. Добавить денежный бонус к товарам за репу , если на игроке эффект "герой деревни"(+)
-    //todo 7. Добавить таблицу лидеров и в конце дня выдавать награду лучшему игроку
+    //todo 7. Добавить таблицу лидеров и в конце дня выдавать награду лучшему игроку(+)
     //todo 8. Создать конфиг для базы данных (+)
     //todo 9. Оптимизировать (убрать устаревшие части кода)
     //todo 10. Побочное задание: Добавить больше товаров.
-    //todo 11. Добавить возможность продать все предметы разом
+    //todo 11. Добавить возможность продать все предметы разом (+)
+    //todo 12. Добавить коэфиценты скупщика
+    //todo 13 Добавить возможность ухудшить репутацию
+    //todo 14 Добавить возможность накидать предметы в инвентарь и продать их разом
+    //todo 15 Добавить коэфициент спроса
+    //todo 16 Заменить кнопки на головы
+    //todo 17 Избавиться от PriceManager
+    //todo 18 Добавить систему штрафов
     public ConfigManager CustomConfig;
 
     public MySQLManager sql;
@@ -89,6 +97,10 @@ public final class MyTraderReloaded extends JavaPlugin {
         Boolean bool = isEpicType;
         return bool;
     }
+    //reward config part
+    public int reward = this.getConfig().getInt("reward");
+    public int hours = this.getConfig().getInt("rewardHours");
+    public int minutes = this.getConfig().getInt("rewardMinutes");
 
     //Custom Config Part
     Logger logger = this.getLogger();
@@ -104,7 +116,7 @@ public final class MyTraderReloaded extends JavaPlugin {
     public MessagesFileManager messagesFileManager;
     public SellerSettingsFileManager sellerSettingsFileManager;
     public MenuFileManager menuFileManager;
-    public ErrorFileManager errorFileManager;
+    public IconsFileManager iconsFileManager;
 
     @Override
     public void onEnable() {
@@ -131,9 +143,9 @@ public final class MyTraderReloaded extends JavaPlugin {
         //Load gui.yml
         this.menuFileManager = new MenuFileManager();
         menuFileManager.MenuFileManager(this);
-        //Load error.yml
-        this.errorFileManager = new ErrorFileManager();
-        errorFileManager.ErrorFileManager(this);
+        //Load icons.yml
+        this.iconsFileManager = new IconsFileManager();
+        iconsFileManager.IconsFileManager(this);
 
         //Load usermap.yml
         if(!getConfig().getBoolean("useSQL")) {
@@ -160,6 +172,7 @@ public final class MyTraderReloaded extends JavaPlugin {
         Bukkit.getScheduler().runTaskTimer(this, () ->{
             LeaderUtils.updateLeader();
         },1,6000);
+        LeaderUtils.giveLeaderReward();
 
         //Expansion
         if(getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
@@ -173,22 +186,20 @@ public final class MyTraderReloaded extends JavaPlugin {
         PriceManager.allProductSetUp();
         PriceManager.allReputationProductsSetUp();
         setSellerInventory();
-        LoadScreen.setupLoadInventory();
         InfoInventory.setupInfoInventory();
         getServer().getPluginManager().registerEvents(new InfoInventory(),this);
 
         //Events (Seller)
-            //Inventory Events (Seller)
+        //Inventory Events (Seller)
         getServer().getPluginManager().registerEvents(new SellerInteract(),this);
 
         //тестовый класс
         Bukkit.getServer().getPluginManager().registerEvents(new ReputationInteract(),this);
-            //General Events (Seller)
+        //General Events (Seller)
         Bukkit.getServer().getPluginManager().registerEvents(new GlobalEvents(this), this);
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerReputation(),this);
-        Bukkit.getServer().getPluginManager().registerEvents(new LoadScreen(this),this);
-        getServer().getPluginManager().registerEvents(new SellManager(),this);
         getServer().getPluginManager().registerEvents(new LeaderUtils(), this);
+        getServer().getPluginManager().registerEvents(new BarEvent(), this);
 
         //Commands(Seller)
         Bukkit.getServer().getPluginCommand("seller").setExecutor(new PlayerCommand());
@@ -230,7 +241,6 @@ public final class MyTraderReloaded extends JavaPlugin {
         messagesFileManager = null;
         sellerSettingsFileManager = null;
         menuFileManager = null;
-        errorFileManager = null;
     }
 
 
@@ -276,7 +286,7 @@ public final class MyTraderReloaded extends JavaPlugin {
     }
 
     public void setSellerInventory(){
-        SellerInventory.setInventoryButtonsList();
+        SellerInventory.setButtonsSkull();
         if(Math.random() <= getConfig().getDouble("chanceOfEpicSeller") - 0.01){
             isEpicType = false;
             SellerInventory.setUpDefaultSellerItemsList();

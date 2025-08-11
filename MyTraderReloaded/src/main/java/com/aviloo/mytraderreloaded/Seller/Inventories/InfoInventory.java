@@ -1,5 +1,6 @@
 package com.aviloo.mytraderreloaded.Seller.Inventories;
 
+import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import com.aviloo.mytraderreloaded.Seller.Utils.ColorUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,8 +18,12 @@ import java.util.ArrayList;
 
 public class InfoInventory implements Listener {
 
+    private static int reward = MyTraderReloaded.getPlugin().reward;
+    private static int hours = MyTraderReloaded.getPlugin().hours;
+    private static int minutes = MyTraderReloaded.getPlugin().minutes;
+
     public static Inventory inventory = Bukkit.createInventory(null,54,
-            ChatColor.DARK_GRAY+"Информация о скупщике");
+            ChatColor.WHITE+"Информация о скупщике");
 
 
     public static void setupInfoInventory(){
@@ -113,11 +118,10 @@ public class InfoInventory implements Listener {
                 "&fна наибольшую сумму.",
                 "&aКакие бонусы он получит?",
                 "&fОн получит в награду донат-валюту ",
-                "&fв размере: 45 донат-валюты",
+                "&fв размере: "+reward+" донат-валюты",
                 "&aКогда выдается награда?",
-                "&fЧерез 15 часов после рестарта.",
-                "&7(Обычно это 21:01 по МСК",
-                "&7Но бывают исключения)",
+                "&fОбычно это "+hours+":"+minutes+" по МСК,",
+                "&fно бывают исключения.",
                 "&aЧто делать если не выдали награду?",
                 "&fСообщить о проблеме администрации. &7(/links)",
                 "&fЕсли вы не получили свою награду, необходимо",
@@ -157,7 +161,7 @@ public class InfoInventory implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event){
         if(event.getCurrentItem() == null){return;}
-        if(event.getView().getTitle().equals(ChatColor.DARK_GRAY+"Информация о скупщике")){
+        if(event.getView().getTitle().equals(ChatColor.WHITE+"Информация о скупщике")){
             Player player = (Player) event.getWhoClicked();
             switch (event.getCurrentItem().getType()){
                 case SPECTRAL_ARROW:

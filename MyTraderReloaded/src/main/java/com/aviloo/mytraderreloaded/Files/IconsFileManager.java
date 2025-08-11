@@ -11,59 +11,56 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.logging.Logger;
 
-public class ErrorFileManager {
-
-
+public class IconsFileManager {
     private MyTraderReloaded plugin;
     private FileConfiguration dataConfig = null;
     private File configFile = null;
 
     Logger logger = MyTraderReloaded.getPlugin().getLogger();
 
-    public void ErrorFileManager(MyTraderReloaded plugin){
+    public void IconsFileManager(MyTraderReloaded plugin){
         this.plugin = plugin;
-        saveDefaultErrorConfig();
+        saveDefaultIconsConfig();
     }
 
-    public void reloadErrorConfig(){
+    public void reloadIconsConfig(){
         if (this.configFile == null){
-            this.configFile = new File(plugin.getDataFolder(), "error-logs.yml");
+            this.configFile = new File(plugin.getDataFolder(), "icons.yml");
         }
         this.dataConfig = YamlConfiguration.loadConfiguration(this.configFile);
-        InputStream defaultStream = this.plugin.getResource("error-logs.yml");
+        InputStream defaultStream = this.plugin.getResource("icons.yml");
         if (defaultStream != null){
             YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream));
             this.dataConfig.setDefaults(defaultConfig);
         }
     }
 
-    public FileConfiguration getErrorConfig(){
+    public FileConfiguration getIconsConfig(){
         if (this.dataConfig == null){
-            this.reloadErrorConfig();
+            this.reloadIconsConfig();
         }
         return this.dataConfig;
     }
 
-    public void saveErrorConfig() {
+    public void saveIconsConfig() {
         if (this.dataConfig == null||this.configFile == null){
             return;
         }
         try {
-            this.getErrorConfig().save(this.configFile);
+            this.getIconsConfig().save(this.configFile);
         }catch (IOException e){
-            logger.severe(ColorUtils.translateColorCodes("&6MyTraderReloaded: &4Could not save error-logs.yml"));
+            logger.severe(ColorUtils.translateColorCodes("&6MyTraderReloaded: &4Could not save icons.yml"));
             logger.severe(ColorUtils.translateColorCodes("&6MyTraderReloaded: &4Check the below message for the reasons!"));
             e.printStackTrace();
         }
     }
 
-    public void saveDefaultErrorConfig(){
-        if (this.configFile == null){
-            this.configFile = new File(plugin.getDataFolder(), "error-logs.yml");
+    public void saveDefaultIconsConfig() {
+        if (this.configFile == null) {
+            this.configFile = new File(plugin.getDataFolder(), "icons.yml");
         }
-        if (!this.configFile.exists()){
-            this.plugin.saveResource("error-logs.yml", false);
+        if (!this.configFile.exists()) {
+            this.plugin.saveResource("icons.yml", false);
         }
     }
-
 }

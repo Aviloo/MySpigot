@@ -1,12 +1,9 @@
 package com.aviloo.mytraderreloaded.Seller.Expansions;
 
 import com.aviloo.mytraderreloaded.MyTraderReloaded;
+import com.aviloo.mytraderreloaded.Seller.Utils.LeaderUtils;
 import com.aviloo.mytraderreloaded.Seller.Utils.PlayerReputation;
-import com.aviloo.mytraderreloaded.Seller.Utils.PlayerStats;
-import com.aviloo.mytraderreloaded.Seller.Utils.UsermapStorageUtil;
-import com.aviloo.mytraderreloaded.models.PluginPlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,7 +42,7 @@ public class ReputationExpansion extends PlaceholderExpansion {
             }
         }
         if(params.equalsIgnoreCase("earned")){
-            return String.valueOf(PlayerStats.getEarnedPlayerStats(player.getUniqueId()));
+            return String.valueOf(LeaderUtils.getPlayerEarned(player.getUniqueId()));
         }
 
         return null; // Placeholder is unknown by the Expansion

@@ -3,7 +3,7 @@ package com.aviloo.mytraderreloaded.Commands.adminSubCommand;
 import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import com.aviloo.mytraderreloaded.Seller.Utils.ColorUtils;
 import com.aviloo.mytraderreloaded.Seller.Utils.EconomyManager;
-import com.aviloo.mytraderreloaded.Seller.Utils.PlayerStats;
+import com.aviloo.mytraderreloaded.Seller.Utils.LeaderUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -45,34 +45,33 @@ public class earnedCommand {
 
         switch (args[1]){
             case "set":
-                PlayerStats.setEarnedPlayerStats(argPlayer.getUniqueId(), Double.parseDouble(args[3]));
+                LeaderUtils.setPlayerEarned(argPlayer.getUniqueId(), Double.parseDouble(args[3]));
                 break;
             case "reset":
-                PlayerStats.setEarnedPlayerStats(argPlayer.getUniqueId(), 0);
+                LeaderUtils.setPlayerEarned(argPlayer.getUniqueId(), 0);
                 break;
             case "get":
                 player.sendMessage(ColorUtils.translateColorCodes("Игрок " + argPlayer.getName()
                         + " заработал за сегодня -&6"
-                        + PlayerStats.getEarnedPlayerStats(argPlayer.getUniqueId())));
+                        + LeaderUtils.getPlayerEarned(argPlayer.getUniqueId())));
                 break;
             case "givereward":
-                PlayerStats.getBestTraderUUID();
-                if(PlayerStats.bestTrader == null){
+                if(LeaderUtils.maxKey == null){
                     player.sendMessage("Лучший игрок невыявлен.");
                     break;
                 }
 
-                if(Bukkit.getOfflinePlayer(PlayerStats.bestTrader).isOnline()){
-                    EconomyManager.givePoints(Bukkit.getOfflinePlayer(PlayerStats.bestTrader).getUniqueId(),
+                if(Bukkit.getOfflinePlayer(LeaderUtils.maxKey).isOnline()){
+                    EconomyManager.givePoints(Bukkit.getOfflinePlayer(LeaderUtils.maxKey).getUniqueId(),
                             45);
-                    Bukkit.getOfflinePlayer(PlayerStats.bestTrader)
+                    Bukkit.getOfflinePlayer(LeaderUtils.maxKey)
                             .getPlayer().sendMessage("Вы получили награду.");
                     player.sendMessage("Игроку выдана награда!");
                     break;
 
                 }
-                if(!Bukkit.getOfflinePlayer(PlayerStats.bestTrader).isOnline()){
-                    EconomyManager.givePoints(Bukkit.getOfflinePlayer(PlayerStats.bestTrader).getUniqueId(),
+                if(!Bukkit.getOfflinePlayer(LeaderUtils.maxKey).isOnline()){
+                    EconomyManager.givePoints(Bukkit.getOfflinePlayer(LeaderUtils.maxKey).getUniqueId(),
                             45);
                     player.sendMessage("Игроку выдана награда!");
                     break;

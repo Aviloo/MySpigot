@@ -2,7 +2,6 @@ package com.aviloo.mytraderreloaded.Commands.adminSubCommand;
 
 import com.aviloo.mytraderreloaded.MyTraderReloaded;
 import com.aviloo.mytraderreloaded.Seller.Inventories.InfoInventory;
-import com.aviloo.mytraderreloaded.Seller.Inventories.LoadScreen;
 import com.aviloo.mytraderreloaded.Seller.Utils.ColorUtils;
 import com.aviloo.mytraderreloaded.Seller.Utils.PriceManager;
 import org.bukkit.ChatColor;
@@ -32,7 +31,6 @@ public class reloadCommand {
                 PriceManager.allProductSetUp();
                 PriceManager.allReputationProductsSetUp();
                 MyTraderReloaded.getPlugin().setSellerInventory();
-                LoadScreen.setupLoadInventory();
                 InfoInventory.setupInfoInventory();
                 sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("prefix_plugin_with_brackets")+
                         messagesConfig.getString("command_menu_has_been_reloaded")));
@@ -49,7 +47,6 @@ public class reloadCommand {
                 PriceManager.allProductSetUp();
                 PriceManager.allReputationProductsSetUp();
                 MyTraderReloaded.getPlugin().setSellerInventory();
-                LoadScreen.setupLoadInventory();
                 InfoInventory.setupInfoInventory();
                 sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("prefix_plugin_with_brackets")+
                         messagesConfig.getString("command_plugin_has_been_reloaded")));

@@ -5,10 +5,14 @@ import com.aviloo.mytraderreloaded.Seller.Utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -17,10 +21,73 @@ import java.util.Random;
 
 public class SellerInventory implements Listener {
 
+    private static FileConfiguration iconConfig =
+            MyTraderReloaded.getPlugin().iconsFileManager.getIconsConfig();
+
     public static Inventory inventory = Bukkit.createInventory(null,54,
-            ChatColor.DARK_GRAY+"Скупщик");
+            ChatColor.WHITE+"Скупщик");
 
     private static ArrayList<ItemStack> inventoryButtonsList = new ArrayList<>();
+
+    public static void setButtonsSkull(){
+        ItemStack back = SkullUtils.getSkullByBase64EncodedTextureUrl(iconConfig.getString("back"));
+        ItemMeta backMeta = back.getItemMeta();
+        backMeta.addEnchant(Enchantment.ARROW_KNOCKBACK,1,true);
+        backMeta.setDisplayName(ChatColor.YELLOW+"Назад");
+        backMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        back.setItemMeta(backMeta);
+
+        ItemStack close = SkullUtils.getSkullByBase64EncodedTextureUrl(iconConfig.getString("close"));
+        ItemMeta closeMeta = close.getItemMeta();
+        closeMeta.addEnchant(Enchantment.ARROW_FIRE,1,true);
+        closeMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        close.setItemMeta(closeMeta);
+
+        ItemStack leaders = SkullUtils.getSkullByBase64EncodedTextureUrl(iconConfig.getString("leader"));
+        ItemMeta leadersMeta = leaders.getItemMeta();
+        leadersMeta.addEnchant(Enchantment.ARROW_INFINITE,1,true);
+        leadersMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        leaders.setItemMeta(leadersMeta);
+
+        ItemStack reputation = SkullUtils.getSkullByBase64EncodedTextureUrl(iconConfig.getString("reputation"));
+        ItemMeta repMeta = reputation.getItemMeta();
+        repMeta.addEnchant(Enchantment.ARROW_DAMAGE,1,true);
+        repMeta.setDisplayName(ChatColor.YELLOW+"Товары за репутацию");
+        repMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        reputation.setItemMeta(repMeta);
+
+        ItemStack multiplier = SkullUtils.getSkullByBase64EncodedTextureUrl(iconConfig.getString("multiplier"));
+        ItemMeta mulMeta = multiplier.getItemMeta();
+        mulMeta.setDisplayName(ChatColor.YELLOW+"Множитель");
+        mulMeta.addEnchant(Enchantment.DURABILITY,1,true);
+        mulMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        multiplier.setItemMeta(mulMeta);
+
+        ItemStack info = SkullUtils.getSkullByBase64EncodedTextureUrl(iconConfig.getString("info"));
+        ItemMeta infoMeta = info.getItemMeta();
+        infoMeta.addEnchant(Enchantment.ARROW_FIRE,1,true);
+        infoMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        infoMeta.setDisplayName(ChatColor.YELLOW+"Информация");
+        ArrayList<String> infoLore = new ArrayList<>();
+        infoLore.add(" ");
+        infoLore.add(ChatColor.GRAY+"< Нажмите, чтобы узнать подробнее. >");
+        infoLore.add(" ");
+        infoMeta.setLore(infoLore);
+        info.setItemMeta(infoMeta);
+
+        ItemStack sellall = SkullUtils.getSkullByBase64EncodedTextureUrl(iconConfig.getString("sell-all"));
+        ItemMeta sellMeta = sellall.getItemMeta();
+        sellMeta.setDisplayName(ChatColor.YELLOW+"Продать всё");
+        sellMeta.addEnchant(Enchantment.DIG_SPEED,1,true);
+        sellMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        sellall.setItemMeta(sellMeta);
+
+        inventoryButtonsList.add(back);inventoryButtonsList.add(close);
+        inventoryButtonsList.add(leaders);inventoryButtonsList.add(reputation);
+        inventoryButtonsList.add(multiplier);inventoryButtonsList.add(info);
+        inventoryButtonsList.add(sellall);
+
+    }
 
     public static void setInventoryButtonsList(){
         ItemStack back = new ItemStack(Material.SPECTRAL_ARROW,1);
@@ -35,7 +102,7 @@ public class SellerInventory implements Listener {
         reputation.setItemMeta(repMeta);
         inventoryButtonsList.add(reputation);
 
-        ItemStack info = new ItemStack(Material.PAPER,1);
+        ItemStack info = new ItemStack(Material.KNOWLEDGE_BOOK,1);
         ItemMeta infoMeta = info.getItemMeta();
         infoMeta.setDisplayName(ChatColor.YELLOW+"Информация");
         ArrayList<String> infoLore = new ArrayList<>();
@@ -45,6 +112,7 @@ public class SellerInventory implements Listener {
         infoMeta.setLore(infoLore);
         info.setItemMeta(infoMeta);
         inventoryButtonsList.add(info);
+
     }
 
     private static ArrayList<ItemStack> defaultSellerItemsList = new ArrayList<>();
@@ -202,7 +270,6 @@ public class SellerInventory implements Listener {
                 if(attempts >= 15){
                     Bukkit.getConsoleSender().sendMessage(ChatColor.RED+
                             "Превышенно максимальное кол-во попыток перезагрузки метода." );
-                    ErrorStorageUtils.saveError("Плагин не смог загрузить предметы более 15 раз.");
                     Bukkit.getServer().shutdown();
                 }
 
@@ -218,9 +285,14 @@ public class SellerInventory implements Listener {
         while(attempts < 15 &&!success) {
             try {
                 //Buttons set up
-                for (int i = 0; i < 3; i++) {
-                    inventory.setItem(48 + i, inventoryButtonsList.get(i));
-                }
+                inventory.setItem(45 , inventoryButtonsList.get(0));
+                inventory.setItem(47 , inventoryButtonsList.get(6));
+                inventory.setItem(48,  LeaderUtils.traderItemHead());
+                inventory.setItem(49 , inventoryButtonsList.get(5));
+                inventory.setItem(50 , inventoryButtonsList.get(4));
+                inventory.setItem(51 , inventoryButtonsList.get(3));
+                inventory.setItem(53 , inventoryButtonsList.get(0));
+
                 //Seller Items
                 for (int i = 0; i < 3; i++) {
                     inventory.setItem(12 + i, generatedSellerItems.get(i));
@@ -239,7 +311,6 @@ public class SellerInventory implements Listener {
                     loadMetaForGeneratedEpicItems();
                 }
 
-                inventory.setItem(45, LeaderUtils.traderItem());
                 success = true;
             } catch (IllegalArgumentException e) {
                 attempts++;
@@ -248,7 +319,6 @@ public class SellerInventory implements Listener {
                 if(attempts >= 15){
                     Bukkit.getConsoleSender().sendMessage(ChatColor.RED+
                             "Превышенно максимальное кол-во попыток перезагрузки метода." );
-                    ErrorStorageUtils.saveError("Плагин не смог загрузить предметы более 15 раз.");
                     Bukkit.getServer().shutdown();
                 }
             }
@@ -1196,7 +1266,8 @@ public class SellerInventory implements Listener {
         List<Integer> ignore_list = new ArrayList<>();
         ignore_list.add(12);ignore_list.add(13);ignore_list.add(14);ignore_list.add(21);
         ignore_list.add(23);ignore_list.add(30);ignore_list.add(31);ignore_list.add(32);
-        ignore_list.add(48);ignore_list.add(49);ignore_list.add(50);ignore_list.add(22);
+        ignore_list.add(48);ignore_list.add(52);ignore_list.add(50);ignore_list.add(22);
+        ignore_list.add(46);
         // cycle part
         for(int i = 0; i < 53; i++){
             if(ignore_list.contains(i)){continue;}

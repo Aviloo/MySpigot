@@ -226,21 +226,21 @@ SCULK:
 #Price - цена
 #NeedRep - необходимое кол-во очков репутации, чтобы разблокировать.
 #Окончание "_R" - нужно, чтобы не возникали ошибки.
-GOLD_NUGGET_R:
+LAPIS_LAZULI_R:
   Price: 1.3
   NeedRep: 100
-WHEAT_R:
+BONE_R:
   Price: 0.3
   NeedRep: 200
-LAPIS_LAZULI_R:
+BAKED_POTATO_R:
   Price: 0.9
   NeedRep: 300
-TOTEM_OF_UNDYING_R:
+CACTUS_R:
   Price: 6
   NeedRep: 400
-CAKE_R:
+SUGAR_CANE_R:
   Price: 5.3
   NeedRep: 500
-DIAMOND_ORE_R:
+GUNPOWDER_R:
   Price: 1.5
   NeedRep: 600

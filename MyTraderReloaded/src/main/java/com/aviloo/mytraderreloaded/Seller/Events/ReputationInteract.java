@@ -3,7 +3,7 @@ package com.aviloo.mytraderreloaded.Seller.Events;
 import com.aviloo.mytraderreloaded.Seller.Inventories.InfoInventory;
 import com.aviloo.mytraderreloaded.Seller.Inventories.SellerInventory;
 import com.aviloo.mytraderreloaded.Seller.Utils.EconomyManager;
-import com.aviloo.mytraderreloaded.Seller.Utils.PlayerStats;
+import com.aviloo.mytraderreloaded.Seller.Utils.LeaderUtils;
 import com.aviloo.mytraderreloaded.Seller.Utils.PriceManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,9 +17,14 @@ import org.bukkit.potion.PotionEffectType;
 
 public class ReputationInteract implements Listener {
 
+    private String getProductName(String ProductType){
+        return new ItemStack(Material.valueOf(ProductType.substring(0,ProductType.length()-2))).
+                getItemMeta().getLocalizedName();
+    }
+
     private void sellProduct(Player player,String ProductType,int amount){
         bonusByEffectHeroOfVillage(player,ProductType,amount);
-        PlayerStats.addEarnedPlayerStats(player.getUniqueId(),ProductType,amount);
+        LeaderUtils.addPlayerEarned(player.getUniqueId(),amount);
         player.getInventory().removeItem(new ItemStack(Material.valueOf(ProductType), amount));
         if(amount == 1){
             EconomyManager.giveMoney(player, PriceManager.getPriceReputation(ProductType));
@@ -36,7 +41,7 @@ public class ReputationInteract implements Listener {
                         PriceManager.getPriceReputation64(ClickedProductType) * 0.15); // 15% бонусов
             }
             if(amount == 1){
-                EconomyManager.giveMoney(player,
+                EconomyManager.giveMoney(player, PriceManager.getCurrentPrice(ClickedProductType)+
                         PriceManager.getPriceReputation(ClickedProductType) * 0.15); // 15% бонусов
             }
         }else return;
@@ -46,7 +51,7 @@ public class ReputationInteract implements Listener {
     public void onClick(InventoryClickEvent event){
         if(event.getCurrentItem() == null){return;}
         Player player = (Player) event.getWhoClicked();
-        if(event.getView().getTitle().equals(ChatColor.GRAY+"Товары за репутацию")){
+        if(event.getView().getTitle().equals(ChatColor.WHITE+"Товары за репутацию")){
             switch (event.getCurrentItem().getType()){
                 case SPECTRAL_ARROW:
                     player.openInventory(SellerInventory.inventory);
@@ -57,44 +62,8 @@ public class ReputationInteract implements Listener {
                             "товар.");
                     player.closeInventory();
                     break;
-                case PAPER:
+                case KNOWLEDGE_BOOK:
                     player.openInventory(InfoInventory.inventory);
-                    break;
-                case GOLD_NUGGET:
-                    if(event.isRightClick()){
-                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.GOLD_NUGGET), 1)) {
-                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
-                            break;
-                        }
-                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Золотой самородок.");
-                        sellProduct(player,"GOLD_NUGGET_R",1);
-                    }
-                    if(event.isLeftClick()){
-                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.GOLD_NUGGET), 64)) {
-                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
-                            break;
-                        }
-                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Золотой самородок.");
-                        sellProduct(player,"GOLD_NUGGET_R",64);
-                    }
-                    break;
-                case WHEAT:
-                    if(event.isRightClick()){
-                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.WHEAT), 1)) {
-                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
-                            break;
-                        }
-                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Пшеница.");
-                        sellProduct(player,"WHEAT_R",1);
-                    }
-                    if(event.isLeftClick()){
-                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.WHEAT), 64)) {
-                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
-                            break;
-                        }
-                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Пшеница.");
-                        sellProduct(player,"WHEAT_R",64);
-                    }
                     break;
                 case LAPIS_LAZULI:
                     if(event.isRightClick()){
@@ -102,7 +71,8 @@ public class ReputationInteract implements Listener {
                             player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
                             break;
                         }
-                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Лазурит.");
+                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. "
+                                +getProductName("LAPIS_LAZULI_R")+".");
                         sellProduct(player,"LAPIS_LAZULI_R",1);
                     }
                     if(event.isLeftClick()){
@@ -110,62 +80,109 @@ public class ReputationInteract implements Listener {
                             player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
                             break;
                         }
-                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Лазурит.");
+                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. "
+                                +getProductName("LAPIS_LAZULI_R")+".");
                         sellProduct(player,"LAPIS_LAZULI_R",64);
                     }
                     break;
-                case TOTEM_OF_UNDYING:
+                case BONE:
                     if(event.isRightClick()){
-                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.TOTEM_OF_UNDYING), 1)) {
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.BONE), 1)) {
                             player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
                             break;
                         }
-                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Тотем.");
-                        sellProduct(player,"TOTEM_OF_UNDYING_R",1);
+                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. "
+                                +getProductName("BONE_R")+".");
+                        sellProduct(player,"BONE_R",1);
                     }
                     if(event.isLeftClick()){
-                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.TOTEM_OF_UNDYING), 64)) {
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.BONE), 64)) {
                             player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
                             break;
                         }
-                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Тотем.");
-                        sellProduct(player,"TOTEM_OF_UNDYING_R",64);
+                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. "
+                                +getProductName("BONE_R")+".");
+                        sellProduct(player,"BONE_R",64);
                     }
                     break;
-                case CAKE:
+                case BAKED_POTATO:
                     if(event.isRightClick()){
-                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.CAKE), 1)) {
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.BAKED_POTATO), 1)) {
                             player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
                             break;
                         }
-                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Торт.");
-                        sellProduct(player,"CAKE_R",1);
+                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. "
+                                +getProductName("BAKED_POTATO_R")+".");
+                        sellProduct(player,"BAKED_POTATO_R",1);
                     }
                     if(event.isLeftClick()){
-                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.CAKE), 64)) {
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.BAKED_POTATO), 64)) {
                             player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
                             break;
                         }
-                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Торт.");
-                        sellProduct(player,"CAKE_R",64);
+                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. "
+                                +getProductName("BAKED_POTATO_R")+".");
+                        sellProduct(player,"BAKED_POTATO_R",64);
                     }
                     break;
-                case DIAMOND_ORE:
+                case CACTUS:
                     if(event.isRightClick()){
-                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.DIAMOND_ORE), 1)) {
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.CACTUS), 1)) {
                             player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
                             break;
                         }
-                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. Алм. руды.");
-                        sellProduct(player,"DIAMOND_ORE_R",1);
+                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. "
+                                +getProductName("CACTUS_R")+".");
+                        sellProduct(player,"CACTUS_R",1);
                     }
                     if(event.isLeftClick()){
-                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.DIAMOND_ORE), 64)) {
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.CACTUS), 64)) {
                             player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
                             break;
                         }
-                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. Алм. руды.");
-                        sellProduct(player,"DIAMOND_ORE_R",64);
+                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. "
+                                +getProductName("CACTUS_R")+".");
+                        sellProduct(player,"CACTUS_R",64);
+                    }
+                    break;
+                case SUGAR_CANE:
+                    if(event.isRightClick()){
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.SUGAR_CANE), 1)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                            break;
+                        }
+                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. "
+                                +getProductName("SUGAR_CANE_R")+".");
+                        sellProduct(player,"SUGAR_CANE_R",1);
+                    }
+                    if(event.isLeftClick()){
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.SUGAR_CANE), 64)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                            break;
+                        }
+                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. "
+                                +getProductName("SUGAR_CANE_R")+".");
+                        sellProduct(player,"SUGAR_CANE_R",64);
+                    }
+                    break;
+                case GUNPOWDER:
+                    if(event.isRightClick()){
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.GUNPOWDER), 1)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                            break;
+                        }
+                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 1 шт. "
+                                +getProductName("GUNPOWDER_R")+".");
+                        sellProduct(player,"GUNPOWDER_R",1);
+                    }
+                    if(event.isLeftClick()){
+                        if (!player.getInventory().containsAtLeast(new ItemStack(Material.GUNPOWDER), 64)) {
+                            player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "У вас нет данного предмета.");
+                            break;
+                        }
+                        player.sendMessage(ChatColor.GRAY + "[Система] " + ChatColor.WHITE + "Вы продали 64 шт. "
+                                +getProductName("GUNPOWDER_R")+".");
+                        sellProduct(player,"GUNPOWDER_R",64);
                     }
                     break;
             }
