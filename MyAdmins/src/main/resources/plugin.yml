@@ -1,0 +1,34 @@
+name: MyAdmins
+version: '1.0-SNAPSHOT'
+main: me.aviloo.myAdmins.MyAdmins
+api-version: '1.19'
+authors: [ Aviloo ]
+commands:
+  kick:
+    usage: </command> ник причина
+  ban:
+    usage: </command> ник причина
+  banip:
+    usage: </command> ник причина
+  tempban:
+    usage: </command> ник, время(20s,20m,20h,20d), причина
+  mute:
+    usage: </command> ник причина
+  myadmin:
+    usage: </command>
+    aliases:
+      - mya
+  getpunish:
+    usage: </command>
+  ac:
+    usage: </command>
+  report:
+    usage: </command>
+    aliases:
+      - rep
+  reports:
+    usage: </command>
+  vanish:
+    usage: </command>
+    aliases:
+      - v
