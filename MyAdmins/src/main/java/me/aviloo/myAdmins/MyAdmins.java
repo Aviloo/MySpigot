@@ -56,7 +56,9 @@ public final class MyAdmins extends JavaPlugin {
         getCommand("banip").setExecutor(new BanIPCommand());
         getCommand("tempban").setExecutor(new TempBanCommand());
         getCommand("mute").setExecutor(new MuteCommand());
+        getCommand("tempmute").setExecutor(new TempMuteCommand());
         getCommand("myadmin").setExecutor(new AdminCommand());
+        getCommand("myadmin").setTabCompleter(new AdminCommand());
         getCommand("getpunish").setExecutor(new getPunishments());
         getCommand("ac").setExecutor(new AdminChatCommand());
         getCommand("report").setExecutor(new ReportCommand());

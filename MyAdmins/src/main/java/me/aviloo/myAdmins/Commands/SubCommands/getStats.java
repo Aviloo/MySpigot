@@ -39,6 +39,8 @@ public class getStats{
         sender.sendMessage("Кол-во банов IP: "+admin.getBanip_count());
         sender.sendMessage("Кол-во киков: "+admin.getKick_count());
         sender.sendMessage("Кол-во мутов: "+admin.getMute_count());
+        sender.sendMessage("Кол-во вр.банов: "+admin.getTempban_count());
+        sender.sendMessage("Кол-во вр.мутов "+admin.getTempmute_count());
         sender.sendMessage("--------------------");
         return true;
     }

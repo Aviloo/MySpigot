@@ -73,10 +73,30 @@ public class PlayerHandler implements Listener {
     public void onChat(AsyncPlayerChatEvent event){
         if(PluginPlayer.getPluginPlayerByPlayer(event.getPlayer())==null){return;}
         if(!PluginPlayer.getPluginPlayerByPlayer(event.getPlayer()).isMuted()){return;}
+        if(PluginPlayer.getPluginPlayerByPlayer(event.getPlayer()).getDuration() > 0){return;}
         event.setCancelled(true);
         event.getPlayer().sendMessage(ChatColor.DARK_GRAY+"[Мут] "
         +ChatColor.GOLD+"На вас наложили мут."+ChatColor.GRAY+
         " Дата: "+new SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date()));
+    }
+
+    @EventHandler
+    public void onMute(AsyncPlayerChatEvent event){
+        if(PluginPlayer.getPluginPlayerByPlayer(event.getPlayer())==null){return;}
+        if(!PluginPlayer.getPluginPlayerByPlayer(event.getPlayer()).isMuted()){return;}
+        Date unmuteTime = new Date(PluginPlayer.getPluginPlayerByPlayer(event.getPlayer()).getDuration());
+        Date time = new Date(System.currentTimeMillis());
+        if(unmuteTime.before(time)){
+            PluginPlayer.getPluginPlayerByPlayer(event.getPlayer()).setMuted(false);
+            PluginPlayer.getPluginPlayerByPlayer(event.getPlayer()).setDuration(0);
+            return;
+        }
+        event.setCancelled(true);
+        event.getPlayer().sendMessage(ChatColor.DARK_GRAY+"[Мут] "
+        +ChatColor.GOLD+"На вас наложили мут."+ChatColor.GRAY+
+        " Дата: "+new SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date())
+        +" До: "+new SimpleDateFormat("dd-MM-yyyy HH:mm").format(unmuteTime));
+
     }
 
 }

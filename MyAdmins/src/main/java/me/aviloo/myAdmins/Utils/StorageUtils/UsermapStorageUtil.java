@@ -29,7 +29,7 @@ public class UsermapStorageUtil {
             usermapConfig.set("users.data."+entry.getKey() + ".address", entry.getValue().getAddress());
             usermapConfig.set("users.data."+entry.getKey() + ".banned", entry.getValue().isBanned());
             usermapConfig.set("users.data."+entry.getKey() + ".muted",entry.getValue().isMuted());
-
+            usermapConfig.set("users.data."+entry.getKey() + ".duration",entry.getValue().getDuration());
 
 
         }
@@ -47,9 +47,10 @@ public class UsermapStorageUtil {
             String address = usermapConfig.getString("users.data." + key + ".address");
             boolean banned = usermapConfig.getBoolean("users.data." + key + ".banned");
             boolean muted = usermapConfig.getBoolean("users.data." + key + ".muted");
+            long duration = usermapConfig.getLong("users.data." + key + ".duration");
 
             PluginPlayer player = new PluginPlayer(ownerUUID,name,address,
-                    banned,muted);
+                    banned,muted,duration);
 
             usermap.put(uuid, player);
         });

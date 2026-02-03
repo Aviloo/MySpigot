@@ -59,6 +59,7 @@ public class MuteCommand implements CommandExecutor {
         }
         if(PluginPlayer.getPluginPlayerByUUID(target.getUniqueId()).isMuted()){
             PluginPlayer.getPluginPlayerByPlayer(target).setMuted(false);
+            PluginPlayer.getPluginPlayerByUUID(target.getUniqueId()).setDuration(0);
             sender.sendMessage(ChatColor.GREEN + "Вы сняли с игрока "
                     + target.getName() + " мут.");
             target.sendMessage(ChatColor.GOLD + "С вас сняли перманентный мут.");

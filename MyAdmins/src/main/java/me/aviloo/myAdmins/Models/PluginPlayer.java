@@ -13,6 +13,7 @@ public class PluginPlayer {
     private List<Punishment> punishments;
     private boolean banned;
     private boolean muted;
+    private long duration;
 
     public PluginPlayer(UUID uuid, String name, String address) {
         this.uuid = uuid;
@@ -21,17 +22,19 @@ public class PluginPlayer {
         this.punishments = new ArrayList<>();
         this.banned = false;
         this.muted = false;
+        this.duration = 0;
         players.add(this);
         UsermapStorageUtil.addPluginPlayer(uuid, this);
     }
 
-    public PluginPlayer(UUID uuid, String name, String address, boolean banned, boolean muted) {
+    public PluginPlayer(UUID uuid, String name, String address, boolean banned, boolean muted, long duration) {
         this.uuid = uuid;
         this.name = name;
         this.address = address;
         this.punishments = new ArrayList<>();
         this.banned = banned;
         this.muted = muted;
+        this.duration = duration;
         players.add(this);
     }
 
@@ -124,4 +127,13 @@ public class PluginPlayer {
         }
         return null;
     }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
 }

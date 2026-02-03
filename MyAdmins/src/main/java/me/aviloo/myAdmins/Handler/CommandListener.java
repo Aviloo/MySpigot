@@ -3,6 +3,7 @@ package me.aviloo.myAdmins.Handler;
 import me.aviloo.myAdmins.Events.BanEvent;
 import me.aviloo.myAdmins.Events.KickEvent;
 import me.aviloo.myAdmins.Events.TempBanEvent;
+import me.aviloo.myAdmins.Events.TempMuteEvent;
 import me.aviloo.myAdmins.Models.Admin;
 import me.aviloo.myAdmins.Models.Punishment;
 import org.bukkit.entity.Player;
@@ -51,6 +52,17 @@ public class CommandListener implements Listener {
         Admin.getAdminByPlayer(admin).addTempban();
         new Punishment(Punishment.getPunishmentCount()+1,
                 Punishment.PunishmentType.TEMPBAN,event.getPlayer().getName(),event.getPlayer().getUniqueId().toString(),
+                event.getSender().getName(),((Player) event.getSender()).getUniqueId().toString(),event.getReason(),event.getPlayer().
+                getAddress().getHostString());
+    }
+
+    @EventHandler
+    public void tempMute(TempMuteEvent event){
+        if(!(event.getSender() instanceof Player)){return;}
+        Player admin = (Player) event.getSender();
+        Admin.getAdminByPlayer(admin).addTempmute();
+        new Punishment(Punishment.getPunishmentCount()+1,
+                Punishment.PunishmentType.TEMPMUTE,event.getPlayer().getName(),event.getPlayer().getUniqueId().toString(),
                 event.getSender().getName(),((Player) event.getSender()).getUniqueId().toString(),event.getReason(),event.getPlayer().
                 getAddress().getHostString());
     }

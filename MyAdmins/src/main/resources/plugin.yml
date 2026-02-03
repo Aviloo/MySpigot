@@ -14,6 +14,8 @@ commands:
     usage: </command> ник, время(20s,20m,20h,20d), причина
   mute:
     usage: </command> ник причина
+  tempmute:
+    usage: </command> ник, время(20s,20m,20h,20d), причина
   myadmin:
     usage: </command>
     aliases:

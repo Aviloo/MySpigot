@@ -1,6 +1,7 @@
 package me.aviloo.myAdmins.Commands.PunishmentCommands;
 
 import me.aviloo.myAdmins.Events.BanIPEvent;
+import me.aviloo.myAdmins.Models.Admin;
 import me.aviloo.myAdmins.Utils.StorageUtils.RulesStorageUtil;
 import me.aviloo.myAdmins.Utils.TextUtils;
 import org.bukkit.BanList;
@@ -21,9 +22,11 @@ import static me.aviloo.myAdmins.Commands.PunishmentCommands.KickCommand.isNumer
 public class BanIPCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(!(sender instanceof ConsoleCommandSender)){
-            sender.sendMessage(ChatColor.RED+"Вы должны быть администратором.");
-            return true;
+        if(!(sender instanceof ConsoleCommandSender)) {
+            if (!Admin.isPlayerAdmin((Player) sender)) {
+                sender.sendMessage(ChatColor.RED + "Вы должны быть администратором.");
+                return true;
+            }
         }
         if(args.length < 2){return false;}
         if(!isNumeric(args[1]) && !isInteger(args[1])){

@@ -35,6 +35,7 @@ public class AdminmapStorageUtil {
             usermapConfig.set("users.data."+entry.getKey() + ".muteCount",entry.getValue().getMute_count());
             usermapConfig.set("users.data."+entry.getKey() + ".banipCount", entry.getValue().getBanip_count());
             usermapConfig.set("users.data."+entry.getKey() + ".tempbanCount", entry.getValue().getTempban_count());
+            usermapConfig.set("users.data."+entry.getKey() + ".tempMuteCount", entry.getValue().getTempmute_count());
             usermapConfig.set("users.data."+entry.getKey() + ".LSTime", entry.getValue().getLast_session_time());
             usermapConfig.set("users.data."+entry.getKey() + ".LCDate", entry.getValue().getLast_connection_date());
 
@@ -61,11 +62,12 @@ public class AdminmapStorageUtil {
             int mute = usermapConfig.getInt("users.data." + key + ".muteCount");
             int banip = usermapConfig.getInt("users.data." + key + ".banipCount");
             int tempban = usermapConfig.getInt("users.data." + key + ".tempbanCount");
+            int tempmute = usermapConfig.getInt("users.data." + key + ".tempMuteCount");
             String LSTime = usermapConfig.getString("users.data." + key + ".LSTime");
             String LCDate = usermapConfig.getString("users.data." + key + ".LCDate");
 
             Admin admin = new Admin(name,ownerUUID,type,currentIP,LastIP,
-                    reg,ban,kick,mute,banip,tempban,LSTime,LCDate);
+                    reg,ban,kick,mute,banip,tempban,tempmute,LSTime,LCDate);
 
             usermap.put(uuid, admin);
         });

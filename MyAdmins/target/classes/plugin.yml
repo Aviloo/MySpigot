@@ -5,12 +5,16 @@ api-version: '1.19'
 authors: [ Aviloo ]
 commands:
   kick:
-    usage: </command>
+    usage: </command> ник причина
   ban:
-    usage: </command>
+    usage: </command> ник причина
   banip:
-    usage: </command>
+    usage: </command> ник причина
   tempban:
+    usage: </command> ник, время(20s,20m,20h,20d), причина
+  mute:
+    usage: </command> ник причина
+  tempmute:
     usage: </command> ник, время(20s,20m,20h,20d), причина
   myadmin:
     usage: </command>

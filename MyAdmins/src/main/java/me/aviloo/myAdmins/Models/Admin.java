@@ -25,6 +25,7 @@ public class Admin {
     private int mute_count;
     private int banip_count;
     private int tempban_count;
+    private int tempmute_count;
     private String last_session_time;
     private String last_connection_date;
 
@@ -32,7 +33,7 @@ public class Admin {
 
     public Admin(String name, UUID uuid,AdminType adminType,String current_ip,String last_ip,
      String registration_date, int ban_count, int kick_count, int mute_count,int banip_count,
-     int tempban_count,String last_session_time, String last_connection_date) {
+     int tempban_count,int tempmute_count,String last_session_time, String last_connection_date) {
         this.name = name;
         this.uuid = uuid;
         this.adminType = adminType;
@@ -44,13 +45,14 @@ public class Admin {
         this.mute_count = mute_count;
         this.banip_count = banip_count;
         this.tempban_count = tempban_count;
+        this.tempmute_count = tempmute_count;
         this.last_session_time = last_session_time;
         this.last_connection_date = last_connection_date;
         this.current_Connection = "null";
         admins.add(this);
     }
 
-    public Admin(String name,UUID uuid,AdminType adminType,String current_ip) {
+    public Admin(String name, UUID uuid, AdminType adminType, String current_ip) {
         this.name = name;
         this.uuid = uuid;
         this.adminType = adminType;
@@ -62,6 +64,7 @@ public class Admin {
         this.mute_count = 0;
         this.banip_count = 0;
         this.tempban_count = 0;
+        this.tempmute_count = 0;
         this.last_session_time = "null";
         this.last_connection_date = "null";
         this.current_Connection = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
@@ -215,6 +218,17 @@ public class Admin {
         this.tempban_count++;
     }
 
+    public int getTempmute_count() {
+        return tempmute_count;
+    }
+
+    public void setTempmute_count(int tempmute_count) {
+        this.tempmute_count = tempmute_count;
+    }
+
+    public void addTempmute(){
+        this.tempmute_count++;
+    }
 
     public AdminType getAdminType() {
         return adminType;

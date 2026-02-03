@@ -19,6 +19,7 @@ D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Events\BanIPEvent
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Events\KickEvent.java
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Events\MuteEvent.java
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Events\TempBanEvent.java
+D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Events\TempMuteEvent.java
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Files\AdminmapFileManager.java
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Files\IconsFileManager.java
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Files\PunishmentFileManager.java

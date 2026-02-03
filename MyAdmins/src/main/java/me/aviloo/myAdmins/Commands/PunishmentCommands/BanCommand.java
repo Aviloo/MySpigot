@@ -22,9 +22,11 @@ import static me.aviloo.myAdmins.Commands.PunishmentCommands.KickCommand.isNumer
 public class BanCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(!Admin.isPlayerAdmin((Player) sender) && !(sender instanceof ConsoleCommandSender)){
-            sender.sendMessage(ChatColor.RED+"Вы должны быть администратором.");
-            return true;
+        if(!(sender instanceof ConsoleCommandSender)) {
+            if (!Admin.isPlayerAdmin((Player) sender)) {
+                sender.sendMessage(ChatColor.RED + "Вы должны быть администратором.");
+                return true;
+            }
         }
         if(args.length < 2){return false;}
         if(!isNumeric(args[1]) && !isInteger(args[1])){

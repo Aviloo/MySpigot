@@ -8,10 +8,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class AdminCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class AdminCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(!Admin.isPlayerAdmin((Player) sender)) {
@@ -28,5 +32,24 @@ public class AdminCommand implements CommandExecutor {
                 return new getStats().execute(sender,args);
         }
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+
+        List<String> commandsFirst = new ArrayList<>();
+        if(args.length == 1){
+            List<String> completions = new ArrayList<>();
+            completions.add("makeadmin");
+            completions.add("createpluginplayer");
+            completions.add("getstats");
+            for(String s : completions){
+                if(s.toLowerCase().startsWith(args[0].toLowerCase())){
+                    commandsFirst.add(s);
+                }
+            }
+            return commandsFirst;
+        }
+        return null;
     }
 }
