@@ -49,13 +49,14 @@ public class TempBanCommand implements CommandExecutor {
         }
         long duration = DateManager.parseDuration(args[1]);
         Date ban  = new Date(System.currentTimeMillis() + duration);
-        String reason = ChatColor.RED+"Вас забанили по причине "
+        String reason = ChatColor.DARK_GRAY+"\n----------\n"+ChatColor.RED+"Вас забанили. \n"
+                +ChatColor.GRAY+"Причина: "
                 +ChatColor.GOLD+args[2]+": "+ChatColor.WHITE+
                 RulesStorageUtil.getValue(args[2])
-                + "                                                      "
-                +ChatColor.GRAY+"Администратор: "+sender.getName()+" Дата: "+
+                + "\n"
+                +ChatColor.GRAY+"Администратор: "+sender.getName()+"\nДата: "+
                 new SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date())
-                + " Вас разбанят: "+new SimpleDateFormat("dd-MM-yyyy HH:mm").format(ban);
+                + "\nВас разбанят: "+new SimpleDateFormat("dd-MM-yyyy HH:mm").format(ban);
 
         Bukkit.getBanList(org.bukkit.BanList.Type.NAME).addBan(target.getName(),
                 reason, ban, sender.getName());

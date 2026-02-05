@@ -238,20 +238,46 @@ public class Admin {
         this.adminType = adminType;
     }
 
+    public static boolean isPlayerAdmin(PluginPlayer player){
+        for(Admin admin : admins){
+            if(player.getUuid().equals(admin.getUuid())){return true;}
+        }
+        return false;
+    }
+
+    public static Admin getAdminByUUID(UUID uuid){
+        for(Admin admin : admins){
+            if(admin.uuid.equals(uuid)){return admin;}
+        }
+        return null;
+    }
+
+    public static Admin getAdminByName(String name){
+        for(Admin admin : admins){
+            if(admin.getName().equalsIgnoreCase(name)){return admin;}
+        }
+        return null;
+    }
+
+    public void delete(){
+        admins.remove(this);
+    }
 
     public static class AdminType {
-        public static AdminType HELPER = new AdminType("Хэлпер", ChatColor.GREEN+"Хэлпер");
-        public static AdminType MODER = new AdminType("Модератор",ChatColor.AQUA+"Модератор");
-        public static AdminType ADMIN = new AdminType("Админ",ChatColor.RED+"Админ");
-        public static AdminType TECH = new AdminType("Тех. Админ",ChatColor.DARK_PURPLE+"Тех. Админ");
-        public static AdminType SPECIAL = new AdminType("Спец. Админ",ChatColor.DARK_RED+"Спец. Админ");
+        public static AdminType HELPER = new AdminType("Хэлпер", ChatColor.GREEN+"Хэлпер",1);
+        public static AdminType MODER = new AdminType("Модератор",ChatColor.AQUA+"Модератор",2);
+        public static AdminType ADMIN = new AdminType("Админ",ChatColor.RED+"Админ",3);
+        public static AdminType TECH = new AdminType("Тех. Админ",ChatColor.DARK_PURPLE+"Тех. Админ",4);
+        public static AdminType SPECIAL = new AdminType("Спец. Админ",ChatColor.DARK_RED+"Спец. Админ",5);
 
-        private String name;
-        private String prefix;
+        private final String name;
+        private final String prefix;
+        private final int priority;
 
-        public AdminType(String name, String prefix) {
+        public AdminType(String name, String prefix, int priority) {
             this.name = name;
             this.prefix = prefix;
+            this.priority = priority;
         }
 
         public String getName() {
@@ -260,6 +286,8 @@ public class Admin {
         public String getPrefix() {
             return prefix;
         }
+        public int getPriority() {return priority;}
+
 
         public static AdminType valueOf(String name) {
             if(HELPER.getName().equalsIgnoreCase(name)){return HELPER;}

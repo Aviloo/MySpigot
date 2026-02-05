@@ -63,7 +63,9 @@ public final class MyAdmins extends JavaPlugin {
         getCommand("ac").setExecutor(new AdminChatCommand());
         getCommand("report").setExecutor(new ReportCommand());
         getCommand("reports").setExecutor(new ReportsCommand());
+        getCommand("reportask").setExecutor(new ReportAskCommand());
         getCommand("vanish").setExecutor(new VanishCommand());
+        getCommand("getalt").setExecutor(new AltCommand());
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerHandler(), this);
         getServer().getPluginManager().registerEvents(new PunishmentMenu(),this);

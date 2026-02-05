@@ -13,7 +13,7 @@ public class makeAdmin {
             sender.sendMessage(ChatColor.RED+"Вы должны быть администратором.");
             return true;
         }
-        if(args.length < 2) {return false;}
+        if(args.length < 1) {return false;}
 
         String PlayerName = args[1];
         Player target = Bukkit.getServer().getPlayer(PlayerName);
@@ -23,6 +23,12 @@ public class makeAdmin {
         }
         if(Admin.getAdminByPlayer(target) != null){
             sender.sendMessage(ChatColor.RED+"Игрок уже администратор!");
+            return true;
+        }
+        if(args[2] == null || args[2].equalsIgnoreCase(" ")) {
+            new Admin(target.getName(),target.getUniqueId(),
+            Admin.AdminType.valueOf("Хэлпер"),target.getAddress().getHostString());
+            sender.sendMessage("Игрок повышен до администратора.");
             return true;
         }
         if(Admin.AdminType.valueOf(args[2]) == null){

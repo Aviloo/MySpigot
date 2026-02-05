@@ -30,7 +30,15 @@ commands:
       - rep
   reports:
     usage: </command>
+  reportask:
+    usage: </command> id ответ
+    aliases:
+      - rask
   vanish:
     usage: </command>
     aliases:
       - v
+  getalt:
+    usage: </command>
+    aliases:
+      - alt

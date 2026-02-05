@@ -136,4 +136,19 @@ public class PluginPlayer {
         this.duration = duration;
     }
 
+    public static PluginPlayer getPluginPlayerByName(String name) {
+        for(PluginPlayer p : players){
+            if(p.getName().equalsIgnoreCase(name)){return p;}
+        }
+        return null;
+    }
+
+    public static List<PluginPlayer> getSameAddressPluginPlayers(PluginPlayer player){
+        List<PluginPlayer> pluginPlayers = new ArrayList<>();
+        for(PluginPlayer p : players){
+            if(p.getAddress().equalsIgnoreCase(player.getAddress())){pluginPlayers.add(p);}
+        }
+        return pluginPlayers;
+    }
+
 }

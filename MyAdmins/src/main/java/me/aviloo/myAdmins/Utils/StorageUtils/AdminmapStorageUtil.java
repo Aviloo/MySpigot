@@ -89,4 +89,8 @@ public class AdminmapStorageUtil {
         usermap.put(uuid, admin);
     }
 
+    public static void deleteFromUsermap(UUID uuid){
+        usermap.remove(uuid);
+    }
+
 }

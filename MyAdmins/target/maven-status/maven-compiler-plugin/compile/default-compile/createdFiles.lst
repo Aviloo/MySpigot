@@ -3,9 +3,11 @@ me\aviloo\myAdmins\Menu\ReportsMenu.class
 me\aviloo\myAdmins\Events\BanEvent.class
 me\aviloo\myAdmins\Commands\ReportsCommand.class
 me\aviloo\myAdmins\Events\TempBanEvent.class
+me\aviloo\myAdmins\Commands\ReportAskCommand.class
 me\aviloo\myAdmins\Menu\ReportsMenu$1.class
 me\aviloo\myAdmins\Models\Punishment.class
 me\aviloo\myAdmins\Commands\PunishmentCommands\BanCommand.class
+me\aviloo\myAdmins\Commands\AltCommand.class
 me\aviloo\myAdmins\Commands\PunishmentCommands\KickCommand.class
 me\aviloo\myAdmins\Commands\PunishmentCommands\TempMuteCommand.class
 me\aviloo\myAdmins\Models\PluginPlayer.class
@@ -29,6 +31,7 @@ me\aviloo\myAdmins\Commands\SubCommands\createPluginPlayer.class
 me\aviloo\myAdmins\Commands\SubCommands\makeAdmin.class
 me\aviloo\myAdmins\Events\KickEvent.class
 me\aviloo\myAdmins\Utils\DateManager.class
+me\aviloo\myAdmins\Commands\SubCommands\DeleteAdminCommand.class
 me\aviloo\myAdmins\Utils\TextUtils.class
 me\aviloo\myAdmins\Handler\PlayerHandler.class
 me\aviloo\myAdmins\Models\Admin.class

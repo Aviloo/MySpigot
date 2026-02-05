@@ -43,11 +43,12 @@ public class KickCommand implements CommandExecutor {
             return true;
         }
 
-        target.kickPlayer(ChatColor.RED+"Вас кикнули по причине "
+        target.kickPlayer(ChatColor.DARK_GRAY+"\n----------\n"+ChatColor.RED+"Вас кикнули. \n"+
+        ChatColor.GRAY+"Причина: "
         +ChatColor.GOLD+args[1]+": "+ChatColor.WHITE+
         RulesStorageUtil.getValue(args[1])
-        + "                                                      "
-        +ChatColor.GRAY+"Администратор: "+sender.getName()+" Дата: "+
+        + "\n"
+        +ChatColor.GRAY+"Администратор: "+sender.getName()+"\nДата: "+
         new SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date()));
         KickEvent event = new KickEvent(target,sender,args[1]);
         Bukkit.getPluginManager().callEvent(event);

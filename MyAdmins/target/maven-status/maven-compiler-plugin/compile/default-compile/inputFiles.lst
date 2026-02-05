@@ -1,5 +1,6 @@
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\AdminChatCommand.java
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\AdminCommand.java
+D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\AltCommand.java
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\getPunishments.java
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\PunishmentCommands\BanCommand.java
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\PunishmentCommands\BanIPCommand.java
@@ -7,9 +8,11 @@ D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\Punishme
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\PunishmentCommands\MuteCommand.java
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\PunishmentCommands\TempBanCommand.java
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\PunishmentCommands\TempMuteCommand.java
+D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\ReportAskCommand.java
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\ReportCommand.java
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\ReportsCommand.java
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\SubCommands\createPluginPlayer.java
+D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\SubCommands\DeleteAdminCommand.java
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\SubCommands\getStats.java
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\SubCommands\makeAdmin.java
 D:\Cmds\Plugins Java\MyAdmins\src\main\java\me\aviloo\myAdmins\Commands\VanishCommand.java

@@ -46,11 +46,12 @@ public class BanCommand implements CommandExecutor {
             sender.sendMessage("Игрок не найден");
             return true;
         }
-        String reason = ChatColor.RED+"Вас забанили навсегда по причине "
+        String reason = ChatColor.DARK_GRAY+"\n----------\n"+ChatColor.RED+
+                "Вас забанили навсегда. \n "+ChatColor.GRAY+"Причина: "
                 +ChatColor.GOLD+args[1]+": "+ChatColor.WHITE+
                 RulesStorageUtil.getValue(args[1])
-                + "                                                      "
-                +ChatColor.GRAY+"Администратор: "+sender.getName()+" Дата: "+
+                + "\n"
+                +ChatColor.GRAY+"Администратор: "+sender.getName()+"\nДата: "+
                 new SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
 
         Bukkit.getBanList(org.bukkit.BanList.Type.NAME).addBan(target.getName(),

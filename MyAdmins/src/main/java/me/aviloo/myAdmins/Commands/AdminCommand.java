@@ -1,5 +1,6 @@
 package me.aviloo.myAdmins.Commands;
 
+import me.aviloo.myAdmins.Commands.SubCommands.DeleteAdminCommand;
 import me.aviloo.myAdmins.Commands.SubCommands.getStats;
 import me.aviloo.myAdmins.Commands.SubCommands.makeAdmin;
 import me.aviloo.myAdmins.Commands.SubCommands.createPluginPlayer;
@@ -30,6 +31,8 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                 return new createPluginPlayer().execute(sender,args);
             case "getstats":
                 return new getStats().execute(sender,args);
+            case "deleteAdmin":
+                return new DeleteAdminCommand().execute(sender,args);
         }
         return true;
     }
@@ -43,6 +46,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
             completions.add("makeadmin");
             completions.add("createpluginplayer");
             completions.add("getstats");
+            completions.add("deleteAdmin");
             for(String s : completions){
                 if(s.toLowerCase().startsWith(args[0].toLowerCase())){
                     commandsFirst.add(s);
